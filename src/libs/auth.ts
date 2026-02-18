@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 
 import type { NextAuthOptions } from 'next-auth'
 import type { Adapter } from 'next-auth/adapters'
+import type { SystemRole } from '@prisma/client'
 import prisma from '@/libs/prisma'
 
 // Extend NextAuth types
@@ -16,8 +17,14 @@ declare module 'next-auth' {
       name?: string | null
       email?: string | null
       image?: string | null
-      role?: string
+      role?: string // @deprecated - usar roles[]
+      roles: SystemRole[]
       organizationId?: string | null
+      networkId?: string | null
+      networkRole?: string | null
+      ledGroups?: { groupId: string }[]
+      ledServiceAreas?: { serviceAreaId: string }[]
+      volunteerAreas?: { serviceAreaId: string; isActive: boolean }[]
     }
   }
 
@@ -27,6 +34,7 @@ declare module 'next-auth' {
     name?: string | null
     image?: string | null
     role?: string
+    roles?: SystemRole[]
     organizationId?: string | null
   }
 }
@@ -35,6 +43,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     id?: string
     role?: string
+    roles?: SystemRole[]
     organizationId?: string | null
   }
 }
@@ -77,7 +86,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role || 'user',
+          role: user.role || 'user', // @deprecated
+          roles: user.roles,
           image: user.image,
           organizationId: user.organizationId
         }
@@ -137,7 +147,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role || 'user',
+          role: user.role || 'user', // @deprecated
+          roles: user.roles || ['member'],
           organizationId: user.organizationId,
           provider: account.provider
         }
@@ -147,12 +158,42 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string
-        session.user.name = token.name
-        session.user.email = token.email
-        session.user.role = (token.role as string) || 'user'
-        session.user.organizationId = token.organizationId as string | null
+      if (session.user && token.id) {
+        // Cargar datos completos del usuario con relaciones de roles
+        const userWithRoles = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            role: true,
+            roles: true,
+            organizationId: true,
+            networkId: true,
+            networkRole: true,
+            groupLeaderships: { select: { groupId: true } },
+            ledServiceAreas: { select: { serviceAreaId: true } },
+            volunteerAreas: { select: { serviceAreaId: true, isActive: true } }
+          }
+        })
+
+        if (userWithRoles) {
+          session.user = {
+            id: userWithRoles.id,
+            name: userWithRoles.name,
+            email: userWithRoles.email,
+            image: userWithRoles.image,
+            role: userWithRoles.role || 'user', // @deprecated
+            roles: userWithRoles.roles,
+            organizationId: userWithRoles.organizationId,
+            networkId: userWithRoles.networkId,
+            networkRole: userWithRoles.networkRole,
+            ledGroups: userWithRoles.groupLeaderships,
+            ledServiceAreas: userWithRoles.ledServiceAreas,
+            volunteerAreas: userWithRoles.volunteerAreas
+          }
+        }
       }
 
       return session

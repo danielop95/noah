@@ -168,11 +168,148 @@ src/
 | `createdAt`      | DateTime      | Fecha de creación                          |
 | `updatedAt`      | DateTime      | Fecha de actualización                     |
 
+### Modelo `ServiceArea` (áreas de servicio)
+
+| Campo            | Tipo          | Descripción                                |
+| ---------------- | ------------- | ------------------------------------------ |
+| `id`             | String (CUID) | Identificador único                        |
+| `name`           | String        | Nombre del área (Alabanza, Ujieres, etc.)  |
+| `description`    | String?       | Descripción del área                       |
+| `color`          | String?       | Color hex para UI                          |
+| `icon`           | String?       | Icono remixicon                            |
+| `isActive`       | Boolean       | Estado del área                            |
+| `organizationId` | String        | ID de la iglesia                           |
+| `leaders`        | ServiceAreaLeader[] | Líderes del área                     |
+| `volunteers`     | VolunteerAssignment[] | Voluntarios asignados              |
+| `events`         | CalendarEvent[] | Eventos asociados al área                |
+
+**Restricción**: `@@unique([organizationId, name])` - Nombre único por organización.
+
+### Modelo `ServiceAreaLeader` (líderes de área)
+
+| Campo           | Tipo          | Descripción                     |
+| --------------- | ------------- | ------------------------------- |
+| `id`            | String (CUID) | Identificador único             |
+| `userId`        | String        | ID del usuario líder            |
+| `serviceAreaId` | String        | ID del área de servicio         |
+| `createdAt`     | DateTime      | Fecha de asignación             |
+
+**Restricción**: `@@unique([userId, serviceAreaId])`
+
+### Modelo `VolunteerAssignment` (asignación de voluntarios)
+
+| Campo           | Tipo          | Descripción                     |
+| --------------- | ------------- | ------------------------------- |
+| `id`            | String (CUID) | Identificador único             |
+| `userId`        | String        | ID del voluntario               |
+| `serviceAreaId` | String        | ID del área de servicio         |
+| `isActive`      | Boolean       | Si está activo en el área       |
+| `notes`         | String?       | Notas sobre el voluntario       |
+| `createdAt`     | DateTime      | Fecha de asignación             |
+
+**Restricción**: `@@unique([userId, serviceAreaId])`
+
 ### Modelos de soporte NextAuth
 
 - **Account** - Cuentas OAuth vinculadas (Google, etc.)
 - **Session** - Sesiones de usuario
 - **VerificationToken** - Tokens de verificación de email
+
+---
+
+## Sistema de Roles y Permisos
+
+### Enum `SystemRole`
+
+```typescript
+enum SystemRole {
+  admin   // Nivel 100 - Control total
+  pastor  // Nivel 80 - Liderazgo espiritual + vista global
+  member  // Nivel 10 - Usuario base
+}
+```
+
+### Jerarquía de Roles (Heredable)
+
+| Rol | Nivel | Descripción |
+|-----|-------|-------------|
+| **Admin** | 100 | Control total del sistema |
+| **Pastor** | 80 | Liderazgo espiritual, vista global sin edición |
+| **Líder de Red** | 60 | Gestiona SU red y grupos de su red |
+| **Líder de Grupo** | 40 | Gestiona SU grupo |
+| **Líder de Área** | 40 | Gestiona SU área de servicio |
+| **Voluntario** | 20 | Participa en áreas asignadas |
+| **Miembro** | 10 | Usuario base |
+
+### Roles Base vs Contextuales
+
+- **Roles base** (`User.roles[]`): `admin`, `pastor`, `member`
+- **Roles contextuales** (calculados de relaciones):
+  - `network_leader`: `User.networkRole === 'leader'`
+  - `group_leader`: tiene registros en `GroupLeader`
+  - `area_leader`: tiene registros en `ServiceAreaLeader`
+  - `volunteer`: tiene registros activos en `VolunteerAssignment`
+
+### Archivos del Sistema de Permisos
+
+| Archivo | Descripción |
+|---------|-------------|
+| `src/libs/permissions.ts` | Sistema core de permisos (50+ permisos) |
+| `src/libs/permissions-server.ts` | Helpers para server actions |
+| `src/components/guards/PermissionGuard.tsx` | Guard para componentes cliente |
+| `src/app/server/roleActions.ts` | Server actions para gestión de roles |
+| `src/app/server/areaActions.ts` | Server actions para áreas de servicio |
+
+### Permisos Disponibles
+
+**Usuarios**: `users:read:all`, `users:read:network`, `users:read:group`, `users:read:area`, `users:create`, `users:update:all`, `users:update:own`, `users:delete`, `users:assign_roles`
+
+**Redes**: `networks:read:all`, `networks:read:own`, `networks:create`, `networks:update:all`, `networks:update:own`, `networks:delete`
+
+**Grupos**: `groups:read:all`, `groups:read:network`, `groups:read:own`, `groups:create:any`, `groups:create:network`, `groups:update:all`, `groups:update:own`, `groups:delete`
+
+**Calendario**: `calendar:read:public`, `calendar:read:leaders`, `calendar:read:admin`, `calendar:read:area`, `calendar:create:any`, `calendar:create:area`, `calendar:update:all`, `calendar:update:area`, `calendar:delete`
+
+**Reportes**: `reports:read:all`, `reports:read:network`, `reports:read:group`, `reports:create`, `reports:update:own`, `reports:delete:own`, `reports:delete:all`
+
+**Áreas**: `areas:read:all`, `areas:read:own`, `areas:create`, `areas:update`, `areas:delete`, `areas:assign_volunteers`
+
+**Configuración**: `config:read`, `config:update`
+
+### Uso en Server Actions
+
+```typescript
+import { requirePermission, requireAdmin } from '@/libs/permissions-server'
+
+// Verificar permiso específico
+export async function updateGroup(id: string, data: any) {
+  const user = await requirePermission('groups:update:own', { groupId: id })
+  // ... lógica
+}
+
+// Solo admin
+export async function deleteUser(id: string) {
+  await requireAdmin()
+  // ... lógica
+}
+```
+
+### Uso en Componentes Cliente
+
+```tsx
+import { PermissionGuard, usePermissions } from '@/components/guards/PermissionGuard'
+
+// Con Guard
+<PermissionGuard permission="users:create">
+  <CreateUserButton />
+</PermissionGuard>
+
+// Con Hook
+const { hasPermission, isAdmin } = usePermissions()
+if (hasPermission('groups:update:own', { groupId })) {
+  // mostrar botón editar
+}
+```
 
 ---
 
