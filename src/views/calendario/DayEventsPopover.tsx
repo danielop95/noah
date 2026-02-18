@@ -146,7 +146,8 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
             fontWeight: 700,
             textTransform: 'capitalize',
             letterSpacing: '-0.02em',
-            fontSize: '1.125rem'
+            fontSize: '1.125rem',
+            color: 'white'
           }}
         >
           {formatDateHeader(selectedDate)}
