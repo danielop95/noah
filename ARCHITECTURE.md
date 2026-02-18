@@ -46,6 +46,17 @@ Este proyecto sigue una arquitectura **SaaS Multi-tenant** utilizando Next.js 15
 
 Toda nueva funcionalidad debe actualizar este documento o los archivos `README.md` y `CHANGELOG.md` pertinentes.
 
+## Seguridad y Permisos
+
+El sistema utiliza una arquitectura de permisos basada en roles (RBAC) con soporte para jerarquías heredables y contextos dinámicos.
+
+1. **Jerarquía**: Los roles tienen niveles (0-100). Un usuario con nivel superior suele heredar capacidades de los niveles inferiores.
+2. **Contextos**: Los permisos pueden ser globales (ej: `users:read:all`) o contextuales (ej: `groups:update:own`), verificando si el usuario es líder del recurso específico.
+3. **Implementación**:
+   - **Client-side**: `PermissionGuard` y hooks para control de UI.
+   - **Server-side**: `requirePermission` en Server Actions.
+   - **Sesión**: Los roles y relaciones se inyectan en el JWT de NextAuth para acceso rápido.
+
 ## Identidad Visual (Noah)
 
 - **Paleta de Colores**:
