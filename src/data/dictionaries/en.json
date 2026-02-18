@@ -103,11 +103,13 @@
     "menuLevel3": "Menu Level 3",
     "disabledMenu": "Disabled Menu",
     "inicio": "Home",
+    "calendario": "Calendar",
     "miCuenta": "My Account",
     "administracion": "Administration",
     "usuarios": "Users",
     "redes": "Networks",
     "grupos": "Groups",
+    "reportes": "Reports",
     "configuracion": "Settings"
   }
 }

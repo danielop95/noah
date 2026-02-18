@@ -76,6 +76,12 @@ model User {
 
   // Grupos donde es líder
   groupLeaderships GroupLeader[]
+
+  // Reportes creados
+  groupReports     GroupReport[]
+
+  // Eventos de calendario creados
+  calendarEvents   CalendarEvent[]
 }
 
 model Organization {
@@ -87,9 +93,11 @@ model Organization {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  users       User[]
-  networks    Network[]
-  groups      Group[]
+  users           User[]
+  networks        Network[]
+  groups          Group[]
+  groupReports    GroupReport[]
+  calendarEvents  CalendarEvent[]
 }
 
 model VerificationToken {
@@ -158,6 +166,9 @@ model Group {
 
   // Líderes (many-to-many)
   leaders        GroupLeader[]
+
+  // Reportes de este grupo
+  reports        GroupReport[]
 }
 
 model GroupLeader {
@@ -170,4 +181,79 @@ model GroupLeader {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, userId])
+}
+
+// ===================
+// Módulo de Reportes
+// ===================
+
+model GroupReport {
+  id              String   @id @default(cuid())
+
+  // Fecha de la reunión (solo fecha, sin hora)
+  meetingDate     DateTime @db.Date
+
+  // Asistencia
+  totalAttendees  Int      // Total asistentes (incluye líderes)
+  leadersCount    Int      // Cuántos eran líderes
+  visitorsCount   Int      // Cuántos fueron visitas
+
+  // Ofrenda
+  reportOffering  Boolean  @default(false)
+  offeringAmount  Decimal? @db.Decimal(10, 2)
+
+  // Notas (opcional)
+  notes           String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relaciones
+  groupId         String
+  group           Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  reporterId      String   // Usuario que creó el reporte
+  reporter        User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, meetingDate])  // Un reporte por grupo por fecha
+}
+
+// ===================
+// Módulo de Calendario
+// ===================
+
+model CalendarEvent {
+  id             String   @id @default(cuid())
+  title          String
+  description    String?
+
+  // Fechas
+  startDate      DateTime
+  endDate        DateTime
+  allDay         Boolean  @default(false)
+
+  // Categoría: 'culto' | 'evento' | 'reunion' | 'actividad' | 'capacitacion'
+  category       String   @default("evento")
+
+  // URL externa opcional (para más info)
+  url            String?
+
+  // Ubicación
+  location       String?
+
+  // Estado
+  isActive       Boolean  @default(true)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relaciones
+  createdById    String
+  createdBy      User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }

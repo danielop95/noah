@@ -103,11 +103,13 @@
     "menuLevel3": "Niveau menu 3",
     "disabledMenu": "Menu désactivé",
     "inicio": "Accueil",
+    "calendario": "Calendrier",
     "miCuenta": "Mon Compte",
     "administracion": "Administration",
     "usuarios": "Utilisateurs",
     "redes": "Reseaux",
     "grupos": "Groupes",
+    "reportes": "Rapports",
     "configuracion": "Parametres"
   }
 }

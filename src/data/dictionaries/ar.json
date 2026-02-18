@@ -103,11 +103,13 @@
     "menuLevel3": "مستوى القائمة 3",
     "disabledMenu": "قائمة المعوقين",
     "inicio": "الرئيسية",
+    "calendario": "التقويم",
     "miCuenta": "حسابي",
     "administracion": "الإدارة",
     "usuarios": "المستخدمين",
     "redes": "الشبكات",
     "grupos": "المجموعات",
+    "reportes": "التقارير",
     "configuracion": "الإعدادات"
   }
 }

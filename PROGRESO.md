@@ -1,7 +1,7 @@
 # Noah - Progreso del Proyecto
 
 > Sistema de Gestión de Iglesia
-> Última actualización: 18 de febrero de 2026 (v5)
+> Última actualización: 18 de febrero de 2026 (v6)
 
 ---
 
@@ -149,6 +149,25 @@ src/
 
 **Restricción**: `@@unique([groupId, userId])` - Un usuario solo puede ser líder una vez por grupo.
 
+### Modelo `CalendarEvent` (eventos del calendario)
+
+| Campo            | Tipo          | Descripción                                |
+| ---------------- | ------------- | ------------------------------------------ |
+| `id`             | String (CUID) | Identificador único                        |
+| `title`          | String        | Título del evento                          |
+| `description`    | String?       | Descripción del evento                     |
+| `startDate`      | DateTime      | Fecha y hora de inicio                     |
+| `endDate`        | DateTime      | Fecha y hora de fin                        |
+| `allDay`         | Boolean       | Si es evento de todo el día                |
+| `category`       | String        | Tipo: culto, evento, reunion, actividad, capacitacion |
+| `url`            | String?       | Enlace externo (opcional)                  |
+| `location`       | String?       | Ubicación del evento (opcional)            |
+| `isActive`       | Boolean       | Estado del evento (activo/inactivo)        |
+| `createdById`    | String        | ID del usuario que creó el evento          |
+| `organizationId` | String        | ID de la iglesia a la que pertenece        |
+| `createdAt`      | DateTime      | Fecha de creación                          |
+| `updatedAt`      | DateTime      | Fecha de actualización                     |
+
 ### Modelos de soporte NextAuth
 
 - **Account** - Cuentas OAuth vinculadas (Google, etc.)
@@ -237,7 +256,7 @@ src/
 | Español | `es`   | LTR       | Sí             |
 | Inglés  | `en`   | LTR       | No             |
 
-Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuarios`, `redes`, `configuracion`
+Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuarios`, `redes`, `grupos`, `configuracion`, `calendario`, `reportes`
 
 ### 7. API Routes
 
@@ -444,7 +463,59 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 - Estado (activo/inactivo)
 - Acciones (editar, eliminar)
 
-### 17. Dashboard Rediseñado
+### 17. Módulo de Calendario
+
+| Funcionalidad                          | Estado | Descripción                                                        |
+| -------------------------------------- | ------ | ------------------------------------------------------------------ |
+| **Modelo de datos**                    | Listo  | `CalendarEvent` con relación a User y Organization                 |
+| **Vista de calendario FullCalendar**   | Listo  | Vista mensual con eventos, localización en español                 |
+| **Categorías de eventos**              | Listo  | 5 tipos: culto, evento, reunión, actividad, capacitación           |
+| **Colores por categoría**              | Listo  | Primary, warning, error, success, info según tipo                  |
+| **Filtro por categorías**              | Listo  | Sidebar con checkboxes para filtrar por tipo de evento             |
+| **Mini calendario de navegación**      | Listo  | DatePicker para saltar a fechas específicas                        |
+| **Drawer de creación (Admin)**         | Listo  | Formulario completo para crear/editar eventos                      |
+| **Drawer de detalle (Usuarios)**       | Listo  | Vista de solo lectura para usuarios no admin                       |
+| **Drag & Drop (Admin)**                | Listo  | Arrastrar eventos para cambiar fechas                              |
+| **Click en día (Admin)**               | Listo  | Click en fecha vacía abre drawer con fecha preseleccionada         |
+| **Eventos todo el día**                | Listo  | Toggle para eventos sin hora específica                            |
+| **Ubicación y URL**                    | Listo  | Campos opcionales para lugar y enlace externo                      |
+| **CRUD completo**                      | Listo  | Crear, editar, eliminar eventos (solo admin)                       |
+| **Script de seed**                     | Listo  | 29 eventos de ejemplo para Casa del Rey                            |
+
+**Archivos del módulo:**
+
+| Archivo | Descripción |
+|---------|-------------|
+| `src/views/calendario/index.tsx` | Vista principal que integra todos los componentes |
+| `src/views/calendario/CalendarView.tsx` | Componente FullCalendar con configuración |
+| `src/views/calendario/CalendarSidebar.tsx` | Sidebar con filtros y mini calendario |
+| `src/views/calendario/EventDrawer.tsx` | Drawer para admin (crear/editar) |
+| `src/views/calendario/EventDetailDrawer.tsx` | Drawer solo lectura para usuarios |
+| `src/views/calendario/types.ts` | Tipos TypeScript del módulo |
+| `src/app/server/calendarActions.ts` | Server actions CRUD |
+| `src/app/[lang]/(dashboard)/(private)/calendario/page.tsx` | Ruta de página |
+| `src/scripts/seed-calendar.ts` | Script para poblar datos de ejemplo |
+
+**Categorías de eventos:**
+
+| Categoría | Color | Descripción |
+|-----------|-------|-------------|
+| `culto` | Primary (azul) | Servicios dominicales y de oración |
+| `evento` | Warning (naranja) | Eventos especiales, conferencias |
+| `reunion` | Error (rojo) | Reuniones de líderes y pastores |
+| `actividad` | Success (verde) | Actividades de redes |
+| `capacitacion` | Info (celeste) | Escuelas y talleres |
+
+**Datos de seed (29 eventos):**
+- 12 cultos (dominicales y de oración)
+- 6 eventos especiales (bautismos, vigilia, conferencia)
+- 3 reuniones de líderes
+- 4 actividades de redes
+- 4 capacitaciones
+
+**Script de seed:** `npx dotenv-cli -e .env -- npx tsx src/scripts/seed-calendar.ts`
+
+### 18. Dashboard Rediseñado (renumerado)
 
 | Funcionalidad                          | Estado | Descripción                                                        |
 | -------------------------------------- | ------ | ------------------------------------------------------------------ |
@@ -470,7 +541,7 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 - `upcomingGroups` (próximos 5 grupos por día de reunión)
 - `currentUserName` (nombre del usuario actual)
 
-### 18. Componente ColorPicker
+### 19. Componente ColorPicker
 
 | Funcionalidad                          | Estado | Descripción                                                        |
 | -------------------------------------- | ------ | ------------------------------------------------------------------ |
@@ -538,7 +609,7 @@ const tenant = useTenant()
 | Subida de avatar                   | No iniciado | Campo `image` existe en DB pero sin upload            |
 | Notificaciones                     | No iniciado | Componente dropdown existe pero sin lógica            |
 | Búsqueda global                    | No iniciado | Componente existe pero sin implementación             |
-| Calendario                         | No iniciado | Dependencia `@fullcalendar` instalada                 |
+| ~~Calendario~~                     | **Listo**   | Módulo completo con FullCalendar (ver sección 17)     |
 | Gráficos/reportes                  | No iniciado | Dependencia `apexcharts` instalada                    |
 | Editor de texto                    | No iniciado | Dependencia `@tiptap` instalada                       |
 
@@ -607,9 +678,27 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 ---
 
-## Archivos Clave Modificados (Sesión 18-Feb-2026 v5)
+## Archivos Clave Modificados (Sesión 18-Feb-2026 v6)
 
-### Módulo de Grupos (nuevo)
+### Módulo de Calendario (nuevo)
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/prisma/schema.prisma` | Agregado modelo `CalendarEvent` con relaciones |
+| `src/views/calendario/index.tsx` | **NUEVO** - Vista principal del calendario |
+| `src/views/calendario/CalendarView.tsx` | **NUEVO** - Componente FullCalendar |
+| `src/views/calendario/CalendarSidebar.tsx` | **NUEVO** - Sidebar con filtros |
+| `src/views/calendario/EventDrawer.tsx` | **NUEVO** - Drawer admin crear/editar |
+| `src/views/calendario/EventDetailDrawer.tsx` | **NUEVO** - Drawer solo lectura |
+| `src/views/calendario/types.ts` | **NUEVO** - Tipos TypeScript |
+| `src/app/server/calendarActions.ts` | **NUEVO** - Server actions CRUD |
+| `src/app/[lang]/(dashboard)/(private)/calendario/page.tsx` | **NUEVO** - Ruta de página |
+| `src/scripts/seed-calendar.ts` | **NUEVO** - Script de seed con 29 eventos |
+| `src/data/navigation/verticalMenuData.tsx` | Agregado item "Calendario" |
+| `src/data/navigation/horizontalMenuData.tsx` | Agregado item "Calendario" |
+| `src/data/dictionaries/*.json` | Agregada clave `calendario` |
+
+### Módulo de Grupos (sesión anterior)
 
 | Archivo | Cambio |
 |---------|--------|
@@ -648,7 +737,8 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 | Módulo | Descripción | Prioridad |
 |--------|-------------|-----------|
-| **Eventos** | Crear eventos, asignar a redes/grupos, registro de asistencia, calendario | Alta |
+| ~~**Eventos/Calendario**~~ | ~~Crear eventos, calendario interactivo~~ | **Listo** |
+| **Reportes de Grupos** | Reportes de asistencia, ofrendas, estadísticas por grupo | Alta |
 | **Asistencia** | Check-in a servicios y grupos, reportes, histórico por usuario | Alta |
 | **Finanzas/Diezmos** | Registro de donaciones, reportes, recibos | Media |
 | **Comunicaciones** | Notificaciones, mensajes a redes/grupos, anuncios | Media |

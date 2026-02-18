@@ -9,9 +9,19 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
     href: '/dashboards'
   },
   {
+    label: dictionary['navigation'].calendario,
+    icon: 'ri-calendar-event-line',
+    href: '/calendario'
+  },
+  {
     label: dictionary['navigation'].miCuenta,
     icon: 'ri-user-settings-line',
     href: '/account-settings'
+  },
+  {
+    label: dictionary['navigation'].reportes,
+    icon: 'ri-file-chart-line',
+    href: '/reportes'
   },
   {
     isSection: true,
