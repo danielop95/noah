@@ -68,6 +68,11 @@ model User {
 
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  // Red (un usuario solo puede pertenecer a una red)
+  networkId   String?
+  network     Network? @relation(fields: [networkId], references: [id], onDelete: SetNull)
+  networkRole String?  // 'leader' | 'member'
 }
 
 model Organization {
@@ -80,6 +85,7 @@ model Organization {
   updatedAt   DateTime @updatedAt
 
   users       User[]
+  networks    Network[]
 }
 
 model VerificationToken {
@@ -88,4 +94,24 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// ===================
+// Módulo de Redes
+// ===================
+
+model Network {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  imageUrl       String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Usuarios que pertenecen a esta red (como líderes o miembros)
+  users          User[]
 }

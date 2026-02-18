@@ -22,7 +22,12 @@
       "Bash(git push:*)",
       "Bash(git reset:*)",
       "Bash(git update-ref:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(npx ts-node:*)",
+      "Bash(node -e:*)",
+      "Bash(pkill:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(npx prisma generate:*)"
     ]
   }
 }

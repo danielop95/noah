@@ -1,5 +1,6 @@
 // Next Imports
 import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
 // MUI Imports
@@ -19,6 +20,9 @@ import {
   type TenantColors,
   type TenantBranding
 } from '@/services/organizationService'
+
+// Config Imports
+import themeConfig from '@configs/themeConfig'
 
 // Layout Imports
 import LayoutWrapper from '@layouts/LayoutWrapper'
@@ -64,14 +68,29 @@ const Layout = async (props: ChildrenType & { params: Promise<{ lang: string }> 
   // Obtener branding del tenant desde el header inyectado por el middleware
   const headersList = await headers()
   const tenantSlug = headersList.get('x-tenant-slug')
+  const host = headersList.get('host') || ''
 
   let tenantBranding: TenantBranding | null = null
 
   if (tenantSlug) {
-    // Prioridad 1: Hay subdominio, usar ese tenant
+    // Hay subdominio - verificar que el usuario pertenece a este tenant
     const organization = await getOrganizationBySlug(tenantSlug)
 
     if (organization) {
+      // Validar que el usuario pertenece a esta organización
+      if (session?.user?.organizationId && session.user.organizationId !== organization.id) {
+        // Usuario pertenece a OTRO tenant - redirigir a su subdominio correcto
+        const userOrg = await getOrganizationById(session.user.organizationId)
+
+        if (userOrg) {
+          const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+          const mainDomain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || host.split('.').slice(-2).join('.')
+          const redirectUrl = `${protocol}://${userOrg.slug}.${mainDomain}/${lang}${themeConfig.homePageUrl}`
+
+          redirect(redirectUrl)
+        }
+      }
+
       tenantBranding = {
         id: organization.id,
         name: organization.name,
@@ -81,18 +100,16 @@ const Layout = async (props: ChildrenType & { params: Promise<{ lang: string }> 
       }
     }
   } else if (session?.user?.organizationId) {
-    // Prioridad 2: No hay subdominio, pero el usuario tiene organización
-    // Cargar branding de la organización del usuario
+    // No hay subdominio, pero el usuario tiene organización
+    // Redirigir al subdominio correcto del usuario
     const organization = await getOrganizationById(session.user.organizationId)
 
     if (organization) {
-      tenantBranding = {
-        id: organization.id,
-        name: organization.name,
-        slug: organization.slug,
-        logoUrl: organization.logoUrl,
-        colors: organization.colors as TenantColors | null
-      }
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+      const mainDomain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || host.split('.').slice(-2).join('.')
+      const redirectUrl = `${protocol}://${organization.slug}.${mainDomain}/${lang}${themeConfig.homePageUrl}`
+
+      redirect(redirectUrl)
     }
   }
 

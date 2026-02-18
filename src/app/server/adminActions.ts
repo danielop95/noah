@@ -46,7 +46,12 @@ export async function getAllUsers() {
       phone: true,
       city: true,
       isActive: true,
-      createdAt: true
+      createdAt: true,
+      networkId: true,
+      networkRole: true,
+      network: {
+        select: { id: true, name: true }
+      }
     }
   })
 

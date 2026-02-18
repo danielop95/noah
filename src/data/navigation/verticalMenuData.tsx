@@ -25,6 +25,12 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
         roles: ['admin']
       },
       {
+        label: dictionary['navigation'].redes,
+        icon: 'ri-bubble-chart-line',
+        href: '/admin/redes',
+        roles: ['admin']
+      },
+      {
         label: dictionary['navigation'].configuracion,
         icon: 'ri-settings-3-line',
         href: '/admin/configuracion',

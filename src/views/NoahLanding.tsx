@@ -126,9 +126,27 @@ const NoahLanding = ({ mode }: { mode: Mode }) => {
     })
 
     if (res && res.ok && res.error === null) {
-      const redirectURL = searchParams.get('redirectTo') ?? '/dashboards'
+      // Obtener la organización del usuario para redirigir al subdominio correcto
+      try {
+        const orgRes = await fetch('/api/user/organization')
+        const orgData = await orgRes.json()
 
-      router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+        if (orgData.organization?.slug) {
+          // Redirigir al subdominio de la organización del usuario
+          const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+          const protocol = window.location.protocol
+          const redirectPath = searchParams.get('redirectTo') ?? '/dashboards'
+          const redirectUrl = `${protocol}//${orgData.organization.slug}.${domain}/${locale}${redirectPath}`
+
+          window.location.href = redirectUrl
+        } else {
+          // Usuario sin organización - mostrar error
+          setLoginError({ message: ['Tu cuenta no está asociada a ninguna iglesia.'] })
+        }
+      } catch {
+        // Error al obtener organización - mostrar error
+        setLoginError({ message: ['Error al obtener información de tu iglesia.'] })
+      }
     } else {
       if (res?.error) {
         const error = JSON.parse(res.error)

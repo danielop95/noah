@@ -54,6 +54,9 @@ type UserRow = {
   city: string | null
   isActive: boolean
   createdAt: Date
+  networkId: string | null
+  networkRole: string | null
+  network: { id: string; name: string } | null
 }
 
 const fuzzyFilter: FilterFn<UserRow> = (row, columnId, value, addMeta) => {
@@ -129,6 +132,27 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               color={role === 'admin' ? 'primary' : 'default'}
               size='small'
               variant='tonal'
+            />
+          )
+        }
+      }),
+      columnHelper.accessor('network', {
+        header: 'Red',
+        cell: ({ row }) => {
+          const network = row.original.network
+          const networkRole = row.original.networkRole
+
+          if (!network) {
+            return <Typography variant='body2' className='text-textSecondary'>-</Typography>
+          }
+
+          return (
+            <Chip
+              label={network.name}
+              size='small'
+              variant='tonal'
+              color={networkRole === 'leader' ? 'warning' : 'info'}
+              icon={networkRole === 'leader' ? <i className='ri-star-line text-xs' /> : undefined}
             />
           )
         }

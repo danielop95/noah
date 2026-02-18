@@ -19,6 +19,9 @@ type UserListUser = {
   city: string | null
   isActive: boolean
   createdAt: Date
+  networkId: string | null
+  networkRole: string | null
+  network: { id: string; name: string } | null
 }
 
 const UserList = ({ users }: { users: UserListUser[] }) => {

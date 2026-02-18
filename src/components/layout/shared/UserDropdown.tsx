@@ -75,8 +75,9 @@ const UserDropdown = () => {
 
   const handleUserLogout = async () => {
     try {
-      // Redirigir al login del subdominio actual con el locale correcto
-      const loginUrl = `/${locale}/login`
+      // Construir URL absoluta del login en el subdominio actual
+      const currentOrigin = window.location.origin
+      const loginUrl = `${currentOrigin}/${locale}/login`
 
       await signOut({ callbackUrl: loginUrl })
     } catch (error) {

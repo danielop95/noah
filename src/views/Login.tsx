@@ -44,6 +44,21 @@ type ErrorType = {
   message: string[]
 }
 
+// Helper para extraer el slug del tenant desde el hostname
+const getTenantSlugFromHostname = (): string | null => {
+  if (typeof window === 'undefined') return null
+
+  const hostname = window.location.hostname
+  const parts = hostname.split('.')
+
+  // Si hay más de una parte (ej: casadelrey.localhost o casadelrey.noah.app)
+  if (parts.length >= 2 && parts[0] !== 'www' && parts[0] !== 'localhost') {
+    return parts[0]
+  }
+
+  return null
+}
+
 type FormData = InferInput<typeof schema>
 
 const schema = object({
@@ -87,10 +102,43 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
     })
 
     if (res && res.ok && res.error === null) {
-      // Vars
-      const redirectURL = searchParams.get('redirectTo') ?? '/'
+      // Obtener la organización del usuario y validar el tenant
+      try {
+        const orgRes = await fetch('/api/user/organization')
+        const orgData = await orgRes.json()
 
-      router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+        const currentTenantSlug = getTenantSlugFromHostname()
+        const userOrgSlug = orgData.organization?.slug
+
+        if (userOrgSlug && currentTenantSlug && userOrgSlug !== currentTenantSlug) {
+          // Usuario pertenece a otro tenant - redirigir al subdominio correcto
+          const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+          const protocol = window.location.protocol
+          const redirectPath = searchParams.get('redirectTo') ?? '/dashboards'
+          const redirectUrl = `${protocol}//${userOrgSlug}.${domain}/${locale}${redirectPath}`
+
+          window.location.href = redirectUrl
+
+          return
+        }
+
+        if (!userOrgSlug && currentTenantSlug) {
+          // Usuario sin organización intentando acceder a un tenant
+          setErrorState({ message: ['Tu cuenta no pertenece a esta iglesia.'] })
+
+          return
+        }
+
+        // Usuario válido para este tenant o sin tenant (dominio principal)
+        const redirectURL = searchParams.get('redirectTo') ?? '/dashboards'
+
+        router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+      } catch {
+        // Error al obtener organización - intentar redirección normal
+        const redirectURL = searchParams.get('redirectTo') ?? '/dashboards'
+
+        router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+      }
     } else {
       if (res?.error) {
         const error = JSON.parse(res.error)

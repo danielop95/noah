@@ -1,7 +1,7 @@
 # Noah - Progreso del Proyecto
 
 > Sistema de Gestión de Iglesia
-> Última actualización: 18 de febrero de 2026 (v3)
+> Última actualización: 18 de febrero de 2026 (v4)
 
 ---
 
@@ -85,6 +85,8 @@ src/
 | `city`, `address`, `neighborhood` | String?          | Ubicación                                     |
 | `isActive`                        | Boolean          | Estado de la cuenta                           |
 | `organizationId`                  | String?          | ID de la iglesia/organización asociada        |
+| `networkId`                       | String?          | ID de la red a la que pertenece               |
+| `networkRole`                     | String?          | Rol en la red (`leader` o `member`)           |
 | `createdAt`, `updatedAt`          | DateTime         | Timestamps                                    |
 
 ### Modelo `Organization` (iglesia/tenant)
@@ -98,6 +100,22 @@ src/
 | `colors`    | Json?         | Colores de marca (`primary`, `secondary`) |
 | `createdAt` | DateTime      | Fecha de creación                         |
 | `updatedAt` | DateTime      | Fecha de actualización                    |
+
+### Modelo `Network` (redes/grupos de interés)
+
+| Campo            | Tipo          | Descripción                                |
+| ---------------- | ------------- | ------------------------------------------ |
+| `id`             | String (CUID) | Identificador único                        |
+| `name`           | String        | Nombre de la red                           |
+| `description`    | String?       | Descripción del propósito de la red        |
+| `imageUrl`       | String?       | URL de la imagen/logo de la red            |
+| `isActive`       | Boolean       | Estado de la red (activa/inactiva)         |
+| `organizationId` | String        | ID de la iglesia a la que pertenece        |
+| `users`          | User[]        | Usuarios que pertenecen a esta red         |
+| `createdAt`      | DateTime      | Fecha de creación                          |
+| `updatedAt`      | DateTime      | Fecha de actualización                     |
+
+**Restricción importante**: Un usuario solo puede pertenecer a UNA red (como líder o miembro).
 
 ### Modelos de soporte NextAuth
 
@@ -177,7 +195,7 @@ src/
 
 - **Inicio**: `/dashboards` (Ruta base del panel)
 - **Ajustes**: `/account-settings` (Perfil y Seguridad)
-- **Admin**: `/admin/usuarios` (Gestión de miembros) | `/admin/configuracion` (Colores y nombre)
+- **Admin**: `/admin/usuarios` (Gestión de miembros) | `/admin/redes` (Grupos de interés) | `/admin/configuracion` (Colores y nombre)
 - **Público**: `/landing` (Acceso + Registro de iglesia) | `/login` (redirige a landing en dominio principal) | `/register`
 
 ### 6. Internacionalización (i18n)
@@ -187,7 +205,7 @@ src/
 | Español | `es`   | LTR       | Sí             |
 | Inglés  | `en`   | LTR       | No             |
 
-Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuarios`, `configuracion`
+Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuarios`, `redes`, `configuracion`
 
 ### 7. API Routes
 
@@ -195,6 +213,8 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 | ------------------------- | -------- | ------------------------------------------------------- |
 | `/api/auth/[...nextauth]` | GET/POST | Handler completo de NextAuth                            |
 | `/api/register`           | POST     | Registro de usuario con validación y hash de contraseña |
+| `/api/upload/logo`        | POST/DELETE | Upload/eliminar logo de organización                 |
+| `/api/upload/image`       | POST     | Upload genérico de imágenes (redes, eventos, etc.)      |
 
 ### 8. Server Actions
 
@@ -206,11 +226,20 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 
 **Acciones de admin** (`adminActions.ts`):
 
-- `getAllUsers()` - Listar todos los usuarios
+- `getAllUsers()` - Listar todos los usuarios (incluye red asignada)
 - `getUserById(id)` - Obtener usuario por ID
 - `updateUserByAdmin(id, data)` - Editar usuario (rol, estado, datos)
 - `deactivateUser(id)` - Desactivar usuario
 - `updateOrganizationSettings(organizationId, data)` - Actualizar nombre y colores de organización
+
+**Acciones de redes** (`networkActions.ts`):
+
+- `getAllNetworks()` - Listar todas las redes de la organización
+- `getNetworkById(id)` - Obtener red por ID con usuarios
+- `createNetwork(data)` - Crear red con líderes y miembros
+- `updateNetwork(id, data)` - Actualizar red (nombre, imagen, usuarios)
+- `deleteNetwork(id)` - Eliminar red (usuarios quedan sin asignar)
+- `getOrganizationUsers(excludeNetworkId?)` - Usuarios disponibles para selector
 
 ### 9. Pruebas Automáticas (QA)
 
@@ -291,7 +320,55 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 | Recomendación        | Fondo transparente (PNG/SVG)       |
 | Almacenamiento       | `/public/uploads/logos/`           |
 
-### 15. Componente ColorPicker Mejorado
+### 15. Módulo de Redes (Grupos de Interés)
+
+| Funcionalidad                          | Estado | Descripción                                                        |
+| -------------------------------------- | ------ | ------------------------------------------------------------------ |
+| **Modelo de datos simplificado**       | Listo  | Un usuario pertenece a máximo UNA red (networkId + networkRole)    |
+| **CRUD completo de redes**             | Listo  | Crear, editar, eliminar redes con validaciones                     |
+| **Asignación de líderes**              | Listo  | Usuarios con rol `leader` marcados con estrella                    |
+| **Asignación de miembros**             | Listo  | Usuarios con rol `member` en la red                                |
+| **Upload de imagen por red**           | Listo  | Drag & drop con react-dropzone, validación 2MB                     |
+| **Tabla de redes**                     | Listo  | TanStack Table con filtros, paginación, búsqueda                   |
+| **Drawer de edición**                  | Listo  | Panel lateral para crear/editar redes                              |
+| **Selector múltiple de usuarios**      | Listo  | Autocomplete con chips y avatares                                  |
+| **Columna "Red" en tabla de usuarios** | Listo  | Chip con nombre de red y rol (estrella para líderes)               |
+| **Validación de unicidad**             | Listo  | Un usuario no puede estar en múltiples redes                       |
+| **Filtro por estado**                  | Listo  | Activa/Inactiva                                                    |
+
+**Archivos del módulo:**
+
+| Archivo | Descripción |
+|---------|-------------|
+| `src/views/admin/redes/index.tsx` | Vista principal del módulo |
+| `src/views/admin/redes/NetworkListTable.tsx` | Tabla con TanStack Table |
+| `src/views/admin/redes/NetworkDrawer.tsx` | Drawer crear/editar con dropzone |
+| `src/views/admin/redes/UserMultiSelect.tsx` | Selector múltiple de usuarios |
+| `src/app/server/networkActions.ts` | Server actions CRUD |
+| `src/app/[lang]/(dashboard)/(private)/admin/redes/page.tsx` | Ruta de página |
+| `src/app/api/upload/image/route.ts` | API de upload genérico |
+
+**Validaciones de negocio:**
+
+- Mínimo 1 líder por red
+- Un usuario no puede ser líder Y miembro de la misma red
+- Un usuario solo puede pertenecer a UNA red en total
+- Solo usuarios de la misma organización pueden ser asignados
+
+**Redes de prueba (seed):**
+
+| Red | Descripción |
+|-----|-------------|
+| Red Familiar | Fortalecimiento de lazos familiares |
+| Esencia | Descubrir propósito en Cristo |
+| Refill | Recarga espiritual para jóvenes |
+| Red Más | Creciendo juntos en fe |
+| Zona Activa | Actividades deportivas y recreativas |
+| Red de Mujeres | Comunidad de mujeres |
+
+**Script de seed:** `npx tsx src/scripts/seed-networks.ts`
+
+### 16. Componente ColorPicker Mejorado
 
 | Funcionalidad                          | Estado | Descripción                                                        |
 | -------------------------------------- | ------ | ------------------------------------------------------------------ |
@@ -384,11 +461,12 @@ const tenant = useTenant()
 npm run dev          # Desarrollo con Turbopack
 npm run build        # Build de producción
 npx prisma db push   # Sincronizar schema con DB (no usar migrate dev)
+npx prisma generate  # Regenerar cliente Prisma después de cambios
 npx prisma studio    # Explorar datos en navegador
-npx tsx src/scripts/seed-admin.ts  # Crear usuario admin
+npx tsx src/scripts/seed-admin.ts     # Crear usuario admin
+npx tsx src/scripts/seed-networks.ts  # Crear usuarios y redes de prueba
 npx playwright test  # Ejecutar todas las pruebas E2E
 npx playwright test --ui  # Interfaz gráfica de pruebas
-npx playwright codegen http://localhost:3000/register  # Grabar nuevas pruebas
 ```
 
 ---
@@ -431,9 +509,36 @@ npx playwright codegen http://localhost:3000/register  # Grabar nuevas pruebas
 
 ## Archivos Clave Modificados (Sesión 18-Feb-2026)
 
+### Módulo de Redes (nuevo)
+
 | Archivo | Cambio |
 |---------|--------|
-| `src/components/ColorPicker.tsx` | **NUEVO** - Componente compartido con tooltip mejorado |
+| `src/prisma/schema.prisma` | Agregado modelo `Network`, campos `networkId`/`networkRole` en `User` |
+| `src/views/admin/redes/index.tsx` | **NUEVO** - Vista principal del módulo |
+| `src/views/admin/redes/NetworkListTable.tsx` | **NUEVO** - Tabla con TanStack Table |
+| `src/views/admin/redes/NetworkDrawer.tsx` | **NUEVO** - Drawer crear/editar con dropzone |
+| `src/views/admin/redes/UserMultiSelect.tsx` | **NUEVO** - Selector múltiple de usuarios |
+| `src/app/server/networkActions.ts` | **NUEVO** - Server actions CRUD de redes |
+| `src/app/api/upload/image/route.ts` | **NUEVO** - API de upload genérico |
+| `src/app/[lang]/(dashboard)/(private)/admin/redes/page.tsx` | **NUEVO** - Ruta de página |
+| `src/scripts/seed-networks.ts` | **NUEVO** - Script para crear datos de prueba |
+
+### Integración con Usuarios
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/app/server/adminActions.ts` | `getAllUsers()` ahora incluye `network` y `networkRole` |
+| `src/views/apps/user/list/UserListTable.tsx` | Agregada columna "Red" con chip y estrella para líderes |
+| `src/views/apps/user/list/index.tsx` | Actualizado tipo para incluir datos de red |
+| `src/data/navigation/verticalMenuData.tsx` | Agregado item "Redes" en menú admin |
+| `src/data/navigation/horizontalMenuData.tsx` | Agregado item "Redes" en menú admin |
+| `src/data/dictionaries/*.json` | Agregada clave `redes` en todos los idiomas |
+
+### Sesión anterior
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/components/ColorPicker.tsx` | Componente compartido con tooltip mejorado |
 | `src/configs/themeConfig.ts` | Forzado `mode: 'light'` |
 | `src/@core/utils/serverHelpers.ts` | `getMode()`, `getSystemMode()`, `getServerMode()` retornan `'light'` |
 | `src/components/layout/vertical/NavbarContent.tsx` | Removido `ModeDropdown` |
@@ -441,3 +546,16 @@ npx playwright codegen http://localhost:3000/register  # Grabar nuevas pruebas
 | `src/components/layout/shared/UserDropdown.tsx` | Logout redirige a `/${locale}/login` |
 | `src/views/admin/Configuracion.tsx` | Usa ColorPicker compartido |
 | `src/views/NoahLanding.tsx` | Usa ColorPicker compartido, títulos en español |
+
+---
+
+## Próximos Módulos Sugeridos
+
+| Módulo | Descripción | Prioridad |
+|--------|-------------|-----------|
+| **Eventos** | Crear eventos, asignar a redes, registro de asistencia, calendario | Alta |
+| **Asistencia** | Check-in a servicios, reportes, histórico por usuario | Alta |
+| **Grupos/Células** | Reuniones semanales, diferente a redes (grupos geográficos) | Media |
+| **Finanzas/Diezmos** | Registro de donaciones, reportes, recibos | Media |
+| **Comunicaciones** | Notificaciones, mensajes a redes, anuncios | Baja |
+| **Dashboard Analítico** | Gráficos de crecimiento, asistencia, participación | Baja |
