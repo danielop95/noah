@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify({ message: ['Email y contraseña son requeridos'] }))
         }
 
-        const user = await prisma.user.findUnique({
+        const user = (await prisma.user.findUnique({
           where: { email: credentials.email },
           select: {
             id: true,
@@ -79,7 +79,7 @@ export const authOptions: NextAuthOptions = {
             image: true,
             organizationId: true
           }
-        })
+        })) as any
 
         if (!user || !user.password) {
           throw new Error(JSON.stringify({ message: ['Email o contraseña inválidos'] }))
@@ -100,7 +100,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role || 'user',
-          roles: user.roles,
+          roles: user.roles || ['member'],
           image: user.image,
           organizationId: user.organizationId
         }
@@ -173,7 +173,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user && token.id) {
         // Cargar datos completos del usuario con relaciones de roles
-        const userWithRoles = await prisma.user.findUnique({
+        const userWithRoles = (await prisma.user.findUnique({
           where: { id: token.id as string },
           select: {
             id: true,
@@ -189,7 +189,7 @@ export const authOptions: NextAuthOptions = {
             ledServiceAreas: { select: { serviceAreaId: true } },
             volunteerAreas: { select: { serviceAreaId: true, isActive: true } }
           }
-        })
+        })) as any
 
         if (userWithRoles) {
           session.user = {
@@ -198,7 +198,7 @@ export const authOptions: NextAuthOptions = {
             email: userWithRoles.email,
             image: userWithRoles.image,
             role: userWithRoles.role || 'user',
-            roles: userWithRoles.roles,
+            roles: userWithRoles.roles || ['member'],
             organizationId: userWithRoles.organizationId,
             networkId: userWithRoles.networkId,
             networkRole: userWithRoles.networkRole,
