@@ -191,18 +191,14 @@ export async function getNetworkFullDetails(networkId: string) {
 
   if (!network) return null
 
-  // Obtener estadísticas de reportes de la red
+  // Obtener estadísticas de reportes de la red en una sola query
   const groupIds = network.groups.map(g => g.id)
 
   const reportsStats = await prisma.groupReport.aggregate({
     where: { groupId: { in: groupIds } },
     _sum: { totalAttendees: true, visitorsCount: true },
+    _avg: { totalAttendees: true },
     _count: true
-  })
-
-  const reportsAvg = await prisma.groupReport.aggregate({
-    where: { groupId: { in: groupIds } },
-    _avg: { totalAttendees: true }
   })
 
   return {
@@ -214,7 +210,7 @@ export async function getNetworkFullDetails(networkId: string) {
       totalReports: reportsStats._count || 0,
       totalAttendees: reportsStats._sum.totalAttendees || 0,
       totalVisitors: reportsStats._sum.visitorsCount || 0,
-      avgAttendees: Math.round(reportsAvg._avg.totalAttendees || 0)
+      avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0)
     }
   }
 }

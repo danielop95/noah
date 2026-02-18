@@ -1,40 +1,7 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
-
 import prisma from '@/libs/prisma'
-import { authOptions } from '@/libs/auth'
-
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
-async function getSessionUser() {
-  const session = await getServerSession(authOptions)
-
-  if (!session?.user) {
-    throw new Error('No autorizado: debe iniciar sesión')
-  }
-
-  return session.user
-}
-
-async function getUserOrganizationId(userId: string): Promise<string | null> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { organizationId: true }
-  })
-
-  return user?.organizationId || null
-}
-
-async function isUserGroupLeader(userId: string, groupId: string): Promise<boolean> {
-  const leadership = await prisma.groupLeader.findUnique({
-    where: { groupId_userId: { groupId, userId } }
-  })
-
-  return !!leadership
-}
+import { getSessionUser, getUserOrganizationId, isUserGroupLeader } from './helpers'
 
 // ============================================
 // TYPES

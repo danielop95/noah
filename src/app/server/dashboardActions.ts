@@ -1,28 +1,7 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
-
 import prisma from '@/libs/prisma'
-import { authOptions } from '@/libs/auth'
-
-async function requireAuth() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    throw new Error('No autorizado')
-  }
-
-  return session
-}
-
-async function getUserOrganizationId(userId: string): Promise<string | null> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { organizationId: true }
-  })
-
-  return user?.organizationId || null
-}
+import { requireAuth, getUserOrganizationId } from './helpers'
 
 export type DashboardStats = {
   totalUsers: number

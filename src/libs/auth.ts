@@ -8,12 +8,38 @@ import type { NextAuthOptions } from 'next-auth'
 import type { Adapter } from 'next-auth/adapters'
 import prisma from '@/libs/prisma'
 
-// Definir el secreto fuera para asegurar su existencia
-const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || 'noah-security-fallback-permanent-2026'
+// Extend NextAuth types
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string
+      name?: string | null
+      email?: string | null
+      image?: string | null
+      role?: string
+      organizationId?: string | null
+    }
+  }
+
+  interface User {
+    id: string
+    email?: string | null
+    name?: string | null
+    image?: string | null
+    role?: string
+    organizationId?: string | null
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    id?: string
+    role?: string
+    organizationId?: string | null
+  }
+}
 
 export const authOptions: NextAuthOptions = {
-  // Forzar el secreto aquí
-  secret: NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma) as Adapter,
 
   providers: [
@@ -29,21 +55,9 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify({ message: ['Email y contraseña son requeridos'] }))
         }
 
-        // Usamos una consulta cruda o deshabilitamos chequeo estricto para evitar errores de tipos en Vercel
-        const user = (await prisma.user.findUnique({
-          where: { email: credentials.email },
-          select: {
-            id: true,
-            email: true,
-            name: true,
-            password: true,
-            isActive: true,
-            roles: true,
-            role: true,
-            image: true,
-            organizationId: true
-          }
-        })) as any
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email }
+        })
 
         if (!user || !user.password) {
           throw new Error(JSON.stringify({ message: ['Email o contraseña inválidos'] }))
@@ -64,7 +78,6 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role || 'user',
-          roles: user.roles || ['member'],
           image: user.image,
           organizationId: user.organizationId
         }
@@ -93,6 +106,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login'
   },
 
+  // Configuración de cookies para soporte de subdominios
   cookies: {
     sessionToken: {
       name: 'next-auth.session-token',
@@ -101,12 +115,21 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_COOKIE_DOMAIN : undefined
+        // Permitir cookies en todos los subdominios
+        domain: process.env.NODE_ENV === 'production' ? '.noah.app' : undefined
       }
     }
   },
 
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'credentials') {
+        return true
+      }
+
+      return true
+    },
+
     async jwt({ token, user, account }) {
       if (account && user) {
         return {
@@ -114,60 +137,42 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: (user as any).role || 'user',
-          roles: (user as any).roles || ['member'],
-          organizationId: (user as any).organizationId,
+          role: user.role || 'user',
+          organizationId: user.organizationId,
           provider: account.provider
         }
       }
+
       return token
     },
 
     async session({ session, token }) {
-      if (session.user && token.id) {
-        const userWithRoles = (await prisma.user.findUnique({
-          where: { id: token.id as string },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,
-            roles: true,
-            organizationId: true,
-            networkId: true,
-            networkRole: true,
-            groupLeaderships: { select: { groupId: true } },
-            ledServiceAreas: { select: { serviceAreaId: true } },
-            volunteerAreas: { select: { serviceAreaId: true, isActive: true } }
-          }
-        })) as any
-
-        if (userWithRoles) {
-          session.user = {
-            ...session.user,
-            id: userWithRoles.id,
-            name: userWithRoles.name,
-            email: userWithRoles.email,
-            image: userWithRoles.image,
-            role: userWithRoles.role || 'user',
-            roles: userWithRoles.roles || ['member'],
-            organizationId: userWithRoles.organizationId,
-            networkId: userWithRoles.networkId,
-            networkRole: userWithRoles.networkRole,
-            ledGroups: userWithRoles.groupLeaderships,
-            ledServiceAreas: userWithRoles.ledServiceAreas,
-            volunteerAreas: userWithRoles.volunteerAreas
-          } as any
-        }
+      if (session.user) {
+        session.user.id = token.id as string
+        session.user.name = token.name
+        session.user.email = token.email
+        session.user.role = (token.role as string) || 'user'
+        session.user.organizationId = token.organizationId as string | null
       }
+
       return session
     },
 
     async redirect({ url, baseUrl }) {
       if (url.startsWith('/')) return `${baseUrl}${url}`
       else if (new URL(url).origin === baseUrl) return url
+
       return baseUrl
     }
+  },
+
+  debug: process.env.NODE_ENV === 'development',
+
+  events: {
+    // Events are configured but silent in production
+    // Uncomment console.log statements for debugging
+    async signIn() {},
+    async signOut() {},
+    async createUser() {}
   }
 }

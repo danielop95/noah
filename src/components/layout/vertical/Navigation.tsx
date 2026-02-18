@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -23,6 +23,7 @@ import Logo from '@components/layout/shared/Logo'
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
 import { useSettings } from '@core/hooks/useSettings'
+import useScrollMenu from '@/hooks/useScrollMenu'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
@@ -65,31 +66,16 @@ const Navigation = (props: Props) => {
   const { mode: muiMode, systemMode: muiSystemMode } = useColorScheme()
   const theme = useTheme()
 
-  // Refs
-  const shadowRef = useRef(null)
-
   // Vars
   const { isCollapsed, isHovered, collapseVerticalNav, isBreakpointReached } = verticalNavOptions
   const isSemiDark = settings.semiDark
 
+  // Custom hook for scroll shadow
+  const { shadowRef, scrollMenu } = useScrollMenu(isBreakpointReached)
+
   const currentMode = muiMode === 'system' ? muiSystemMode : muiMode || mode
 
   const isDark = currentMode === 'dark'
-
-  const scrollMenu = (container: any, isPerfectScrollbar: boolean) => {
-    container = isBreakpointReached || !isPerfectScrollbar ? container.target : container
-
-    if (shadowRef && container.scrollTop > 0) {
-      // @ts-ignore
-      if (!shadowRef.current.classList.contains('scrolled')) {
-        // @ts-ignore
-        shadowRef.current.classList.add('scrolled')
-      }
-    } else {
-      // @ts-ignore
-      shadowRef.current.classList.remove('scrolled')
-    }
-  }
 
   useEffect(() => {
     if (settings.layout === 'collapsed') {

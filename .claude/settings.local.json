@@ -27,7 +27,17 @@
       "Bash(node -e:*)",
       "Bash(pkill:*)",
       "Bash(npx prisma db push:*)",
-      "Bash(npx prisma generate:*)"
+      "Bash(npx prisma generate:*)",
+      "Bash(cat:*)",
+      "Bash(xargs:*)",
+      "Bash(dotenv -e .env -- npx tsx:*)",
+      "Bash(npx dotenv-cli:*)",
+      "Bash(tree:*)",
+      "Bash(wc:*)",
+      "Bash(npm install:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/dan/Documents/Nkrease/Noah/src/app/[lang]/(dashboard)/(private)/admin/usuarios/[id]"
     ]
   }
 }

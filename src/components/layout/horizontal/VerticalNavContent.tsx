@@ -1,6 +1,3 @@
-// React Imports
-import { useRef } from 'react'
-
 // Next Imports
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -22,6 +19,7 @@ import NavCollapseIcons from '@menu/components/vertical-menu/NavCollapseIcons'
 
 // Hook Imports
 import useHorizontalNav from '@menu/hooks/useHorizontalNav'
+import useScrollMenu from '@/hooks/useScrollMenu'
 
 // Util Imports
 import { mapHorizontalToVerticalMenu } from '@menu/utils/menuUtils'
@@ -49,27 +47,10 @@ const VerticalNavContent = ({ children }: ChildrenType) => {
   // Hooks
   const { isBreakpointReached } = useHorizontalNav()
   const { lang: locale } = useParams()
-
-  // Refs
-  const shadowRef = useRef(null)
+  const { shadowRef, scrollMenu } = useScrollMenu(isBreakpointReached)
 
   // Vars
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
-
-  const scrollMenu = (container: any, isPerfectScrollbar: boolean) => {
-    container = isBreakpointReached || !isPerfectScrollbar ? container.target : container
-
-    if (shadowRef && container.scrollTop > 0) {
-      // @ts-ignore
-      if (!shadowRef.current.classList.contains('scrolled')) {
-        // @ts-ignore
-        shadowRef.current.classList.add('scrolled')
-      }
-    } else {
-      // @ts-ignore
-      shadowRef.current.classList.remove('scrolled')
-    }
-  }
 
   return (
     <>

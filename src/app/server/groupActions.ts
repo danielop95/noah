@@ -1,28 +1,7 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
-
 import prisma from '@/libs/prisma'
-import { authOptions } from '@/libs/auth'
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions)
-
-  if (!session || session.user.role !== 'admin') {
-    throw new Error('No autorizado: se requiere rol de administrador')
-  }
-
-  return session
-}
-
-async function getAdminOrganizationId(userId: string): Promise<string | null> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { organizationId: true }
-  })
-
-  return user?.organizationId || null
-}
+import { requireAdmin, getAdminOrganizationId } from './helpers'
 
 // Tipos para las respuestas
 export type GroupLeaderInfo = {

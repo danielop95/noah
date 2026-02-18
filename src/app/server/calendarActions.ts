@@ -1,9 +1,7 @@
 'use server'
 
-import { getServerSession } from 'next-auth'
-
 import prisma from '@/libs/prisma'
-import { authOptions } from '@/libs/auth'
+import { requireAuth, requireAdmin, getUserOrganizationId } from './helpers'
 
 // Tipos
 export type CalendarEventInput = {
@@ -15,36 +13,6 @@ export type CalendarEventInput = {
   category?: string
   url?: string
   location?: string
-}
-
-// Helpers
-async function requireAuth() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    throw new Error('No autorizado')
-  }
-
-  return session
-}
-
-async function requireAdmin() {
-  const session = await getServerSession(authOptions)
-
-  if (!session || session.user.role !== 'admin') {
-    throw new Error('No autorizado: se requiere rol de administrador')
-  }
-
-  return session
-}
-
-async function getUserOrganizationId(userId: string): Promise<string | null> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { organizationId: true }
-  })
-
-  return user?.organizationId || null
 }
 
 // ===================

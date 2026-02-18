@@ -7,16 +7,6 @@ generator client {
   binaryTargets   = ["native", "debian-openssl-3.0.x", "linux-arm64-openssl-1.1.x", "rhel-openssl-3.0.x"]
 }
 
-// ===================
-// Enum de Roles Base
-// ===================
-
-enum SystemRole {
-  admin
-  pastor
-  member
-}
-
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -45,13 +35,12 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String?      @default("user")  // @deprecated - usar roles[]
-  roles         SystemRole[] @default([member])
+  role          String?   @default("user")
   password      String?
 
   // Profile fields
@@ -93,12 +82,6 @@ model User {
 
   // Eventos de calendario creados
   calendarEvents   CalendarEvent[]
-
-  // Áreas de servicio donde es líder
-  ledServiceAreas  ServiceAreaLeader[]
-
-  // Áreas donde es voluntario
-  volunteerAreas   VolunteerAssignment[]
 }
 
 model Organization {
@@ -115,7 +98,6 @@ model Organization {
   groups          Group[]
   groupReports    GroupReport[]
   calendarEvents  CalendarEvent[]
-  serviceAreas    ServiceArea[]
 }
 
 model VerificationToken {
@@ -265,13 +247,6 @@ model CalendarEvent {
   // Estado
   isActive       Boolean  @default(true)
 
-  // Visibilidad: 'public' | 'leaders' | 'admin'
-  visibility     String   @default("public")
-
-  // Área de servicio asociada (opcional)
-  serviceAreaId  String?
-  serviceArea    ServiceArea? @relation(fields: [serviceAreaId], references: [id], onDelete: SetNull)
-
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -281,63 +256,4 @@ model CalendarEvent {
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-}
-
-// ===================
-// Módulo de Áreas de Servicio
-// ===================
-
-model ServiceArea {
-  id             String   @id @default(cuid())
-  name           String
-  description    String?
-  color          String?  // Color hex para UI
-  icon           String?  // Icono remixicon
-  isActive       Boolean  @default(true)
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  // Multi-tenant
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  // Relaciones
-  leaders        ServiceAreaLeader[]
-  volunteers     VolunteerAssignment[]
-  events         CalendarEvent[]
-
-  @@unique([organizationId, name])  // Nombre único por organización
-}
-
-model ServiceAreaLeader {
-  id             String      @id @default(cuid())
-
-  userId         String
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  serviceAreaId  String
-  serviceArea    ServiceArea @relation(fields: [serviceAreaId], references: [id], onDelete: Cascade)
-
-  createdAt      DateTime    @default(now())
-
-  @@unique([userId, serviceAreaId])
-}
-
-model VolunteerAssignment {
-  id             String      @id @default(cuid())
-
-  userId         String
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  serviceAreaId  String
-  serviceArea    ServiceArea @relation(fields: [serviceAreaId], references: [id], onDelete: Cascade)
-
-  isActive       Boolean     @default(true)
-  notes          String?     // Notas sobre el voluntario
-
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-
-  @@unique([userId, serviceAreaId])
 }
