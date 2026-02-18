@@ -91,7 +91,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
       fullScreen={isMobile}
       PaperProps={{
         sx: {
-          borderRadius: isMobile ? 0 : 4,
+          borderRadius: isMobile ? 0 : '10px',
           overflow: 'hidden'
         }
       }}
@@ -126,7 +126,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
           sx={{
             width: 56,
             height: 56,
-            borderRadius: 3,
+            borderRadius: '10px',
             backgroundColor: alpha('#fff', 0.2),
             display: 'flex',
             alignItems: 'center',
@@ -150,7 +150,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
         />
 
         {/* Título */}
-        <Typography variant='h4' sx={{ fontWeight: 700, lineHeight: 1.2 }}>
+        <Typography variant='h4' sx={{ fontWeight: 700, lineHeight: 1.2, color: 'white' }}>
           {event.title}
         </Typography>
       </Box>
@@ -166,7 +166,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                 flex: 1,
                 minWidth: 200,
                 p: 2,
-                borderRadius: 2,
+                borderRadius: '10px',
                 backgroundColor: alpha(theme.palette.primary.main, 0.05),
                 border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
               }}
@@ -204,7 +204,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                 flex: 1,
                 minWidth: 150,
                 p: 2,
-                borderRadius: 2,
+                borderRadius: '10px',
                 backgroundColor: alpha(theme.palette.info.main, 0.05),
                 border: `1px solid ${alpha(theme.palette.info.main, 0.1)}`
               }}
@@ -237,7 +237,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
               sx={{
                 p: 2,
                 mb: 3,
-                borderRadius: 2,
+                borderRadius: '10px',
                 backgroundColor: alpha(theme.palette.success.main, 0.05),
                 border: `1px solid ${alpha(theme.palette.success.main, 0.1)}`
               }}
@@ -277,7 +277,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                   color: 'text.primary',
                   lineHeight: 1.7,
                   p: 2,
-                  borderRadius: 2,
+                  borderRadius: '10px',
                   backgroundColor: alpha(theme.palette.grey[500], 0.05)
                 }}
               >
