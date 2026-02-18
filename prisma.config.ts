@@ -5,6 +5,6 @@ import { defineConfig, env } from 'prisma/config'
 export default defineConfig({
   schema: path.join('src', 'prisma', 'schema.prisma'),
   datasource: {
-    url: env('DIRECT_URL') || env('DATABASE_URL')
+    url: process.env.DIRECT_URL || process.env.DATABASE_URL
   }
 })
