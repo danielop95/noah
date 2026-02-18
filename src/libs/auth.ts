@@ -125,8 +125,8 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        // Permitir cookies en todos los subdominios
-        domain: process.env.NODE_ENV === 'production' ? '.noah.app' : undefined
+        // Permitir cookies en subdominios si se define el dominio, o usar por defecto para .vercel.app
+        domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_COOKIE_DOMAIN : undefined
       }
     }
   },
