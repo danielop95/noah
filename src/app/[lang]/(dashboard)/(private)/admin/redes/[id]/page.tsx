@@ -6,35 +6,35 @@ import { i18n } from '@configs/i18n'
 
 // Component Imports
 import AdminGuard from '@/hocs/AdminGuard'
-import UserDetailView from '@/views/admin/usuarios/detail'
+import NetworkDetailView from '@/views/admin/redes/detail'
 
 // Server Action Imports
-import { getUserFullDetails } from '@/app/server/actions'
+import { getNetworkFullDetails } from '@/app/server/actions'
 
 export const metadata = {
-  title: 'Detalle de Usuario - Noah',
-  description: 'Información completa del usuario'
+  title: 'Detalle de Red - Noah',
+  description: 'Información completa de la red'
 }
 
-const UserViewPage = async (props: { params: Promise<{ lang: string; id: string }> }) => {
+const NetworkDetailPage = async (props: { params: Promise<{ lang: string; id: string }> }) => {
   const params = await props.params
   const lang: Locale = i18n.locales.includes(params.lang as Locale) ? (params.lang as Locale) : i18n.defaultLocale
 
-  const user = await getUserFullDetails(params.id)
+  const network = await getNetworkFullDetails(params.id)
 
-  if (!user) {
+  if (!network) {
     return (
       <div className='flex justify-center items-center min-bs-[400px]'>
-        <p>Usuario no encontrado</p>
+        <p>Red no encontrada</p>
       </div>
     )
   }
 
   return (
     <AdminGuard locale={lang}>
-      <UserDetailView user={user} />
+      <NetworkDetailView network={network} />
     </AdminGuard>
   )
 }
 
-export default UserViewPage
+export default NetworkDetailPage

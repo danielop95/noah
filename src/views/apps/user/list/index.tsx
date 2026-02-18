@@ -22,6 +22,7 @@ type UserListUser = {
   networkId: string | null
   networkRole: string | null
   network: { id: string; name: string } | null
+  groupLeaderships: Array<{ group: { id: string; name: string } }>
 }
 
 const UserList = ({ users }: { users: UserListUser[] }) => {

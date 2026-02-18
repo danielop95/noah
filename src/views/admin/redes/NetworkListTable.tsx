@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react'
 
+import { useRouter, useParams } from 'next/navigation'
+
 import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
@@ -17,6 +19,9 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
+
+import type { Locale } from '@configs/i18n'
+import { getLocalizedUrl } from '@/utils/i18n'
 
 import {
   createColumnHelper,
@@ -74,6 +79,8 @@ type NetworkListTableProps = {
 }
 
 const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: NetworkListTableProps) => {
+  const router = useRouter()
+  const { lang: locale } = useParams()
   const [networks, setNetworks] = useState(initialNetworks)
   const [globalFilter, setGlobalFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -176,6 +183,14 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
         header: 'Acciones',
         cell: ({ row }) => (
           <div className='flex items-center gap-1'>
+            <Tooltip title='Ver'>
+              <IconButton
+                size='small'
+                onClick={() => router.push(getLocalizedUrl(`/admin/redes/${row.original.id}`, locale as Locale))}
+              >
+                <i className='ri-eye-line text-textSecondary' />
+              </IconButton>
+            </Tooltip>
             <Tooltip title='Editar'>
               <IconButton
                 size='small'

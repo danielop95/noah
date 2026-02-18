@@ -57,6 +57,7 @@ type UserRow = {
   networkId: string | null
   networkRole: string | null
   network: { id: string; name: string } | null
+  groupLeaderships: Array<{ group: { id: string; name: string } }>
 }
 
 const fuzzyFilter: FilterFn<UserRow> = (row, columnId, value, addMeta) => {
@@ -154,6 +155,38 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               color={networkRole === 'leader' ? 'warning' : 'info'}
               icon={networkRole === 'leader' ? <i className='ri-star-line text-xs' /> : undefined}
             />
+          )
+        }
+      }),
+      columnHelper.display({
+        id: 'groups',
+        header: 'Grupos',
+        cell: ({ row }) => {
+          const groups = row.original.groupLeaderships || []
+
+          if (groups.length === 0) {
+            return <Typography variant='body2' className='text-textSecondary'>-</Typography>
+          }
+
+          return (
+            <div className='flex flex-wrap gap-1'>
+              {groups.slice(0, 2).map(({ group }) => (
+                <Chip
+                  key={group.id}
+                  label={group.name}
+                  size='small'
+                  variant='outlined'
+                  icon={<i className='ri-team-line text-xs' />}
+                />
+              ))}
+              {groups.length > 2 && (
+                <Chip
+                  label={`+${groups.length - 2}`}
+                  size='small'
+                  variant='tonal'
+                />
+              )}
+            </div>
           )
         }
       }),

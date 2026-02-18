@@ -51,6 +51,13 @@ export async function getAllUsers() {
       networkRole: true,
       network: {
         select: { id: true, name: true }
+      },
+      groupLeaderships: {
+        select: {
+          group: {
+            select: { id: true, name: true }
+          }
+        }
       }
     }
   })
