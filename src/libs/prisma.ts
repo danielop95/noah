@@ -6,17 +6,27 @@ const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL
 
   if (!connectionString) {
-    console.error('DATABASE_URL is not defined')
+    if (process.env.NODE_ENV === 'production') {
+      console.error('❌ ERROR: DATABASE_URL is not defined in Vercel Environment Variables')
+    }
   }
 
-  const pool = new Pool({
-    connectionString,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-  })
+  try {
+    const pool = new Pool({
+      connectionString: connectionString || '',
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      max: 10, // Limitar conexiones para evitar saturar el pool de Supabase
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000
+    })
 
-  const adapter = new PrismaPg(pool)
+    const adapter = new PrismaPg(pool)
 
-  return new PrismaClient({ adapter })
+    return new PrismaClient({ adapter })
+  } catch (error) {
+    console.error('❌ Failed to initialize Prisma Client:', error)
+    return new PrismaClient() // Fallback a cliente estándar para evitar crashes totales
+  }
 }
 
 declare global {
