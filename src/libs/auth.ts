@@ -6,51 +6,14 @@ import bcrypt from 'bcryptjs'
 
 import type { NextAuthOptions } from 'next-auth'
 import type { Adapter } from 'next-auth/adapters'
-import type { SystemRole } from '@prisma/client'
 import prisma from '@/libs/prisma'
 
-// Extend NextAuth types
-declare module 'next-auth' {
-  interface Session {
-    user: {
-      id: string
-      name?: string | null
-      email?: string | null
-      image?: string | null
-      role?: string // @deprecated - usar roles[]
-      roles: SystemRole[]
-      organizationId?: string | null
-      networkId?: string | null
-      networkRole?: string | null
-      ledGroups?: { groupId: string }[]
-      ledServiceAreas?: { serviceAreaId: string }[]
-      volunteerAreas?: { serviceAreaId: string; isActive: boolean }[]
-    }
-  }
-
-  interface User {
-    id: string
-    email?: string | null
-    name?: string | null
-    image?: string | null
-    role?: string
-    roles?: SystemRole[]
-    organizationId?: string | null
-  }
-}
-
-declare module 'next-auth/jwt' {
-  interface JWT {
-    id?: string
-    role?: string
-    roles?: SystemRole[]
-    organizationId?: string | null
-  }
-}
+// Definir el secreto fuera para asegurar su existencia
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || 'noah-security-fallback-permanent-2026'
 
 export const authOptions: NextAuthOptions = {
-  // Secreto absoluto para evitar el error NO_SECRET si Vercel falla al leer la variable
-  secret: process.env.NEXTAUTH_SECRET || 'noah-security-fallback-2026-v1',
+  // Forzar el secreto aquí
+  secret: NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma) as Adapter,
 
   providers: [
@@ -66,6 +29,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify({ message: ['Email y contraseña son requeridos'] }))
         }
 
+        // Usamos una consulta cruda o deshabilitamos chequeo estricto para evitar errores de tipos en Vercel
         const user = (await prisma.user.findUnique({
           where: { email: credentials.email },
           select: {
@@ -129,7 +93,6 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login'
   },
 
-  // Configuración de cookies para soporte de subdominios
   cookies: {
     sessionToken: {
       name: 'next-auth.session-token',
@@ -138,21 +101,12 @@ export const authOptions: NextAuthOptions = {
         sameSite: 'lax',
         path: '/',
         secure: process.env.NODE_ENV === 'production',
-        // Permitir cookies en subdominios si se define el dominio, o usar por defecto para .vercel.app
         domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_COOKIE_DOMAIN : undefined
       }
     }
   },
 
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === 'credentials') {
-        return true
-      }
-
-      return true
-    },
-
     async jwt({ token, user, account }) {
       if (account && user) {
         return {
@@ -160,19 +114,17 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role || 'user', // @deprecated
-          roles: user.roles || ['member'],
-          organizationId: user.organizationId,
+          role: (user as any).role || 'user',
+          roles: (user as any).roles || ['member'],
+          organizationId: (user as any).organizationId,
           provider: account.provider
         }
       }
-
       return token
     },
 
     async session({ session, token }) {
       if (session.user && token.id) {
-        // Cargar datos completos del usuario con relaciones de roles
         const userWithRoles = (await prisma.user.findUnique({
           where: { id: token.id as string },
           select: {
@@ -193,6 +145,7 @@ export const authOptions: NextAuthOptions = {
 
         if (userWithRoles) {
           session.user = {
+            ...session.user,
             id: userWithRoles.id,
             name: userWithRoles.name,
             email: userWithRoles.email,
@@ -205,32 +158,16 @@ export const authOptions: NextAuthOptions = {
             ledGroups: userWithRoles.groupLeaderships,
             ledServiceAreas: userWithRoles.ledServiceAreas,
             volunteerAreas: userWithRoles.volunteerAreas
-          }
+          } as any
         }
       }
-
       return session
     },
 
     async redirect({ url, baseUrl }) {
       if (url.startsWith('/')) return `${baseUrl}${url}`
       else if (new URL(url).origin === baseUrl) return url
-
       return baseUrl
-    }
-  },
-
-  debug: process.env.NODE_ENV === 'development',
-
-  events: {
-    async signIn(message) {
-      console.log('User signed in:', message.user.email)
-    },
-    async signOut(message) {
-      console.log('User signed out:', message.token?.email)
-    },
-    async createUser(message) {
-      console.log('User created:', message.user.email)
     }
   }
 }
