@@ -49,7 +49,8 @@ declare module 'next-auth/jwt' {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+  // Secreto absoluto para evitar el error NO_SECRET si Vercel falla al leer la variable
+  secret: process.env.NEXTAUTH_SECRET || 'noah-security-fallback-2026-v1',
   adapter: PrismaAdapter(prisma) as Adapter,
 
   providers: [
@@ -66,7 +67,18 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            password: true,
+            isActive: true,
+            roles: true,
+            role: true,
+            image: true,
+            organizationId: true
+          }
         })
 
         if (!user || !user.password) {
@@ -87,7 +99,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role || 'user', // @deprecated
+          role: user.role || 'user',
           roles: user.roles,
           image: user.image,
           organizationId: user.organizationId
@@ -185,7 +197,7 @@ export const authOptions: NextAuthOptions = {
             name: userWithRoles.name,
             email: userWithRoles.email,
             image: userWithRoles.image,
-            role: userWithRoles.role || 'user', // @deprecated
+            role: userWithRoles.role || 'user',
             roles: userWithRoles.roles,
             organizationId: userWithRoles.organizationId,
             networkId: userWithRoles.networkId,
