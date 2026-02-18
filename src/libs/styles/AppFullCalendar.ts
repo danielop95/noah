@@ -280,19 +280,38 @@ const AppFullCalendar = styled('div')(({ theme }: { theme: Theme }) => ({
     },
     '& .fc-daygrid-event-harness': {
       '& .fc-event': {
-        padding: theme.spacing(1, 2)
+        padding: theme.spacing(1, 2),
+        borderRadius: '6px',
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          transform: 'translateY(-1px)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        }
       },
       '&:not(:last-of-type) .fc-event': {
-        marginBottom: `${theme.spacing(2.5)} !important`
+        marginBottom: `${theme.spacing(1.5)} !important`
       }
     },
     '& .fc-daygrid-day-bottom': {
-      marginTop: theme.spacing(2.5)
+      marginTop: theme.spacing(1.5)
     },
     '& .fc-daygrid-day': {
-      padding: '8px',
+      padding: '6px',
+      transition: 'all 0.2s ease',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: 'var(--mui-palette-action-hover)',
+        '& .fc-daygrid-day-number': {
+          color: 'var(--mui-palette-primary-main) !important',
+          fontWeight: 600
+        }
+      },
       '& .fc-daygrid-day-top': {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        padding: theme.spacing(0.5)
+      },
+      '& .fc-daygrid-day-frame': {
+        minHeight: '100px'
       }
     },
     '& .fc-scrollgrid': {
@@ -322,7 +341,45 @@ const AppFullCalendar = styled('div')(({ theme }: { theme: Theme }) => ({
       color: 'var(--mui-palette-text-primary) !important'
     },
     '& .fc-day-today:not(.fc-popover)': {
-      backgroundColor: 'var(--mui-palette-action-hover)'
+      backgroundColor: 'var(--mui-palette-primary-lightOpacity)',
+      '& .fc-daygrid-day-number': {
+        backgroundColor: 'var(--mui-palette-primary-main)',
+        color: 'white !important',
+        borderRadius: '50%',
+        width: '28px',
+        height: '28px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 600
+      }
+    },
+
+    // Modern event style
+    '& .fc-event.event-modern': {
+      borderRadius: '8px !important',
+      overflow: 'hidden',
+      '&:not(.fc-list-event)': {
+        boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+        '&:hover': {
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          transform: 'translateY(-2px)'
+        }
+      }
+    },
+
+    // More events link styling
+    '& .fc-daygrid-more-link': {
+      color: 'var(--mui-palette-primary-main)',
+      fontWeight: 500,
+      fontSize: '0.75rem',
+      padding: theme.spacing(0.5, 1),
+      borderRadius: '4px',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        backgroundColor: 'var(--mui-palette-primary-lightOpacity)',
+        textDecoration: 'none'
+      }
     },
 
     // WeekView

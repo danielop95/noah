@@ -12,7 +12,8 @@ import type { EventInput } from '@fullcalendar/core'
 import CalendarView from './CalendarView'
 import CalendarSidebar from './CalendarSidebar'
 import EventDrawer from './EventDrawer'
-import EventDetailDrawer from './EventDetailDrawer'
+import DayEventsPopover from './DayEventsPopover'
+import EventDetailDialog from './EventDetailDialog'
 
 // Type Imports
 import type { CalendarColors, CalendarCategory, CalendarEventData, CalendarSelectedEvent } from './types'
@@ -59,21 +60,24 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
   const [events, setEvents] = useState<EventInput[]>(convertToCalendarEvents(initialEvents))
   const [calendarApi, setCalendarApi] = useState<any>(null)
   const [leftSidebarOpen, setLeftSidebarOpen] = useState<boolean>(false)
-  const [addEventSidebarOpen, setAddEventSidebarOpen] = useState<boolean>(false)
   const [selectedCategories, setSelectedCategories] = useState<CalendarCategory[]>(allCategories)
+
+  // Popover state
+  const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+
+  // Detail dialog state
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<CalendarSelectedEvent>(null)
+
+  // Edit drawer state (solo admin)
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false)
+  const [eventToEdit, setEventToEdit] = useState<CalendarSelectedEvent>(null)
 
   // Hooks
   const mdAbove = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
 
   const handleLeftSidebarToggle = () => setLeftSidebarOpen(!leftSidebarOpen)
-  const handleAddEventSidebarToggle = () => {
-    if (addEventSidebarOpen) {
-      setSelectedEvent(null)
-    }
-
-    setAddEventSidebarOpen(!addEventSidebarOpen)
-  }
 
   const handleToggleCategory = (category: CalendarCategory) => {
     if (selectedCategories.includes(category)) {
@@ -87,8 +91,8 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
     setSelectedCategories(checked ? allCategories : [])
   }
 
+  // Recargar eventos
   const handleEventUpdated = useCallback(async () => {
-    // Recargar eventos desde el servidor
     try {
       const updatedEvents = await getAllCalendarEvents()
 
@@ -97,6 +101,122 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
       console.error('Error recargando eventos:', error)
     }
   }, [])
+
+  // Click en día - abre popover
+  const handleDateClick = (date: Date, anchorEl: HTMLElement) => {
+    setSelectedDate(date)
+    setPopoverAnchor(anchorEl)
+  }
+
+  // Cerrar popover
+  const handleClosePopover = () => {
+    setPopoverAnchor(null)
+    setSelectedDate(null)
+  }
+
+  // Click en evento desde popover - abre dialog de detalle
+  const handleEventClickFromPopover = (event: EventInput) => {
+    handleClosePopover()
+
+    const eventData: CalendarSelectedEvent = {
+      id: event.id as string,
+      title: event.title as string,
+      start: event.start as Date,
+      end: (event.end as Date) || (event.start as Date),
+      allDay: event.allDay as boolean,
+      url: (event.url as string) || '',
+      category: (event.extendedProps?.calendar as CalendarCategory) || 'evento',
+      description: (event.extendedProps?.description as string) || '',
+      location: (event.extendedProps?.location as string) || ''
+    }
+
+    setSelectedEvent(eventData)
+    setDetailDialogOpen(true)
+  }
+
+  // Click en evento directo desde calendario
+  const handleEventClick = (event: EventInput) => {
+    const eventData: CalendarSelectedEvent = {
+      id: event.id as string,
+      title: event.title as string,
+      start: event.start as Date,
+      end: (event.end as Date) || (event.start as Date),
+      allDay: event.allDay as boolean,
+      url: (event.url as string) || '',
+      category: (event.extendedProps?.calendar as CalendarCategory) || 'evento',
+      description: (event.extendedProps?.description as string) || '',
+      location: (event.extendedProps?.location as string) || ''
+    }
+
+    setSelectedEvent(eventData)
+    setDetailDialogOpen(true)
+  }
+
+  // Cerrar dialog de detalle
+  const handleCloseDetailDialog = () => {
+    setDetailDialogOpen(false)
+    setSelectedEvent(null)
+  }
+
+  // Abrir drawer de edición (desde dialog o popover)
+  const handleOpenEditDrawer = () => {
+    if (selectedEvent) {
+      setEventToEdit(selectedEvent)
+      setDetailDialogOpen(false)
+      setEditDrawerOpen(true)
+    }
+  }
+
+  // Agregar evento desde popover
+  const handleAddEventFromPopover = () => {
+    handleClosePopover()
+
+    if (selectedDate) {
+      const newEvent: CalendarSelectedEvent = {
+        title: '',
+        start: selectedDate,
+        end: selectedDate,
+        allDay: true,
+        url: '',
+        category: 'evento',
+        description: '',
+        location: ''
+      }
+
+      setEventToEdit(newEvent)
+      setEditDrawerOpen(true)
+    }
+  }
+
+  // Agregar evento desde sidebar
+  const handleAddEventFromSidebar = () => {
+    const newEvent: CalendarSelectedEvent = {
+      title: '',
+      start: new Date(),
+      end: new Date(),
+      allDay: true,
+      url: '',
+      category: 'evento',
+      description: '',
+      location: ''
+    }
+
+    setEventToEdit(newEvent)
+    setEditDrawerOpen(true)
+  }
+
+  // Cerrar drawer de edición
+  const handleCloseEditDrawer = () => {
+    setEditDrawerOpen(false)
+    setEventToEdit(null)
+  }
+
+  // Filtrar eventos para el popover
+  const filteredEvents = events.filter(event => {
+    const category = event.extendedProps?.calendar as CalendarCategory
+
+    return selectedCategories.includes(category)
+  })
 
   return (
     <>
@@ -108,11 +228,12 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
         selectedCategories={selectedCategories}
         isAdmin={isAdmin}
         handleLeftSidebarToggle={handleLeftSidebarToggle}
-        handleAddEventSidebarToggle={handleAddEventSidebarToggle}
+        handleAddEventSidebarToggle={handleAddEventFromSidebar}
         handleToggleCategory={handleToggleCategory}
         handleToggleAll={handleToggleAll}
       />
-      <div className='p-5 pbe-0 grow overflow-visible bg-backgroundPaper rounded'>
+
+      <div className='p-5 pbe-0 grow overflow-visible bg-backgroundPaper rounded-lg shadow-sm'>
         <CalendarView
           events={events}
           calendarApi={calendarApi}
@@ -121,22 +242,39 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
           selectedCategories={selectedCategories}
           isAdmin={isAdmin}
           handleLeftSidebarToggle={handleLeftSidebarToggle}
-          handleAddEventSidebarToggle={handleAddEventSidebarToggle}
-          setSelectedEvent={setSelectedEvent}
+          onDateClick={handleDateClick}
+          onEventClick={handleEventClick}
         />
       </div>
-      {isAdmin ? (
+
+      {/* Popover de eventos del día */}
+      <DayEventsPopover
+        anchorEl={popoverAnchor}
+        selectedDate={selectedDate}
+        events={filteredEvents}
+        calendarsColor={calendarsColor}
+        isAdmin={isAdmin}
+        onClose={handleClosePopover}
+        onEventClick={handleEventClickFromPopover}
+        onAddEvent={handleAddEventFromPopover}
+      />
+
+      {/* Dialog de detalle de evento */}
+      <EventDetailDialog
+        open={detailDialogOpen}
+        event={selectedEvent}
+        onClose={handleCloseDetailDialog}
+        onEdit={handleOpenEditDrawer}
+        isAdmin={isAdmin}
+      />
+
+      {/* Drawer de edición (solo admin) */}
+      {isAdmin && (
         <EventDrawer
-          drawerOpen={addEventSidebarOpen}
-          selectedEvent={selectedEvent}
-          handleDrawerToggle={handleAddEventSidebarToggle}
+          drawerOpen={editDrawerOpen}
+          selectedEvent={eventToEdit}
+          handleDrawerToggle={handleCloseEditDrawer}
           onEventUpdated={handleEventUpdated}
-        />
-      ) : (
-        <EventDetailDrawer
-          drawerOpen={addEventSidebarOpen}
-          selectedEvent={selectedEvent}
-          handleDrawerToggle={handleAddEventSidebarToggle}
         />
       )}
     </>

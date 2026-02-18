@@ -29,19 +29,8 @@ type Props = {
   selectedCategories: CalendarCategory[]
   isAdmin: boolean
   handleLeftSidebarToggle: () => void
-  handleAddEventSidebarToggle: () => void
-  setSelectedEvent: (event: CalendarSelectedEvent) => void
-}
-
-const blankEvent: CalendarSelectedEvent = {
-  title: '',
-  start: new Date(),
-  end: new Date(),
-  allDay: true,
-  url: '',
-  category: 'evento',
-  description: '',
-  location: ''
+  onDateClick: (date: Date, anchorEl: HTMLElement) => void
+  onEventClick: (event: EventInput) => void
 }
 
 const CalendarView = (props: Props) => {
@@ -52,9 +41,9 @@ const CalendarView = (props: Props) => {
     calendarsColor,
     selectedCategories,
     isAdmin,
-    handleAddEventSidebarToggle,
     handleLeftSidebarToggle,
-    setSelectedEvent
+    onDateClick,
+    onEventClick
   } = props
 
   // Refs
@@ -101,35 +90,29 @@ const CalendarView = (props: Props) => {
     editable: isAdmin,
     eventResizableFromStart: isAdmin,
     dragScroll: true,
-    dayMaxEvents: 2,
+    dayMaxEvents: 3,
     navLinks: true,
+    fixedWeekCount: false,
+    showNonCurrentDates: true,
+    aspectRatio: 1.5,
 
+    // Estilos mejorados para eventos
     eventClassNames({ event: calendarEvent }: any) {
       const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar as CalendarCategory]
 
-      return [`event-bg-${colorName}`]
+      return [`event-bg-${colorName}`, 'event-modern']
     },
 
+    // Click en evento individual
     eventClick({ event: clickedEvent, jsEvent }: any) {
       jsEvent.preventDefault()
+      jsEvent.stopPropagation()
 
-      const eventData: CalendarSelectedEvent = {
-        id: clickedEvent.id,
-        title: clickedEvent.title,
-        start: clickedEvent.start,
-        end: clickedEvent.end || clickedEvent.start,
-        allDay: clickedEvent.allDay,
-        url: clickedEvent.url || '',
-        category: clickedEvent.extendedProps.calendar || 'evento',
-        description: clickedEvent.extendedProps.description || '',
-        location: clickedEvent.extendedProps.location || ''
-      }
+      // Encontrar el evento completo con todos los datos
+      const fullEvent = events.find(e => e.id === clickedEvent.id)
 
-      setSelectedEvent(eventData)
-      handleAddEventSidebarToggle()
-
-      if (clickedEvent.url) {
-        window.open(clickedEvent.url, '_blank')
+      if (fullEvent) {
+        onEventClick(fullEvent)
       }
     },
 
@@ -142,18 +125,12 @@ const CalendarView = (props: Props) => {
       }
     },
 
+    // Click en celda de día - abre popover
     dateClick(info: any) {
-      if (!isAdmin) return
-
-      const ev = { ...blankEvent }
-
-      ev.start = info.date
-      ev.end = info.date
-
-      setSelectedEvent(ev)
-      handleAddEventSidebarToggle()
+      onDateClick(info.date, info.dayEl)
     },
 
+    // Drag & drop (solo admin)
     async eventDrop({ event: droppedEvent }: any) {
       if (!isAdmin) return
 
@@ -164,6 +141,7 @@ const CalendarView = (props: Props) => {
       }
     },
 
+    // Resize (solo admin)
     async eventResize({ event: resizedEvent }: any) {
       if (!isAdmin) return
 
@@ -172,6 +150,12 @@ const CalendarView = (props: Props) => {
       } catch (error) {
         console.error('Error actualizando evento:', error)
       }
+    },
+
+    // Hover effects en día
+    dayCellDidMount(info) {
+      info.el.style.cursor = 'pointer'
+      info.el.style.transition = 'all 0.2s ease'
     },
 
     direction: theme.direction
