@@ -16,7 +16,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import type { CalendarOptions, EventInput } from '@fullcalendar/core'
 
 // Type Imports
-import type { CalendarColors, CalendarCategory, CalendarSelectedEvent } from './types'
+import type { CalendarColors, CalendarCategory } from './types'
 
 // Actions
 import { updateCalendarEventDates } from '@/app/server/calendarActions'
@@ -28,7 +28,6 @@ type Props = {
   setCalendarApi: (val: any) => void
   selectedCategories: CalendarCategory[]
   isAdmin: boolean
-  handleLeftSidebarToggle: () => void
   onDateClick: (date: Date, anchorEl: HTMLElement) => void
   onEventClick: (event: EventInput) => void
 }
@@ -41,7 +40,6 @@ const CalendarView = (props: Props) => {
     calendarsColor,
     selectedCategories,
     isAdmin,
-    handleLeftSidebarToggle,
     onDateClick,
     onEventClick
   } = props
@@ -71,7 +69,7 @@ const CalendarView = (props: Props) => {
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
     initialView: 'dayGridMonth',
     headerToolbar: {
-      start: 'sidebarToggle, prev, next, title',
+      start: 'prev, next, title',
       end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
     },
     views: {
@@ -113,15 +111,6 @@ const CalendarView = (props: Props) => {
 
       if (fullEvent) {
         onEventClick(fullEvent)
-      }
-    },
-
-    customButtons: {
-      sidebarToggle: {
-        icon: 'bi bi-list',
-        click() {
-          handleLeftSidebarToggle()
-        }
       }
     },
 

@@ -4,13 +4,11 @@
 import { useState, useCallback } from 'react'
 
 // MUI Imports
-import { useMediaQuery } from '@mui/material'
-import type { Theme } from '@mui/material/styles'
 import type { EventInput } from '@fullcalendar/core'
 
 // Component Imports
 import CalendarView from './CalendarView'
-import CalendarSidebar from './CalendarSidebar'
+import CalendarFiltersBar from './CalendarFiltersBar'
 import EventDrawer from './EventDrawer'
 import DayEventsPopover from './DayEventsPopover'
 import EventDetailDialog from './EventDetailDialog'
@@ -59,7 +57,6 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
   // States
   const [events, setEvents] = useState<EventInput[]>(convertToCalendarEvents(initialEvents))
   const [calendarApi, setCalendarApi] = useState<any>(null)
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState<boolean>(false)
   const [selectedCategories, setSelectedCategories] = useState<CalendarCategory[]>(allCategories)
 
   // Popover state
@@ -74,21 +71,12 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
   const [editDrawerOpen, setEditDrawerOpen] = useState(false)
   const [eventToEdit, setEventToEdit] = useState<CalendarSelectedEvent>(null)
 
-  // Hooks
-  const mdAbove = useMediaQuery((theme: Theme) => theme.breakpoints.up('md'))
-
-  const handleLeftSidebarToggle = () => setLeftSidebarOpen(!leftSidebarOpen)
-
   const handleToggleCategory = (category: CalendarCategory) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(selectedCategories.filter(c => c !== category))
     } else {
       setSelectedCategories([...selectedCategories, category])
     }
-  }
-
-  const handleToggleAll = (checked: boolean) => {
-    setSelectedCategories(checked ? allCategories : [])
   }
 
   // Recargar eventos
@@ -188,8 +176,8 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
     }
   }
 
-  // Agregar evento desde sidebar
-  const handleAddEventFromSidebar = () => {
+  // Agregar evento desde barra de filtros
+  const handleAddEvent = () => {
     const newEvent: CalendarSelectedEvent = {
       title: '',
       start: new Date(),
@@ -211,7 +199,7 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
     setEventToEdit(null)
   }
 
-  // Filtrar eventos para el popover
+  // Filtrar eventos
   const filteredEvents = events.filter(event => {
     const category = event.extendedProps?.calendar as CalendarCategory
 
@@ -219,33 +207,27 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
   })
 
   return (
-    <>
-      <CalendarSidebar
-        mdAbove={mdAbove}
-        calendarApi={calendarApi}
-        calendarsColor={calendarsColor}
-        leftSidebarOpen={leftSidebarOpen}
-        selectedCategories={selectedCategories}
+    <div className='p-5 bg-backgroundPaper rounded-lg shadow-sm'>
+      {/* Barra de filtros y botón agregar */}
+      <CalendarFiltersBar
         isAdmin={isAdmin}
-        handleLeftSidebarToggle={handleLeftSidebarToggle}
-        handleAddEventSidebarToggle={handleAddEventFromSidebar}
+        calendarsColor={calendarsColor}
+        selectedCategories={selectedCategories}
+        handleAddEvent={handleAddEvent}
         handleToggleCategory={handleToggleCategory}
-        handleToggleAll={handleToggleAll}
       />
 
-      <div className='p-5 pbe-0 grow overflow-visible bg-backgroundPaper rounded-lg shadow-sm'>
-        <CalendarView
-          events={events}
-          calendarApi={calendarApi}
-          setCalendarApi={setCalendarApi}
-          calendarsColor={calendarsColor}
-          selectedCategories={selectedCategories}
-          isAdmin={isAdmin}
-          handleLeftSidebarToggle={handleLeftSidebarToggle}
-          onDateClick={handleDateClick}
-          onEventClick={handleEventClick}
-        />
-      </div>
+      {/* Calendario */}
+      <CalendarView
+        events={events}
+        calendarApi={calendarApi}
+        setCalendarApi={setCalendarApi}
+        calendarsColor={calendarsColor}
+        selectedCategories={selectedCategories}
+        isAdmin={isAdmin}
+        onDateClick={handleDateClick}
+        onEventClick={handleEventClick}
+      />
 
       {/* Popover de eventos del día */}
       <DayEventsPopover
@@ -277,7 +259,7 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
           onEventUpdated={handleEventUpdated}
         />
       )}
-    </>
+    </div>
   )
 }
 
