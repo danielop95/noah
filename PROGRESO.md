@@ -1,7 +1,7 @@
 # Noah - Progreso del Proyecto
 
 > Sistema de Gestión de Iglesia
-> Última actualización: 18 de febrero de 2026 (v7)
+> Última actualización: 18 de febrero de 2026 (v8)
 
 ---
 
@@ -522,6 +522,17 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 | **Gestión de Roles (Admin)**            | Listo  | Server actions para promover líderes de red, grupo y área                    |
 | **Privacidad en Calendario**            | Listo  | Visibilidad por nivel (público, líderes, admin) y por área                   |
 
+### 21. Infraestructura y Despliegue (nuevo)
+
+| Funcionalidad                  | Estado | Descripción                                                          |
+| ------------------------------ | ------ | -------------------------------------------------------------------- |
+| **Conexión DB Robusta (SSL)**  | Listo  | Soporte para conexiones seguras con Supabase en Vercel               |
+| **Pool Management**            | Listo  | Limitación de conexiones (max: 10) para evitar saturación de DB      |
+| **Tenant Detection (Vercel)**  | Listo  | Middleware ajustado para ignorar dominios del sistema `*.vercel.app` |
+| **Flexible Cookie Domain**     | Listo  | Soporte para dominios dinámicos via `NEXT_PUBLIC_COOKIE_DOMAIN`      |
+| **Auth Secret Production**     | Listo  | Definición explícita de secreto para estabilidad en entornos CI      |
+| **Sincronización de Lockfile** | Listo  | Sincronización de `pnpm-lock.yaml` con dependencias añadidas         |
+
 ### 15. Módulo de Redes (Grupos de Interés)
 
 | Funcionalidad                          | Estado | Descripción                                                     |
@@ -709,7 +720,6 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 
 ```tsx
 import ColorPicker from '@/components/ColorPicker'
-
 ;<ColorPicker label='Color Primario' value={color} onChange={setColor} previewName='Nombre Iglesia' />
 ```
 
@@ -825,9 +835,19 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 ---
 
-## Archivos Clave Modificados (Sesión 18-Feb-2026 v7)
+## Archivos Clave Modificados (Sesión 18-Feb-2026 v8)
 
-### Sistema de Roles y Permisos (nuevo)
+### Infraestructura y Despliegue (nuevo)
+
+| Archivo              | Cambio                                                                       |
+| -------------------- | ---------------------------------------------------------------------------- |
+| `src/libs/prisma.ts` | **Actualizado** - Implementación robusta de Pool con SSL y manejo de errores |
+| `src/middleware.ts`  | **Actualizado** - Lógica avanzada para detectar tenants en dominios Vercel   |
+| `src/libs/auth.ts`   | **Actualizado** - Configuración de cookies flexible y secreto explícito      |
+| `prisma.config.ts`   | **Actualizado** - Uso de `process.env` para evitar errores de build          |
+| `pnpm-lock.yaml`     | **Actualizado** - Sincronizado para resolver error frozen-lockfile en Vercel |
+
+### Sistema de Roles y Permisos (anterior)
 
 | Archivo                                     | Cambio                                                                                          |
 | ------------------------------------------- | ----------------------------------------------------------------------------------------------- |
