@@ -28,6 +28,17 @@ const extractTenantSlug = (hostname: string): string | null => {
   // Buscar subdominio: tenant.domain.com -> tenant
   const parts = cleanHost.split('.')
 
+  // Manejo especial para dominios de Vercel
+  if (cleanHost.endsWith('.vercel.app')) {
+    // tenant.project.vercel.app -> 4 partes
+    // project.vercel.app -> 3 partes (no hay tenant)
+    if (parts.length <= 3) {
+      return null
+    }
+
+    return parts[0] === 'www' ? null : parts[0]
+  }
+
   // Necesitamos al menos 3 partes para un subdominio (tenant.domain.com)
   // O 2 partes si es tenant.localhost
   if (cleanHost.endsWith('.localhost') && parts.length >= 2) {

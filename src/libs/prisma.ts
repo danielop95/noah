@@ -3,9 +3,19 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
-  const connectionString = `${process.env.DATABASE_URL}`
-  const pool = new Pool({ connectionString })
+  const connectionString = process.env.DATABASE_URL
+
+  if (!connectionString) {
+    console.error('DATABASE_URL is not defined')
+  }
+
+  const pool = new Pool({
+    connectionString,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  })
+
   const adapter = new PrismaPg(pool)
+
   return new PrismaClient({ adapter })
 }
 
