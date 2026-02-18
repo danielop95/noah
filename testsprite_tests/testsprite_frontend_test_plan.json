@@ -1,0 +1,2241 @@
+[
+  {
+    "id": "TC001",
+    "title": "Registration step 1 requires required personal fields before continuing",
+    "description": "Verifies step 1 blocks navigation to step 2 when required personal data is missing.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"firstName\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"lastName\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"document\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"birth\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Has children enabled requires children count before continuing",
+    "description": "Verifies that when hasChildren is enabled, childrenCount becomes required to proceed from step 2.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"firstName\" field with \"Test\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"lastName\" field with \"Parent\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "action",
+        "description": "Toggle hasChildren switch"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 3"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"children\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Proceed through steps with valid contact/location inputs",
+    "description": "Verifies step 3 accepts valid contact/location inputs and allows moving to step 4.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"firstName\" field with \"Test\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"lastName\" field with \"Contact\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 3"
+      },
+      {
+        "type": "action",
+        "description": "Fill phone field with \"5551234567\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 4"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Step 4 requires agreeing to terms before submitting",
+    "description": "Verifies that registration cannot be submitted unless the agreeTerms checkbox is checked.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"firstName\" field with \"Test\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"lastName\" field with \"Terms\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 3"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 4"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Registrarse\" button to submit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"términos\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Password and confirm password must match",
+    "description": "Verifies a visible validation error appears when password and confirmPassword do not match.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"firstName\" field with \"Test\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"lastName\" field with \"Mismatch\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 3"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 4"
+      },
+      {
+        "type": "action",
+        "description": "Fill password field with \"Password123!\""
+      },
+      {
+        "type": "action",
+        "description": "Fill confirmPassword field with \"Password124!\""
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Existing email shows error and user stays on registration page",
+    "description": "Verifies submitting step 4 with an already-registered email shows an error message and does not redirect to dashboards.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"firstName\" field with \"Test\""
+      },
+      {
+        "type": "action",
+        "description": "Fill \"lastName\" field with \"Existing\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 2"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 3"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Siguiente\" to go to step 4"
+      },
+      {
+        "type": "action",
+        "description": "Fill email field with \"existing.user@example.com\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Registrarse\" button to submit"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Update full profile details successfully",
+    "description": "Verifies a logged-in user can update all profile sections and sees a success confirmation.",
+    "category": "Account Settings - Profile",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardar Cambios\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Maria\" into the First Name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Gonzalez\" into the Last Name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"5551234567\" into the Phone field"
+      },
+      {
+        "type": "action",
+        "description": "Select \"DNI\" from the Document Type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"12345678\" into the Document Number field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Female\" gender radio option"
+      },
+      {
+        "type": "action",
+        "description": "Type \"1990-05-12\" into the Birth Date field"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Married\" from the Marital Status dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the Has Children switch to toggle it"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Argentina\" from the Country dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Buenos Aires\" into the City field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Av. Siempre Viva 742\" into the Address field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Palermo\" into the Neighborhood field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Save minimal changes (name only) successfully",
+    "description": "Verifies a user can update only first and last name and successfully save changes.",
+    "category": "Account Settings - Profile",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Juan\" into the First Name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Perez\" into the Last Name field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Attempt to save with required name fields cleared shows validation error",
+    "description": "Verifies client-side validation prevents saving when required name fields are empty.",
+    "category": "Account Settings - Profile",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"\" into the First Name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"\" into the Last Name field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"obligatorio\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Invalid birth date format shows validation error",
+    "description": "Verifies entering an invalid birth date format blocks saving and shows an error.",
+    "category": "Account Settings - Profile",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-a-date\" into the Birth Date field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"fecha\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Invalid phone value shows validation error",
+    "description": "Verifies the phone field rejects invalid input and prevents saving.",
+    "category": "Account Settings - Profile",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"abc\" into the Phone field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"teléfono\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Document type and number can be saved together",
+    "description": "Verifies selecting a document type and entering a document number saves successfully.",
+    "category": "Account Settings - Profile",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Passport\" from the Document Type dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Type \"A1234567\" into the Document Number field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Gender radio selection persists after successful save",
+    "description": "Verifies changing gender via radio buttons can be saved and remains selected afterward.",
+    "category": "Account Settings - Profile",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Male\" gender radio option"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Male gender radio option\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Marital status selection saves successfully",
+    "description": "Verifies a user can change marital status and save the update.",
+    "category": "Account Settings - Profile",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Single\" from the Marital Status dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Has Children toggle can be changed and saved",
+    "description": "Verifies toggling the Has Children switch can be saved and reflected on the page.",
+    "category": "Account Settings - Profile",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Has Children switch to toggle it"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Has Children switch\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Save failure shows an error alert",
+    "description": "Verifies that when the save operation fails, an error alert is displayed instead of success.",
+    "category": "Account Settings - Profile",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Account Settings\" in the main navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Type \"Test\" into the First Name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Failure\" into the Last Name field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Guardar Cambios\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Error\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Change password successfully from Account Settings > Seguridad",
+    "description": "Verifies a logged-in user can change their password by entering the current password and matching new password confirmation and sees a success alert.",
+    "category": "Account Settings - Change Password",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Fill current password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill new password field"
+      },
+      {
+        "type": "action",
+        "description": "Fill confirm new password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"success\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Show error when current password is incorrect",
+    "description": "Verifies the change password form rejects an incorrect current password and shows a visible error message.",
+    "category": "Account Settings - Change Password",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wrong-current-password\" into the current password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the new password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the confirm new password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"contraseña\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Validation error when new password and confirmation do not match",
+    "description": "Verifies the form blocks submission and shows a visible validation error when confirmation does not match the new password.",
+    "category": "Account Settings - Change Password",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the current password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the new password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123?\" into the confirm new password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"no coincide\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Required field validation when submitting with all fields empty",
+    "description": "Verifies the change password form shows visible required-field errors when submitted without any input.",
+    "category": "Account Settings - Change Password",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"requer\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Prevent submission when only current password is provided",
+    "description": "Verifies the form shows visible validation errors and does not proceed when new password fields are missing.",
+    "category": "Account Settings - Change Password",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the current password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Nueva\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Prevent submission when new password is provided but confirmation is empty",
+    "description": "Verifies the form shows a visible validation error when confirmation is missing.",
+    "category": "Account Settings - Change Password",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the current password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the new password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Confirm\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Form remains on Seguridad tab after an incorrect current password error",
+    "description": "Verifies that after a failed password change attempt, the user stays on the Seguridad tab and can see the change password section.",
+    "category": "Account Settings - Change Password",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the Ingresar/Login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the Account Settings option in the app navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click Seguridad tab"
+      },
+      {
+        "type": "action",
+        "description": "Type \"wrong-current-password\" into the current password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the new password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"NewPassword123!\" into the confirm new password field"
+      },
+      {
+        "type": "action",
+        "description": "Click Cambiar Contrasena button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Seguridad\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Admin can filter users and update role/status via edit drawer",
+    "description": "Verifies an admin can search and filter the user table, open the edit drawer, change role and active status, save, and see the updated chips in the table.",
+    "category": "Admin User List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"a\" into the search field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Todos\" from the \"Rol\" filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Todos\" from the \"Estado\" filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click the edit icon for the first row in the table"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Edit user drawer\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Usuario\" from the role field in the edit drawer"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Activo\" from the status field in the edit drawer"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Guardar\" button in the drawer"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Guardado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Search filters the admin user table results",
+    "description": "Verifies typing in the search field filters the visible rows in the admin user list table.",
+    "category": "Admin User List",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"@\" into the search field"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Role filter dropdown limits results to a single role",
+    "description": "Verifies the Rol filter can be applied and the table still renders results consistent with the selected role.",
+    "category": "Admin User List",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Admin\" from the \"Rol\" filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Status filter dropdown limits results to Activo users",
+    "description": "Verifies the Estado filter can be applied to show only active users and the table updates accordingly.",
+    "category": "Admin User List",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "action",
+        "description": "Select \"Activo\" from the \"Estado\" filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC028",
+    "title": "Open user detail from the list using the eye icon",
+    "description": "Verifies clicking the eye icon navigates away from the list into a user detail view page.",
+    "category": "Admin User List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "action",
+        "description": "Click the eye icon for the first row in the table"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios/\""
+      }
+    ]
+  },
+  {
+    "id": "TC029",
+    "title": "Deactivate a user from the list workflow",
+    "description": "Verifies an admin can deactivate a user from the list and sees the user reflected as inactive in the UI.",
+    "category": "Admin User List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Desactivar\" button for the first row in the table"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Inactivo\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC030",
+    "title": "Pagination controls allow navigating to another page of users",
+    "description": "Verifies the user list supports pagination and switching pages keeps the table visible and updated.",
+    "category": "Admin User List",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Usuarios\" option in the admin section of the navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Next page\" pagination control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Users table\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC031",
+    "title": "Non-admin user cannot access Admin User List (authorization enforced)",
+    "description": "Verifies a non-admin account does not gain access to the admin user list page and sees an access denied state.",
+    "category": "Admin User List",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nonadmin.user@example.invalid\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"WrongPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Credenciales inválidas\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Iniciar sesión\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin/usuarios"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Acceso denegado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC032",
+    "title": "Admin views user details and switches between tabs",
+    "description": "Verifies an admin can open a user detail view, see left-panel summary, and view both Personal Info and Location tabs.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the users table is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC033",
+    "title": "Admin opens a user detail view from the user list",
+    "description": "Verifies an admin can navigate from the admin users list into a specific user's detail view.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      }
+    ]
+  },
+  {
+    "id": "TC034",
+    "title": "Admin user detail view shows left panel with avatar, key info, role and status chips",
+    "description": "Verifies the user detail view displays the left panel elements including avatar/basic info and role/status chips.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"User avatar\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC035",
+    "title": "Admin can view Personal Information tab details",
+    "description": "Verifies the Personal Information tab is accessible and displays expected personal detail fields.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Informacion Personal\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Documento\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC036",
+    "title": "Admin can view Location tab details",
+    "description": "Verifies the Location tab is accessible and displays expected location detail fields.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Ubicacion\" tab"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Pais\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC037",
+    "title": "Admin deactivates a user and sees status update",
+    "description": "Verifies an admin can deactivate a user from the detail view and sees a visible success/status change afterward.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Desactivar\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Desactivado\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC038",
+    "title": "Admin can return to the user list using Volver",
+    "description": "Verifies the Volver button returns the admin from the user detail view back to the users list page.",
+    "category": "Admin User View",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Usuarios\" in the admin navigation/menu"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first user row in the users table"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Volver\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      }
+    ]
+  },
+  {
+    "id": "TC039",
+    "title": "Non-admin cannot access admin user detail view (access denied message)",
+    "description": "Verifies a non-admin user is blocked from accessing the admin user detail view and sees an access denied state.",
+    "category": "Admin User View",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nonadmin@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"WrongPassword123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Access denied\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Sign in\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC040",
+    "title": "Sidebar navigation between Dashboard and Account Settings, then logout via user dropdown",
+    "description": "Verifies core navigation links in the sidebar and logout flow from the user dropdown.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Mi Cuenta\" in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Click the user avatar to open the dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Cerrar Sesion\" to logout"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/login\""
+      }
+    ]
+  },
+  {
+    "id": "TC041",
+    "title": "Sidebar 'Inicio' returns user to Dashboard from Account Settings",
+    "description": "Verifies the 'Inicio' sidebar item routes back to the dashboard page.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Mi Cuenta\" in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Inicio\" in the sidebar to go to dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      }
+    ]
+  },
+  {
+    "id": "TC042",
+    "title": "User dropdown 'Mi Cuenta' navigates to Account Settings from Dashboard",
+    "description": "Verifies the 'Mi Cuenta' option inside the user dropdown routes to account settings.",
+    "category": "Navigation",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click the user avatar to open the dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Mi Cuenta\" in the dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/account-settings\""
+      }
+    ]
+  },
+  {
+    "id": "TC043",
+    "title": "Non-admin user does not see 'Usuarios' link in navigation",
+    "description": "Verifies the admin-only 'Usuarios' navigation entry is not visible for non-admin users.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click to open the sidebar menu if it is collapsed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Usuarios\" is not visible"
+      }
+    ]
+  },
+  {
+    "id": "TC044",
+    "title": "Non-admin direct access attempt to Admin Users page shows access denied",
+    "description": "Verifies a non-admin cannot access the admin user list page and sees an access denied message.",
+    "category": "Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin/usuarios"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"access denied\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC045",
+    "title": "Admin indicator appears in user dropdown for admin users (if logged in as admin)",
+    "description": "Verifies the user dropdown shows an Admin indicator (chip/label) when the logged-in user is an admin.",
+    "category": "Navigation",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click the user avatar to open the dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Admin\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC046",
+    "title": "Admin can navigate to 'Usuarios' from sidebar (admin only)",
+    "description": "Verifies an admin user can reach the admin user list using the sidebar navigation.",
+    "category": "Navigation",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Usuarios\" in the sidebar admin section to go to user list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      }
+    ]
+  },
+  {
+    "id": "TC047",
+    "title": "Admin can navigate to 'Usuarios' from user dropdown (admin only)",
+    "description": "Verifies an admin user can reach the admin user list using the user dropdown navigation.",
+    "category": "Navigation",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/dashboards\""
+      },
+      {
+        "type": "action",
+        "description": "Click the user avatar to open the dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Usuarios\" in the dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/usuarios\""
+      }
+    ]
+  }
+]

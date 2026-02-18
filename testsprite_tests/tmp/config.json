@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "Noah",
+    "projectPath": "/Users/dan/Documents/Nkrease/Noah",
+    "testIds": [],
+    "additionalInstruction": "The app uses Spanish UI. Login credentials are admin@noah.app / Admin2026!. The app runs on localhost:3000. Routes include /en/ prefix for language. Login button text is \"Iniciar Sesión\". Navigation menu items are in Spanish: \"Inicio\", \"Mi Cuenta\", \"Administración\" > \"Usuarios\".",
+    "envs": {
+      "API_KEY": "sk-user-fnzmzJTzhTRObUDsH5lo6Lj5zdSttDGK1NJU0F5CcPyOZ-7o_aajJ1gx1CNWPnv2oqgmauvjYeMPov7NIv7yx151Y4j9my4na7bsgE_LkLjFnhmQl3uzsVR1ZvISuI11NOE"
+    }
+  },
+  "serverPort": 61365,
+  "proxy": "http://ff4c3a1e-812e-4b85-9fde-7e16dfa83fc3:3r06FOICR3AKaWWWhkZSq1lflVXuGCho@tun.testsprite.com:8080"
+}

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://postgres.omamnuaebatnnentcwip:Noahdatabase2026.@aws-0-us-west-2.pooler.supabase.com:5432/postgres"
+      }
+    },
+    "testsprite": {
+      "command": "npx",
+      "args": ["-y", "@testsprite/testsprite-mcp@latest"],
+      "env": {
+        "API_KEY": "sk-user-fnzmzJTzhTRObUDsH5lo6Lj5zdSttDGK1NJU0F5CcPyOZ-7o_aajJ1gx1CNWPnv2oqgmauvjYeMPov7NIv7yx151Y4j9my4na7bsgE_LkLjFnhmQl3uzsVR1ZvISuI11NOE"
+      }
+    }
+  }
+}

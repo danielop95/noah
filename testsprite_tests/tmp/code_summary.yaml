@@ -1,0 +1,180 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - Next.js 16.1 (App Router)
+  - MUI v7 (Material UI)
+  - NextAuth 4 (Credentials + Google)
+  - Prisma 7.4 (PostgreSQL / Supabase)
+  - React Hook Form + Valibot
+  - TanStack React Table
+  - bcryptjs
+routes:
+  - path: /login
+    file: src/app/[lang]/(blank-layout-pages)/(guest-only)/login/page.tsx
+    auth_required: false
+    description: User login page with email/password and Google OAuth
+  - path: /register
+    file: src/app/[lang]/(blank-layout-pages)/(guest-only)/register/page.tsx
+    auth_required: false
+    description: Multi-step registration wizard (4 steps)
+  - path: /dashboards
+    file: src/app/[lang]/(dashboard)/(private)/dashboards/page.tsx
+    auth_required: true
+    description: Main dashboard (home page after login)
+  - path: /account-settings
+    file: src/app/[lang]/(dashboard)/(private)/account-settings/page.tsx
+    auth_required: true
+    description: User account settings with profile and security tabs
+  - path: /admin/usuarios
+    file: src/app/[lang]/(dashboard)/(private)/admin/usuarios/page.tsx
+    auth_required: true
+    description: Admin user list with table, filters, and edit drawer (admin only)
+  - path: /admin/usuarios/[id]
+    file: src/app/[lang]/(dashboard)/(private)/admin/usuarios/[id]/page.tsx
+    auth_required: true
+    description: Admin user detail view with info tabs and deactivate (admin only)
+features:
+  - name: User Registration
+    description: Multi-step registration wizard with 4 steps - personal data, family info, contact/location, and account credentials. Creates user in database with hashed password and auto-logs in.
+    files:
+      - src/views/Register.tsx
+      - src/app/api/register/route.ts
+    entry_route: /register
+    user_interactions:
+      - Fill firstName and lastName fields
+      - Select documentType from dropdown
+      - Fill documentNumber field
+      - Select gender via radio buttons
+      - Select birthDate from date input
+      - Click Siguiente to go to step 2
+      - Select maritalStatus from dropdown
+      - Toggle hasChildren switch
+      - Fill childrenCount if hasChildren is true
+      - Click Siguiente to go to step 3
+      - Fill phone field
+      - Select country from dropdown
+      - Fill city, address, neighborhood fields
+      - Click Siguiente to go to step 4
+      - Fill email field
+      - Fill password field
+      - Fill confirmPassword field
+      - Check agreeTerms checkbox
+      - Click Registrarse button to submit
+      - See error message if email already exists
+      - Auto-redirect to dashboard on success
+    api_calls:
+      - method: POST
+        endpoint: /api/register
+    auth_required: false
+  - name: User Login
+    description: Login with email and password credentials against database with bcrypt verification. Checks if user is active.
+    files:
+      - src/views/Login.tsx
+      - src/libs/auth.ts
+    entry_route: /login
+    user_interactions:
+      - Fill email input field
+      - Fill password input field
+      - Click Iniciar Sesion button to submit
+      - See error message on invalid credentials
+      - Redirect to dashboard on success
+    api_calls:
+      - method: POST
+        endpoint: /api/auth/callback/credentials
+    auth_required: false
+  - name: Account Settings - Profile
+    description: View and edit user profile information including personal data, family info, and contact details.
+    files:
+      - src/views/pages/account-settings/index.tsx
+      - src/views/pages/account-settings/account/index.tsx
+      - src/app/server/actions.ts
+    entry_route: /account-settings
+    user_interactions:
+      - View current profile data loaded from database
+      - Edit firstName and lastName fields
+      - Edit phone field
+      - Select documentType from dropdown
+      - Edit documentNumber
+      - Select gender via radio buttons
+      - Edit birthDate
+      - Select maritalStatus
+      - Toggle hasChildren switch
+      - Select country, edit city, address, neighborhood
+      - Click Guardar Cambios button
+      - See success alert on save
+    api_calls: []
+    auth_required: true
+  - name: Account Settings - Change Password
+    description: Change user password by providing current password and new password with confirmation.
+    files:
+      - src/views/pages/account-settings/security/index.tsx
+      - src/app/server/actions.ts
+    entry_route: /account-settings
+    user_interactions:
+      - Click Seguridad tab
+      - Fill current password field
+      - Fill new password field
+      - Fill confirm new password field
+      - Click Cambiar Contrasena button
+      - See success alert on password change
+      - See error if current password is wrong
+    api_calls: []
+    auth_required: true
+  - name: Admin User List
+    description: Admin-only page showing all users in a table with search, role/status filters, pagination, and edit drawer.
+    files:
+      - src/views/apps/user/list/index.tsx
+      - src/views/apps/user/list/UserListTable.tsx
+      - src/app/server/adminActions.ts
+    entry_route: /admin/usuarios
+    user_interactions:
+      - View table of all users with name, email, phone, role chip, status chip, city
+      - Type in search field to filter users
+      - Select Rol filter dropdown (Admin/Usuario/Todos)
+      - Select Estado filter dropdown (Activo/Inactivo/Todos)
+      - Click eye icon to navigate to user detail
+      - Click edit icon to open edit drawer
+      - Change role in edit drawer
+      - Change active status in edit drawer
+      - Click Guardar button in drawer
+      - Click Desactivar button to deactivate user
+    api_calls: []
+    auth_required: true
+  - name: Admin User View
+    description: Admin-only page showing detailed user profile with left panel (avatar, key info, deactivate) and right tabs (personal info, location).
+    files:
+      - src/views/apps/user/view/index.tsx
+      - src/views/apps/user/view/UserLeftPanel.tsx
+      - src/views/apps/user/view/UserRightTabs.tsx
+      - src/app/server/adminActions.ts
+    entry_route: /admin/usuarios/[id]
+    user_interactions:
+      - View user avatar and basic info in left panel
+      - See role and status chips
+      - Click Desactivar button to deactivate user
+      - Click Volver button to go back
+      - Switch between Informacion Personal and Ubicacion tabs
+      - View personal details (name, document, gender, birth date, marital status, children)
+      - View location details (country, city, address, neighborhood)
+    api_calls: []
+    auth_required: true
+  - name: Navigation
+    description: Sidebar navigation with Inicio, Mi Cuenta, and admin section with Usuarios. User dropdown with Mi Cuenta link and admin-only Usuarios link.
+    files:
+      - src/data/navigation/verticalMenuData.tsx
+      - src/data/navigation/horizontalMenuData.tsx
+      - src/components/layout/shared/UserDropdown.tsx
+    entry_route: /dashboards
+    user_interactions:
+      - Click Inicio in sidebar to go to dashboard
+      - Click Mi Cuenta in sidebar to go to account settings
+      - Click Usuarios in sidebar admin section to go to user list
+      - Click user avatar to open dropdown
+      - See Admin chip if user is admin
+      - Click Mi Cuenta in dropdown
+      - Click Usuarios in dropdown (admin only)
+      - Click Cerrar Sesion to logout
+    api_calls: []
+    auth_required: true
+known_limitations: []

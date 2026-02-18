@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx skills find:*)",
+      "Bash(npx skills add just-mpm/conformai@mui-v7-mastery -g -y)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsx:*)",
+      "Bash(curl:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(jq:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git update-ref:*)",
+      "Bash(git rm:*)"
+    ]
+  }
+}
