@@ -107,6 +107,7 @@
     "administracion": "Administration",
     "usuarios": "Users",
     "redes": "Networks",
+    "grupos": "Groups",
     "configuracion": "Settings"
   }
 }

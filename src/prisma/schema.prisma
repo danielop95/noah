@@ -73,6 +73,9 @@ model User {
   networkId   String?
   network     Network? @relation(fields: [networkId], references: [id], onDelete: SetNull)
   networkRole String?  // 'leader' | 'member'
+
+  // Grupos donde es líder
+  groupLeaderships GroupLeader[]
 }
 
 model Organization {
@@ -86,6 +89,7 @@ model Organization {
 
   users       User[]
   networks    Network[]
+  groups      Group[]
 }
 
 model VerificationToken {
@@ -114,4 +118,56 @@ model Network {
 
   // Usuarios que pertenecen a esta red (como líderes o miembros)
   users          User[]
+
+  // Grupos de esta red
+  groups         Group[]
+}
+
+// ===================
+// Módulo de Grupos
+// ===================
+
+model Group {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  imageUrl       String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relación con Red (obligatoria)
+  networkId      String
+  network        Network  @relation(fields: [networkId], references: [id], onDelete: Cascade)
+
+  // Organización
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Modalidad: 'virtual' | 'presencial'
+  modality       String   @default("presencial")
+
+  // Ubicación (solo para presencial)
+  city           String?
+  address        String?
+  neighborhood   String?
+
+  // Horario de reunión
+  meetingDay     String?  // lunes, martes, etc.
+  meetingTime    String?  // "19:00"
+
+  // Líderes (many-to-many)
+  leaders        GroupLeader[]
+}
+
+model GroupLeader {
+  id        String   @id @default(cuid())
+  groupId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
 }

@@ -1,7 +1,7 @@
 # Noah - Progreso del Proyecto
 
 > Sistema de Gestión de Iglesia
-> Última actualización: 18 de febrero de 2026 (v4)
+> Última actualización: 18 de febrero de 2026 (v5)
 
 ---
 
@@ -116,6 +116,38 @@ src/
 | `updatedAt`      | DateTime      | Fecha de actualización                     |
 
 **Restricción importante**: Un usuario solo puede pertenecer a UNA red (como líder o miembro).
+
+### Modelo `Group` (grupos de reunión/células)
+
+| Campo            | Tipo          | Descripción                                |
+| ---------------- | ------------- | ------------------------------------------ |
+| `id`             | String (CUID) | Identificador único                        |
+| `name`           | String        | Nombre del grupo                           |
+| `description`    | String?       | Descripción del grupo                      |
+| `imageUrl`       | String?       | URL de la imagen del grupo                 |
+| `isActive`       | Boolean       | Estado del grupo (activo/inactivo)         |
+| `networkId`      | String        | ID de la red a la que pertenece (required) |
+| `organizationId` | String        | ID de la iglesia a la que pertenece        |
+| `modality`       | String        | `"virtual"` o `"presencial"`               |
+| `city`           | String?       | Ciudad (solo presencial)                   |
+| `address`        | String?       | Dirección (solo presencial)                |
+| `neighborhood`   | String?       | Barrio (solo presencial)                   |
+| `meetingDay`     | String?       | Día de reunión (lunes, martes, etc.)       |
+| `meetingTime`    | String?       | Hora de reunión (ej: "19:00")              |
+| `leaders`        | GroupLeader[] | Relación many-to-many con usuarios líderes |
+| `createdAt`      | DateTime      | Fecha de creación                          |
+| `updatedAt`      | DateTime      | Fecha de actualización                     |
+
+### Modelo `GroupLeader` (tabla pivote grupo-líder)
+
+| Campo     | Tipo          | Descripción                     |
+| --------- | ------------- | ------------------------------- |
+| `id`      | String (CUID) | Identificador único             |
+| `groupId` | String        | ID del grupo                    |
+| `userId`  | String        | ID del usuario líder            |
+| `createdAt` | DateTime    | Fecha de asignación             |
+
+**Restricción**: `@@unique([groupId, userId])` - Un usuario solo puede ser líder una vez por grupo.
 
 ### Modelos de soporte NextAuth
 
@@ -368,7 +400,77 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 
 **Script de seed:** `npx tsx src/scripts/seed-networks.ts`
 
-### 16. Componente ColorPicker Mejorado
+### 16. Módulo de Grupos (Células/Reuniones)
+
+| Funcionalidad                          | Estado | Descripción                                                        |
+| -------------------------------------- | ------ | ------------------------------------------------------------------ |
+| **Modelo de datos**                    | Listo  | `Group` y `GroupLeader` (many-to-many con usuarios)                |
+| **CRUD completo de grupos**            | Listo  | Crear, editar, eliminar grupos con validaciones                    |
+| **Relación con Redes**                 | Listo  | Cada grupo pertenece a una red obligatoriamente                    |
+| **Múltiples líderes**                  | Listo  | Un grupo puede tener varios líderes (mínimo 1)                     |
+| **Modalidad Virtual/Presencial**       | Listo  | Toggle entre modalidades con campos condicionales                  |
+| **Ubicación (solo presencial)**        | Listo  | Ciudad, dirección y barrio cuando es presencial                    |
+| **Horario de reunión**                 | Listo  | Día de la semana + hora de reunión                                 |
+| **Upload de imagen**                   | Listo  | Drag & drop con react-dropzone, validación 2MB                     |
+| **Tabla de grupos**                    | Listo  | TanStack Table con filtros por red, modalidad, estado              |
+| **Drawer de edición**                  | Listo  | Panel lateral con secciones organizadas                            |
+| **Selector de líderes filtrado**       | Listo  | Solo muestra miembros de la red seleccionada                       |
+| **Limpieza automática**                | Listo  | Al cambiar de red, limpia líderes seleccionados                    |
+
+**Archivos del módulo:**
+
+| Archivo | Descripción |
+|---------|-------------|
+| `src/views/admin/grupos/index.tsx` | Vista principal del módulo |
+| `src/views/admin/grupos/GroupListTable.tsx` | Tabla con TanStack Table y filtros |
+| `src/views/admin/grupos/GroupDrawer.tsx` | Drawer crear/editar con secciones |
+| `src/app/server/groupActions.ts` | Server actions CRUD |
+| `src/app/[lang]/(dashboard)/(private)/admin/grupos/page.tsx` | Ruta de página |
+
+**Validaciones de negocio:**
+
+- Red obligatoria
+- Mínimo 1 líder por grupo
+- Líderes deben pertenecer a la red seleccionada
+- Si modalidad es presencial, ciudad es requerida
+
+**Columnas de la tabla:**
+
+- Grupo (avatar + nombre + descripción)
+- Red (chip)
+- Líderes (AvatarGroup)
+- Modalidad (chip Virtual/Presencial con icono)
+- Horario (día + hora)
+- Estado (activo/inactivo)
+- Acciones (editar, eliminar)
+
+### 17. Dashboard Rediseñado
+
+| Funcionalidad                          | Estado | Descripción                                                        |
+| -------------------------------------- | ------ | ------------------------------------------------------------------ |
+| **Tarjeta de bienvenida**              | Listo  | Saludo personalizado con nombre del usuario e ilustración          |
+| **Estadísticas de resumen**            | Listo  | Miembros, redes y grupos en la tarjeta de bienvenida               |
+| **Cards de estadísticas**              | Listo  | Diseño mejorado con iconos, tendencias y subtítulos                |
+| **Estadísticas de grupos**             | Listo  | Total de grupos y grupos activos                                   |
+| **Próximas reuniones**                 | Listo  | Lista de 5 grupos con reunión más cercana por día de semana        |
+| **Top redes con Timeline**             | Listo  | Diseño con Timeline de MUI Lab                                     |
+| **Distribución de miembros**           | Listo  | Barras de progreso: en redes, sin red, inactivos                   |
+| **Miembros recientes**                 | Listo  | Últimos 5 registros con chip "Nuevo"                               |
+| **Ilustraciones del template**         | Listo  | Copiadas de Materio a `public/images/illustrations/`               |
+
+**Server action `getDashboardStats()` incluye:**
+
+- `totalUsers`, `activeUsers`, `inactiveUsers`
+- `totalNetworks`, `activeNetworks`
+- `totalGroups`, `activeGroups`
+- `totalAdmins`, `usersWithNetwork`, `usersWithoutNetwork`
+- `newUsersThisMonth`, `newUsersLastMonth`
+- `topNetworks` (top 5 con conteo de líderes/miembros)
+- `recentUsers` (últimos 5 registros)
+- `upcomingGroups` (próximos 5 grupos por día de reunión)
+- `currentUserName` (nombre del usuario actual)
+
+### 18. Componente ColorPicker
 
 | Funcionalidad                          | Estado | Descripción                                                        |
 | -------------------------------------- | ------ | ------------------------------------------------------------------ |
@@ -431,10 +533,8 @@ const tenant = useTenant()
 
 | Funcionalidad                      | Estado      | Notas                                                 |
 | ---------------------------------- | ----------- | ----------------------------------------------------- |
-| Dashboard principal                | Placeholder | Solo muestra tarjeta de bienvenida                    |
 | Recuperar contraseña               | Solo UI     | Formulario existe pero no envía emails                |
 | Redux store                        | Vacío       | Configurado pero sin reducers                         |
-| Módulos de iglesia                 | No iniciado | Gestión de ministerios, eventos, grupos, etc.         |
 | Subida de avatar                   | No iniciado | Campo `image` existe en DB pero sin upload            |
 | Notificaciones                     | No iniciado | Componente dropdown existe pero sin lógica            |
 | Búsqueda global                    | No iniciado | Componente existe pero sin implementación             |
@@ -507,45 +607,40 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 ---
 
-## Archivos Clave Modificados (Sesión 18-Feb-2026)
+## Archivos Clave Modificados (Sesión 18-Feb-2026 v5)
 
-### Módulo de Redes (nuevo)
-
-| Archivo | Cambio |
-|---------|--------|
-| `src/prisma/schema.prisma` | Agregado modelo `Network`, campos `networkId`/`networkRole` en `User` |
-| `src/views/admin/redes/index.tsx` | **NUEVO** - Vista principal del módulo |
-| `src/views/admin/redes/NetworkListTable.tsx` | **NUEVO** - Tabla con TanStack Table |
-| `src/views/admin/redes/NetworkDrawer.tsx` | **NUEVO** - Drawer crear/editar con dropzone |
-| `src/views/admin/redes/UserMultiSelect.tsx` | **NUEVO** - Selector múltiple de usuarios |
-| `src/app/server/networkActions.ts` | **NUEVO** - Server actions CRUD de redes |
-| `src/app/api/upload/image/route.ts` | **NUEVO** - API de upload genérico |
-| `src/app/[lang]/(dashboard)/(private)/admin/redes/page.tsx` | **NUEVO** - Ruta de página |
-| `src/scripts/seed-networks.ts` | **NUEVO** - Script para crear datos de prueba |
-
-### Integración con Usuarios
+### Módulo de Grupos (nuevo)
 
 | Archivo | Cambio |
 |---------|--------|
-| `src/app/server/adminActions.ts` | `getAllUsers()` ahora incluye `network` y `networkRole` |
-| `src/views/apps/user/list/UserListTable.tsx` | Agregada columna "Red" con chip y estrella para líderes |
-| `src/views/apps/user/list/index.tsx` | Actualizado tipo para incluir datos de red |
-| `src/data/navigation/verticalMenuData.tsx` | Agregado item "Redes" en menú admin |
-| `src/data/navigation/horizontalMenuData.tsx` | Agregado item "Redes" en menú admin |
-| `src/data/dictionaries/*.json` | Agregada clave `redes` en todos los idiomas |
+| `src/prisma/schema.prisma` | Agregados modelos `Group` y `GroupLeader`, relación con `Network` |
+| `src/views/admin/grupos/index.tsx` | **NUEVO** - Vista principal del módulo |
+| `src/views/admin/grupos/GroupListTable.tsx` | **NUEVO** - Tabla con TanStack Table y filtros |
+| `src/views/admin/grupos/GroupDrawer.tsx` | **NUEVO** - Drawer crear/editar con secciones |
+| `src/app/server/groupActions.ts` | **NUEVO** - Server actions CRUD de grupos |
+| `src/app/[lang]/(dashboard)/(private)/admin/grupos/page.tsx` | **NUEVO** - Ruta de página |
+| `src/data/navigation/verticalMenuData.tsx` | Agregado item "Grupos" en menú admin |
+| `src/data/navigation/horizontalMenuData.tsx` | Agregado item "Grupos" en menú admin |
+| `src/data/dictionaries/*.json` | Agregada clave `grupos` en todos los idiomas |
 
-### Sesión anterior
+### Dashboard Rediseñado
 
 | Archivo | Cambio |
 |---------|--------|
-| `src/components/ColorPicker.tsx` | Componente compartido con tooltip mejorado |
-| `src/configs/themeConfig.ts` | Forzado `mode: 'light'` |
-| `src/@core/utils/serverHelpers.ts` | `getMode()`, `getSystemMode()`, `getServerMode()` retornan `'light'` |
-| `src/components/layout/vertical/NavbarContent.tsx` | Removido `ModeDropdown` |
-| `src/components/layout/horizontal/NavbarContent.tsx` | Removido `ModeDropdown` |
-| `src/components/layout/shared/UserDropdown.tsx` | Logout redirige a `/${locale}/login` |
-| `src/views/admin/Configuracion.tsx` | Usa ColorPicker compartido |
-| `src/views/NoahLanding.tsx` | Usa ColorPicker compartido, títulos en español |
+| `src/views/Dashboard.tsx` | Rediseño completo con tarjeta de bienvenida, estadísticas, timeline |
+| `src/app/server/dashboardActions.ts` | **NUEVO** - Server action con estadísticas de grupos y próximas reuniones |
+| `public/images/illustrations/` | **NUEVO** - Ilustraciones copiadas del template Materio |
+
+### Sesión anterior (Redes)
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/views/admin/redes/index.tsx` | Vista principal del módulo de redes |
+| `src/views/admin/redes/NetworkListTable.tsx` | Tabla con TanStack Table |
+| `src/views/admin/redes/NetworkDrawer.tsx` | Drawer crear/editar con dropzone |
+| `src/views/admin/redes/UserMultiSelect.tsx` | Selector múltiple de usuarios |
+| `src/app/server/networkActions.ts` | Server actions CRUD de redes |
+| `src/app/api/upload/image/route.ts` | API de upload genérico |
 
 ---
 
@@ -553,9 +648,8 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 | Módulo | Descripción | Prioridad |
 |--------|-------------|-----------|
-| **Eventos** | Crear eventos, asignar a redes, registro de asistencia, calendario | Alta |
-| **Asistencia** | Check-in a servicios, reportes, histórico por usuario | Alta |
-| **Grupos/Células** | Reuniones semanales, diferente a redes (grupos geográficos) | Media |
+| **Eventos** | Crear eventos, asignar a redes/grupos, registro de asistencia, calendario | Alta |
+| **Asistencia** | Check-in a servicios y grupos, reportes, histórico por usuario | Alta |
 | **Finanzas/Diezmos** | Registro de donaciones, reportes, recibos | Media |
-| **Comunicaciones** | Notificaciones, mensajes a redes, anuncios | Baja |
-| **Dashboard Analítico** | Gráficos de crecimiento, asistencia, participación | Baja |
+| **Comunicaciones** | Notificaciones, mensajes a redes/grupos, anuncios | Media |
+| **Reportes Analíticos** | Gráficos de crecimiento, asistencia, participación con ApexCharts | Baja |
