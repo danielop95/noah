@@ -105,8 +105,8 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
             width: 380,
             maxWidth: '92vw',
             maxHeight: '75vh',
-            borderRadius: 4,
-            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+            borderRadius: '10px',
+            boxShadow: '0 20px 40px -12px rgba(0,0,0,0.25)',
             border: 'none',
             overflow: 'hidden'
           }
@@ -206,7 +206,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
             )}
           </Box>
         ) : (
-          <Box sx={{ p: 2.5 }}>
+          <Box sx={{ p: 2 }}>
             {dayEvents.map((event, index) => {
               const category = event.extendedProps?.calendar as CalendarCategory
               const colorName = calendarsColor[category] || 'primary'
@@ -218,10 +218,10 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                   key={event.id || index}
                   onClick={() => onEventClick(event)}
                   sx={{
-                    mb: index < dayEvents.length - 1 ? 2 : 0,
+                    mb: index < dayEvents.length - 1 ? 1.5 : 0,
                     cursor: 'pointer',
                     backgroundColor: 'white',
-                    borderRadius: 3,
+                    borderRadius: '10px',
                     border: `1px solid ${theme.palette.divider}`,
                     overflow: 'hidden',
                     transition: 'all 0.2s ease',
@@ -244,16 +244,16 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                     }}
                   />
 
-                  <Box sx={{ p: 2.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <Box sx={{ p: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
                       {/* Icono de categoría */}
                       <Box
                         sx={{
-                          width: 44,
-                          height: 44,
-                          borderRadius: 2.5,
-                          backgroundColor: alpha(color, 0.1),
-                          border: `1px solid ${alpha(color, 0.15)}`,
+                          width: 42,
+                          height: 42,
+                          borderRadius: '10px',
+                          backgroundColor: alpha(color, 0.12),
+                          border: `1px solid ${alpha(color, 0.2)}`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -268,10 +268,11 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                         <Typography
                           variant='subtitle1'
                           sx={{
-                            fontWeight: 600,
-                            lineHeight: 1.4,
-                            mb: 0.75,
-                            color: theme.palette.text.primary,
+                            fontWeight: 700,
+                            fontSize: '0.95rem',
+                            lineHeight: 1.3,
+                            mb: 0.5,
+                            color: theme.palette.grey[900],
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap'
