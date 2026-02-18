@@ -207,7 +207,7 @@ const CalendarioView = ({ initialEvents, isAdmin }: Props) => {
   })
 
   return (
-    <div className='p-5 bg-backgroundPaper rounded-lg shadow-sm'>
+    <div className='p-4 sm:p-5 bg-backgroundPaper rounded-lg shadow-sm w-full'>
       {/* Barra de filtros y botón agregar */}
       <CalendarFiltersBar
         isAdmin={isAdmin}
