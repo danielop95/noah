@@ -1,7 +1,7 @@
 # Noah - Progreso del Proyecto
 
 > Sistema de Gestión de Iglesia
-> Última actualización: 18 de febrero de 2026 (v6)
+> Última actualización: 19 de febrero de 2026 (v7)
 
 ---
 
@@ -435,6 +435,11 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 | **Drawer de edición**                  | Listo  | Panel lateral con secciones organizadas                            |
 | **Selector de líderes filtrado**       | Listo  | Solo muestra miembros de la red seleccionada                       |
 | **Limpieza automática**                | Listo  | Al cambiar de red, limpia líderes seleccionados                    |
+| **Vista de detalle de grupo**          | Listo  | Página completa con tarjeta de perfil y tabs                       |
+| **Tab de Líderes**                     | Listo  | Lista de líderes con acciones (ver perfil, remover)                |
+| **Tab de Miembros**                    | Listo  | Miembros de la red con búsqueda y acciones                         |
+| **Tab de Reportes**                    | Listo  | Últimos 10 reportes con estadísticas                               |
+| **Estadísticas del grupo**             | Listo  | Total reportes, asistentes, visitantes, ofrenda, crecimiento       |
 
 **Archivos del módulo:**
 
@@ -443,8 +448,14 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 | `src/views/admin/grupos/index.tsx` | Vista principal del módulo |
 | `src/views/admin/grupos/GroupListTable.tsx` | Tabla con TanStack Table y filtros |
 | `src/views/admin/grupos/GroupDrawer.tsx` | Drawer crear/editar con secciones |
-| `src/app/server/groupActions.ts` | Server actions CRUD |
-| `src/app/[lang]/(dashboard)/(private)/admin/grupos/page.tsx` | Ruta de página |
+| `src/views/admin/grupos/detail/index.tsx` | Vista de detalle con tabs |
+| `src/views/admin/grupos/detail/GroupProfileCard.tsx` | Tarjeta de perfil del grupo |
+| `src/views/admin/grupos/detail/GroupLeadersTab.tsx` | Tab de líderes |
+| `src/views/admin/grupos/detail/GroupMembersTab.tsx` | Tab de miembros de la red |
+| `src/views/admin/grupos/detail/GroupReportsTab.tsx` | Tab de reportes recientes |
+| `src/app/server/groupActions.ts` | Server actions CRUD + getGroupFullDetails |
+| `src/app/(tenant)/dashboard/admin/grupos/page.tsx` | Ruta de lista |
+| `src/app/(tenant)/dashboard/admin/grupos/[id]/page.tsx` | Ruta de detalle |
 
 **Validaciones de negocio:**
 
@@ -455,13 +466,31 @@ Claves de navegación traducidas: `inicio`, `miCuenta`, `administracion`, `usuar
 
 **Columnas de la tabla:**
 
-- Grupo (avatar + nombre + descripción)
+- Grupo (avatar con iniciales + nombre + descripción, clickeable)
 - Red (chip)
 - Líderes (AvatarGroup)
 - Modalidad (chip Virtual/Presencial con icono)
 - Horario (día + hora)
 - Estado (activo/inactivo)
-- Acciones (editar, eliminar)
+- Acciones (ver detalle, editar, eliminar)
+
+**Vista de detalle (tabs):**
+
+- **Líderes**: Lista de líderes del grupo con avatar, nombre, email y acciones
+- **Miembros**: Todos los miembros de la red a la que pertenece el grupo, con búsqueda
+- **Reportes**: Últimos 10 reportes con fecha, asistentes, visitantes y ofrenda
+
+**Estadísticas calculadas (`getGroupFullDetails`):**
+
+- Total de reportes
+- Total de asistentes acumulados
+- Total de visitantes acumulados
+- Promedio de asistentes por reunión
+- Total de ofrenda acumulada
+- Reportes del mes actual
+- Promedio de asistentes del mes actual
+- Fecha del último reporte
+- Crecimiento de asistencia (% comparado con mes anterior)
 
 ### 17. Módulo de Calendario
 
@@ -678,7 +707,20 @@ npx playwright test --ui  # Interfaz gráfica de pruebas
 
 ---
 
-## Archivos Clave Modificados (Sesión 18-Feb-2026 v6)
+## Archivos Clave Modificados (Sesión 19-Feb-2026 v7)
+
+### Vista de Detalle de Grupos (nuevo)
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/views/admin/grupos/detail/index.tsx` | **NUEVO** - Vista principal con tabs (Líderes, Miembros, Reportes) |
+| `src/views/admin/grupos/detail/GroupProfileCard.tsx` | **NUEVO** - Tarjeta de perfil con estadísticas |
+| `src/views/admin/grupos/detail/GroupLeadersTab.tsx` | **NUEVO** - Tab de líderes del grupo |
+| `src/views/admin/grupos/detail/GroupMembersTab.tsx` | **NUEVO** - Tab de miembros de la red |
+| `src/views/admin/grupos/detail/GroupReportsTab.tsx` | **NUEVO** - Tab de reportes recientes |
+| `src/app/server/groupActions.ts` | Agregada función `getGroupFullDetails` con estadísticas |
+| `src/views/admin/grupos/GroupListTable.tsx` | Avatares con iniciales, nombres clickeables |
+| `src/app/(tenant)/dashboard/admin/grupos/[id]/page.tsx` | **NUEVO** - Ruta de página de detalle |
 
 ### Módulo de Calendario (nuevo)
 
