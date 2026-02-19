@@ -1,0 +1,22 @@
+# Development cache
+.next/
+node_modules/
+
+# Template files (not needed in production)
+materio-template/
+materio-docs/
+
+# Local files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/
+
+# Git
+.git/
