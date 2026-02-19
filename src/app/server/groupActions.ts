@@ -415,3 +415,240 @@ export async function getNetworksForGroups(): Promise<NetworkOption[]> {
 
   return networks
 }
+
+// ============================================
+// DETAIL VIEW - FULL GROUP DATA
+// ============================================
+
+export type GroupFullDetails = {
+  id: string
+  name: string
+  description: string | null
+  imageUrl: string | null
+  isActive: boolean
+  modality: string
+  city: string | null
+  address: string | null
+  neighborhood: string | null
+  meetingDay: string | null
+  meetingTime: string | null
+  createdAt: Date
+  network: {
+    id: string
+    name: string
+    imageUrl: string | null
+  }
+  leaders: {
+    id: string
+    user: {
+      id: string
+      name: string | null
+      firstName: string | null
+      lastName: string | null
+      email: string | null
+      image: string | null
+      phone: string | null
+      isActive: boolean
+    }
+  }[]
+  networkMembers: {
+    id: string
+    name: string | null
+    firstName: string | null
+    lastName: string | null
+    email: string | null
+    image: string | null
+    phone: string | null
+    networkRole: string | null
+    isActive: boolean
+  }[]
+  stats: {
+    totalReports: number
+    totalAttendees: number
+    totalVisitors: number
+    avgAttendees: number
+    totalOffering: number
+    reportsThisMonth: number
+    avgAttendeesThisMonth: number
+    lastReportDate: Date | null
+    attendeesGrowth: number
+  }
+  recentReports: {
+    id: string
+    meetingDate: Date
+    totalAttendees: number
+    leadersCount: number
+    visitorsCount: number
+    reportOffering: boolean
+    offeringAmount: number | null
+    notes: string | null
+    createdAt: Date
+    reporter: {
+      id: string
+      name: string | null
+      firstName: string | null
+      lastName: string | null
+      image: string | null
+    }
+  }[]
+}
+
+export async function getGroupFullDetails(groupId: string): Promise<GroupFullDetails | null> {
+  const session = await requireAdmin()
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) {
+    throw new Error('El administrador no pertenece a ninguna organizacion')
+  }
+
+  const group = await prisma.group.findUnique({
+    where: { id: groupId },
+    include: {
+      network: {
+        select: { id: true, name: true, imageUrl: true }
+      },
+      leaders: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+              image: true,
+              phone: true,
+              isActive: true
+            }
+          }
+        }
+      }
+    }
+  })
+
+  if (!group || group.organizationId !== organizationId) {
+    return null
+  }
+
+  // Calculate date ranges
+  const now = new Date()
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+
+  // Get statistics in parallel
+  const [
+    allTimeStats,
+    reportsThisMonth,
+    reportsLastMonth,
+    recentReports,
+    lastReport,
+    networkMembers
+  ] = await Promise.all([
+    // All-time stats
+    prisma.groupReport.aggregate({
+      where: { groupId },
+      _count: { id: true },
+      _sum: {
+        totalAttendees: true,
+        visitorsCount: true,
+        offeringAmount: true
+      },
+      _avg: { totalAttendees: true }
+    }),
+    // Reports this month
+    prisma.groupReport.aggregate({
+      where: { groupId, meetingDate: { gte: startOfMonth } },
+      _count: { id: true },
+      _avg: { totalAttendees: true }
+    }),
+    // Reports last month (for growth calculation)
+    prisma.groupReport.aggregate({
+      where: {
+        groupId,
+        meetingDate: { gte: startOfLastMonth, lt: startOfMonth }
+      },
+      _avg: { totalAttendees: true }
+    }),
+    // Recent reports (last 10)
+    prisma.groupReport.findMany({
+      where: { groupId },
+      orderBy: { meetingDate: 'desc' },
+      take: 10,
+      include: {
+        reporter: {
+          select: {
+            id: true,
+            name: true,
+            firstName: true,
+            lastName: true,
+            image: true
+          }
+        }
+      }
+    }),
+    // Last report date
+    prisma.groupReport.findFirst({
+      where: { groupId },
+      orderBy: { meetingDate: 'desc' },
+      select: { meetingDate: true }
+    }),
+    // Network members
+    prisma.user.findMany({
+      where: { networkId: group.networkId },
+      select: {
+        id: true,
+        name: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        image: true,
+        phone: true,
+        networkRole: true,
+        isActive: true
+      },
+      orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }]
+    })
+  ])
+
+  // Calculate growth
+  const avgThisMonth = reportsThisMonth._avg.totalAttendees || 0
+  const avgLastMonth = reportsLastMonth._avg.totalAttendees || 0
+  let attendeesGrowth = 0
+
+  if (avgLastMonth > 0) {
+    attendeesGrowth = Math.round(((avgThisMonth - avgLastMonth) / avgLastMonth) * 100)
+  }
+
+  return {
+    id: group.id,
+    name: group.name,
+    description: group.description,
+    imageUrl: group.imageUrl,
+    isActive: group.isActive,
+    modality: group.modality,
+    city: group.city,
+    address: group.address,
+    neighborhood: group.neighborhood,
+    meetingDay: group.meetingDay,
+    meetingTime: group.meetingTime,
+    createdAt: group.createdAt,
+    network: group.network,
+    leaders: group.leaders,
+    networkMembers,
+    stats: {
+      totalReports: allTimeStats._count.id,
+      totalAttendees: allTimeStats._sum.totalAttendees || 0,
+      totalVisitors: allTimeStats._sum.visitorsCount || 0,
+      avgAttendees: Math.round(allTimeStats._avg.totalAttendees || 0),
+      totalOffering: Number(allTimeStats._sum.offeringAmount || 0),
+      reportsThisMonth: reportsThisMonth._count.id,
+      avgAttendeesThisMonth: Math.round(avgThisMonth),
+      lastReportDate: lastReport?.meetingDate || null,
+      attendeesGrowth
+    },
+    recentReports: recentReports.map(r => ({
+      ...r,
+      offeringAmount: r.offeringAmount ? Number(r.offeringAmount) : null
+    }))
+  }
+}

@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react'
 
+import { useRouter } from 'next/navigation'
+
 import {
   useReactTable,
   getCoreRowModel,
@@ -70,7 +72,16 @@ const DAYS_LABELS: Record<string, string> = {
   domingo: 'Domingo'
 }
 
+const getInitials = (name: string) =>
+  name
+    .split(' ')
+    .map(n => n.charAt(0))
+    .join('')
+    .substring(0, 2)
+    .toUpperCase()
+
 const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupListTableProps) => {
+  const router = useRouter()
   const [groups, setGroups] = useState(initialGroups)
   const [globalFilter, setGlobalFilter] = useState('')
   const [networkFilter, setNetworkFilter] = useState<string>('all')
@@ -106,12 +117,16 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
           const group = row.original
 
           return (
-            <Box className='flex items-center gap-3'>
-              <Avatar src={group.imageUrl || undefined} variant='rounded' sx={{ bgcolor: 'primary.main' }}>
-                <i className='ri-team-line text-xl' />
+            <Box
+              className='flex items-center gap-3 cursor-pointer'
+              onClick={() => router.push(`/dashboard/admin/grupos/${group.id}`)}
+              sx={{ '&:hover': { opacity: 0.8 } }}
+            >
+              <Avatar src={group.imageUrl || undefined} variant='rounded' sx={{ bgcolor: 'grey.400', fontWeight: 600 }}>
+                {getInitials(group.name)}
               </Avatar>
               <Box>
-                <Typography variant='body2' className='font-medium'>
+                <Typography variant='body2' className='font-medium' color='primary'>
                   {group.name}
                 </Typography>
                 {group.description && (
@@ -207,6 +222,14 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
         header: 'Acciones',
         cell: ({ row }) => (
           <Box className='flex gap-1'>
+            <Tooltip title='Ver detalle'>
+              <IconButton
+                size='small'
+                onClick={() => router.push(`/dashboard/admin/grupos/${row.original.id}`)}
+              >
+                <i className='ri-eye-line' />
+              </IconButton>
+            </Tooltip>
             <Tooltip title='Editar'>
               <IconButton
                 size='small'
