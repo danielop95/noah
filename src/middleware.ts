@@ -6,7 +6,7 @@ import type { NextRequest } from 'next/server'
 import { i18n } from '@configs/i18n'
 
 // Constants
-const MAIN_DOMAIN = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost'
+const MAIN_DOMAIN = (process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost').trim()
 
 // Rutas publicas (sin subdominio requerido)
 const PUBLIC_PATHS = ['/', '/login', '/registrar-iglesia', '/forgot-password']
