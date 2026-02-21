@@ -55,7 +55,7 @@ export type Config = {
 
 const themeConfig: Config = {
   templateName: 'Noah',
-  homePageUrl: '/dashboards',
+  homePageUrl: '/dashboard',
   settingsCookieName: 'noah-church-saas',
   mode: 'light', // Siempre modo claro
   skin: 'default', // 'default', 'bordered'

@@ -476,7 +476,7 @@ const Register = ({ organizationId }: RegisterProps) => {
       })
 
       if (signInRes?.ok) {
-        router.replace(getLocalizedUrl('/dashboards', locale as Locale))
+        router.replace('/dashboard')
       } else {
         // Registration succeeded but auto-login failed, redirect to login
         router.replace(getLocalizedUrl('/login', locale as Locale))

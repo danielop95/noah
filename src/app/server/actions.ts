@@ -171,7 +171,8 @@ export async function getNetworkFullDetails(networkId: string) {
           image: true,
           phone: true,
           networkRole: true,
-          isActive: true
+          isActive: true,
+          createdAt: true
         }
       },
       groups: {
@@ -179,7 +180,7 @@ export async function getNetworkFullDetails(networkId: string) {
           leaders: {
             include: {
               user: {
-                select: { id: true, name: true, firstName: true, lastName: true, image: true }
+                select: { id: true, name: true, firstName: true, lastName: true, image: true, email: true }
               }
             }
           },
@@ -193,24 +194,86 @@ export async function getNetworkFullDetails(networkId: string) {
 
   // Obtener estadísticas de reportes de la red en una sola query
   const groupIds = network.groups.map(g => g.id)
+  const activeGroups = network.groups.filter(g => g.isActive)
 
-  const reportsStats = await prisma.groupReport.aggregate({
-    where: { groupId: { in: groupIds } },
-    _sum: { totalAttendees: true, visitorsCount: true },
-    _avg: { totalAttendees: true },
-    _count: true
-  })
+  // Fechas para cálculos
+  const now = new Date()
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+
+  // Ejecutar queries en paralelo
+  const [reportsStats, reportsThisMonth, newMembersThisMonth, newMembersLastMonth] = await Promise.all([
+    // Estadísticas generales de reportes
+    prisma.groupReport.aggregate({
+      where: { groupId: { in: groupIds } },
+      _sum: { totalAttendees: true, visitorsCount: true },
+      _avg: { totalAttendees: true },
+      _count: true
+    }),
+
+    // Reportes de este mes (para calcular porcentaje de cumplimiento)
+    prisma.groupReport.findMany({
+      where: {
+        groupId: { in: groupIds },
+        meetingDate: { gte: startOfMonth }
+      },
+      select: { groupId: true }
+    }),
+
+    // Miembros nuevos este mes
+    prisma.user.count({
+      where: {
+        networkId: networkId,
+        createdAt: { gte: startOfMonth }
+      }
+    }),
+
+    // Miembros nuevos mes anterior
+    prisma.user.count({
+      where: {
+        networkId: networkId,
+        createdAt: { gte: startOfLastMonth, lt: startOfMonth }
+      }
+    })
+  ])
+
+  // Calcular porcentaje de cumplimiento de reportes del mes
+  // Asumiendo que cada grupo debe reportar al menos 4 veces al mes (semanal)
+  const expectedReportsPerGroup = 4
+  const totalExpectedReports = activeGroups.length * expectedReportsPerGroup
+
+  // Contar grupos únicos que reportaron este mes
+  const groupsReportedThisMonth = new Set(reportsThisMonth.map(r => r.groupId)).size
+  const reportsCountThisMonth = reportsThisMonth.length
+
+  // Porcentaje basado en grupos que reportaron vs grupos activos
+  const reportingPercentage = activeGroups.length > 0
+    ? Math.round((groupsReportedThisMonth / activeGroups.length) * 100)
+    : 0
+
+  // Calcular crecimiento de miembros
+  const memberGrowth = newMembersLastMonth > 0
+    ? Math.round(((newMembersThisMonth - newMembersLastMonth) / newMembersLastMonth) * 100)
+    : newMembersThisMonth > 0 ? 100 : 0
 
   return {
     ...network,
     stats: {
       totalGroups: network.groups.length,
+      activeGroups: activeGroups.length,
       totalLeaders: network.users.filter(u => u.networkRole === 'leader').length,
       totalMembers: network.users.filter(u => u.networkRole === 'member').length,
+      totalUsers: network.users.length,
       totalReports: reportsStats._count || 0,
       totalAttendees: reportsStats._sum.totalAttendees || 0,
       totalVisitors: reportsStats._sum.visitorsCount || 0,
-      avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0)
+      avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0),
+      // Nuevas estadísticas
+      newMembersThisMonth,
+      memberGrowth,
+      reportsThisMonth: reportsCountThisMonth,
+      groupsReportedThisMonth,
+      reportingPercentage
     }
   }
 }

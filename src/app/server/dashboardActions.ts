@@ -41,6 +41,16 @@ export type DashboardStats = {
     networkName: string
     leaderNames: string[]
   }>
+  upcomingEvents: Array<{
+    id: string
+    title: string
+    description: string | null
+    startDate: Date
+    endDate: Date
+    allDay: boolean
+    category: string
+    location: string | null
+  }>
   currentUserName: string
 }
 
@@ -90,7 +100,8 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     newUsersLastMonth,
     topNetworks,
     recentUsers,
-    allGroups
+    allGroups,
+    upcomingCalendarEvents
   ] = await Promise.all([
     // Total de usuarios
     prisma.user.count({
@@ -209,6 +220,30 @@ export async function getDashboardStats(): Promise<DashboardStats> {
           take: 2
         }
       }
+    }),
+
+    // Próximos eventos del calendario (próximos 30 días)
+    prisma.calendarEvent.findMany({
+      where: {
+        organizationId,
+        isActive: true,
+        startDate: {
+          gte: now,
+          lte: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
+        }
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        startDate: true,
+        endDate: true,
+        allDay: true,
+        category: true,
+        location: true
+      },
+      orderBy: { startDate: 'asc' },
+      take: 5
     })
   ])
 
@@ -267,6 +302,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     topNetworks: processedTopNetworks,
     recentUsers,
     upcomingGroups,
+    upcomingEvents: upcomingCalendarEvents,
     currentUserName
   }
 }

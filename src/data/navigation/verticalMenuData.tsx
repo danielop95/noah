@@ -6,22 +6,22 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
   {
     label: dictionary['navigation'].inicio,
     icon: 'ri-home-smile-line',
-    href: '/dashboards'
+    href: '/dashboard'
   },
   {
     label: dictionary['navigation'].calendario,
     icon: 'ri-calendar-event-line',
-    href: '/calendario'
+    href: '/dashboard/calendario'
   },
   {
     label: dictionary['navigation'].miCuenta,
     icon: 'ri-user-settings-line',
-    href: '/account-settings'
+    href: '/dashboard/account-settings'
   },
   {
     label: dictionary['navigation'].reportes,
     icon: 'ri-file-chart-line',
-    href: '/reportes'
+    href: '/dashboard/reportes'
   },
   {
     isSection: true,
@@ -31,25 +31,25 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
       {
         label: dictionary['navigation'].usuarios,
         icon: 'ri-group-line',
-        href: '/admin/usuarios',
+        href: '/dashboard/admin/usuarios',
         roles: ['admin']
       },
       {
         label: dictionary['navigation'].redes,
         icon: 'ri-bubble-chart-line',
-        href: '/admin/redes',
+        href: '/dashboard/admin/redes',
         roles: ['admin']
       },
       {
         label: dictionary['navigation'].grupos,
         icon: 'ri-team-line',
-        href: '/admin/grupos',
+        href: '/dashboard/admin/grupos',
         roles: ['admin']
       },
       {
         label: dictionary['navigation'].configuracion,
         icon: 'ri-settings-3-line',
-        href: '/admin/configuracion',
+        href: '/dashboard/admin/configuracion',
         roles: ['admin']
       }
     ]

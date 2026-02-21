@@ -214,7 +214,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
           <div className='flex items-center gap-1'>
             <IconButton
               size='small'
-              onClick={() => router.push(getLocalizedUrl(`/admin/usuarios/${row.original.id}`, locale as Locale))}
+              onClick={() => router.push(`/dashboard/admin/usuarios/${row.original.id}`)}
             >
               <i className='ri-eye-line text-textSecondary' />
             </IconButton>

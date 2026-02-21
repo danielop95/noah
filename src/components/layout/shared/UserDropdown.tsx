@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
 
 // Next Imports
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // MUI Imports
 import { styled } from '@mui/material/styles'
@@ -25,14 +25,8 @@ import Chip from '@mui/material/Chip'
 // Third-party Imports
 import { signOut, useSession } from 'next-auth/react'
 
-// Type Imports
-import type { Locale } from '@configs/i18n'
-
 // Hook Imports
 import { useSettings } from '@core/hooks/useSettings'
-
-// Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -55,7 +49,6 @@ const UserDropdown = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const { settings } = useSettings()
-  const { lang: locale } = useParams()
 
   const handleDropdownOpen = () => {
     !open ? setOpen(true) : setOpen(false)
@@ -63,7 +56,7 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (event?: MouseEvent<HTMLLIElement> | (MouseEvent | TouchEvent), url?: string) => {
     if (url) {
-      router.push(getLocalizedUrl(url, locale as Locale))
+      router.push(url)
     }
 
     if (anchorRef.current && anchorRef.current.contains(event?.target as HTMLElement)) {
@@ -77,7 +70,7 @@ const UserDropdown = () => {
     try {
       // Construir URL absoluta del login en el subdominio actual
       const currentOrigin = window.location.origin
-      const loginUrl = `${currentOrigin}/${locale}/login`
+      const loginUrl = `${currentOrigin}/login`
 
       await signOut({ callbackUrl: loginUrl })
     } catch (error) {
@@ -135,12 +128,12 @@ const UserDropdown = () => {
                     </div>
                   </div>
                   <Divider className='mlb-1' />
-                  <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/account-settings')}>
+                  <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/dashboard/account-settings')}>
                     <i className='ri-user-settings-line' />
                     <Typography color='text.primary'>Mi Cuenta</Typography>
                   </MenuItem>
                   {session?.user?.role === 'admin' && (
-                    <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/admin/usuarios')}>
+                    <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/dashboard/admin/usuarios')}>
                       <i className='ri-group-line' />
                       <Typography color='text.primary'>Usuarios</Typography>
                     </MenuItem>

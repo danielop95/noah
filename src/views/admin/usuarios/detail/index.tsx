@@ -181,7 +181,7 @@ const UserDetailView = ({ user: initialUser }: Props) => {
         {/* Header */}
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-4'>
-            <IconButton onClick={() => router.push(getLocalizedUrl('/admin/usuarios', locale as Locale))}>
+            <IconButton onClick={() => router.push('/dashboard/admin/usuarios')}>
               <i className='ri-arrow-left-line' />
             </IconButton>
             <div>

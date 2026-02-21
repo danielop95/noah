@@ -1,26 +1,27 @@
 'use client'
 
+// React Imports
+import { useState } from 'react'
+
 // Next Imports
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // MUI Imports
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import Tab from '@mui/material/Tab'
+import TabContext from '@mui/lab/TabContext'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
 
 // Component Imports
-import NetworkOverviewCard from './NetworkOverviewCard'
-import NetworkGroupsList from './NetworkGroupsList'
-
-// Type Imports
-import type { Locale } from '@configs/i18n'
-
-// Utils
-import { getLocalizedUrl } from '@/utils/i18n'
+import NetworkProfileCard from './NetworkProfileCard'
+import NetworkLeadersTab from './NetworkLeadersTab'
+import NetworkGroupsTab from './NetworkGroupsTab'
+import NetworkMembersTab from './NetworkMembersTab'
 
 type NetworkUser = {
   id: string
@@ -32,6 +33,7 @@ type NetworkUser = {
   phone: string | null
   networkRole: string | null
   isActive: boolean
+  createdAt: Date
 }
 
 type GroupLeader = {
@@ -41,6 +43,7 @@ type GroupLeader = {
     firstName: string | null
     lastName: string | null
     image: string | null
+    email: string | null
   }
 }
 
@@ -69,12 +72,19 @@ type NetworkData = {
   groups: GroupData[]
   stats: {
     totalGroups: number
+    activeGroups: number
     totalLeaders: number
     totalMembers: number
+    totalUsers: number
     totalReports: number
     totalAttendees: number
     totalVisitors: number
     avgAttendees: number
+    newMembersThisMonth: number
+    memberGrowth: number
+    reportsThisMonth: number
+    groupsReportedThisMonth: number
+    reportingPercentage: number
   }
 }
 
@@ -84,7 +94,7 @@ type Props = {
 
 const NetworkDetailView = ({ network }: Props) => {
   const router = useRouter()
-  const { lang: locale } = useParams()
+  const [activeTab, setActiveTab] = useState('leaders')
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('es-CO', {
@@ -94,12 +104,15 @@ const NetworkDetailView = ({ network }: Props) => {
     })
   }
 
+  const leaders = network.users.filter(u => u.networkRole === 'leader')
+  const members = network.users.filter(u => u.networkRole === 'member')
+
   return (
     <div className='flex flex-col gap-6'>
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-4'>
-          <IconButton onClick={() => router.push(getLocalizedUrl('/admin/redes', locale as Locale))}>
+          <IconButton onClick={() => router.push('/dashboard/admin/redes')}>
             <i className='ri-arrow-left-line' />
           </IconButton>
           <div>
@@ -112,7 +125,7 @@ const NetworkDetailView = ({ network }: Props) => {
         <Button
           variant='contained'
           startIcon={<i className='ri-edit-line' />}
-          onClick={() => router.push(getLocalizedUrl('/admin/redes', locale as Locale))}
+          onClick={() => router.push('/dashboard/admin/redes')}
         >
           Editar Red
         </Button>
@@ -120,69 +133,60 @@ const NetworkDetailView = ({ network }: Props) => {
 
       {/* Content */}
       <Grid container spacing={6}>
-        {/* Left Column - Overview */}
+        {/* Left Column - Profile Card */}
         <Grid size={{ xs: 12, lg: 4 }}>
-          <NetworkOverviewCard network={network} />
+          <NetworkProfileCard network={network} />
         </Grid>
 
-        {/* Right Column - Groups */}
+        {/* Right Column - Tabs */}
         <Grid size={{ xs: 12, lg: 8 }}>
-          <div className='flex flex-col gap-6'>
-            {/* Stats Cards */}
-            <Grid container spacing={4}>
-              <Grid size={{ xs: 6, sm: 3 }}>
-                <Card>
-                  <CardContent className='text-center'>
-                    <Typography variant='h4' color='primary.main'>
-                      {network.stats.totalGroups}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Grupos
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3 }}>
-                <Card>
-                  <CardContent className='text-center'>
-                    <Typography variant='h4' color='success.main'>
-                      {network.stats.totalReports}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Reportes
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3 }}>
-                <Card>
-                  <CardContent className='text-center'>
-                    <Typography variant='h4' color='info.main'>
-                      {network.stats.totalAttendees}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Asistentes
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3 }}>
-                <Card>
-                  <CardContent className='text-center'>
-                    <Typography variant='h4' color='warning.main'>
-                      {network.stats.avgAttendees}
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      Prom. Asist.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-
-            {/* Groups List */}
-            <NetworkGroupsList groups={network.groups} />
-          </div>
+          <Card>
+            <TabContext value={activeTab}>
+              <TabList
+                onChange={(_, value) => setActiveTab(value)}
+                className='border-be'
+                variant='scrollable'
+                scrollButtons='auto'
+              >
+                <Tab
+                  label={`Lideres (${leaders.length})`}
+                  value='leaders'
+                  icon={<i className='ri-star-line' />}
+                  iconPosition='start'
+                />
+                <Tab
+                  label={`Grupos (${network.groups.length})`}
+                  value='groups'
+                  icon={<i className='ri-team-line' />}
+                  iconPosition='start'
+                />
+                <Tab
+                  label={`Miembros (${members.length})`}
+                  value='members'
+                  icon={<i className='ri-group-line' />}
+                  iconPosition='start'
+                />
+              </TabList>
+              <TabPanel value='leaders' className='p-0'>
+                <NetworkLeadersTab
+                  leaders={leaders}
+                  networkId={network.id}
+                />
+              </TabPanel>
+              <TabPanel value='groups' className='p-0'>
+                <NetworkGroupsTab
+                  groups={network.groups}
+                  networkId={network.id}
+                />
+              </TabPanel>
+              <TabPanel value='members' className='p-0'>
+                <NetworkMembersTab
+                  members={members}
+                  networkId={network.id}
+                />
+              </TabPanel>
+            </TabContext>
+          </Card>
         </Grid>
       </Grid>
     </div>

@@ -18,40 +18,40 @@ import { verticalLayoutClasses } from '@layouts/utils/layoutClasses'
 // Vars
 const shortcuts: ShortcutsType[] = [
   {
-    url: '/apps/calendar',
+    url: '/dashboard',
+    icon: 'ri-home-smile-line',
+    title: 'Inicio',
+    subtitle: 'Dashboard'
+  },
+  {
+    url: '/dashboard/calendario',
     icon: 'ri-calendar-line',
-    title: 'Calendar',
-    subtitle: 'Appointments'
+    title: 'Calendario',
+    subtitle: 'Eventos'
   },
   {
-    url: '/apps/invoice/list',
-    icon: 'ri-file-list-3-line',
-    title: 'Invoice App',
-    subtitle: 'Manage Accounts'
+    url: '/dashboard/reportes',
+    icon: 'ri-file-chart-line',
+    title: 'Reportes',
+    subtitle: 'Informes'
   },
   {
-    url: '/apps/user/list',
-    icon: 'ri-user-3-line',
-    title: 'Users',
-    subtitle: 'Manage Users'
+    url: '/dashboard/admin/usuarios',
+    icon: 'ri-group-line',
+    title: 'Usuarios',
+    subtitle: 'Administrar'
   },
   {
-    url: '/apps/roles',
-    icon: 'ri-computer-line',
-    title: 'Role Management',
-    subtitle: 'Permissions'
+    url: '/dashboard/admin/redes',
+    icon: 'ri-bubble-chart-line',
+    title: 'Redes',
+    subtitle: 'Ministerios'
   },
   {
-    url: '/dashboards',
-    icon: 'ri-pie-chart-2-line',
-    title: 'Dashboard',
-    subtitle: 'User Dashboard'
-  },
-  {
-    url: '/pages/account-settings',
+    url: '/dashboard/account-settings',
     icon: 'ri-settings-4-line',
-    title: 'Settings',
-    subtitle: 'Account Settings'
+    title: 'Mi Cuenta',
+    subtitle: 'Configuracion'
   }
 ]
 

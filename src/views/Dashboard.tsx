@@ -14,6 +14,7 @@ import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
 import Skeleton from '@mui/material/Skeleton'
+import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import TimelineDot from '@mui/lab/TimelineDot'
 import TimelineItem from '@mui/lab/TimelineItem'
@@ -271,6 +272,117 @@ const UpcomingMeetingsCard = ({ groups }: { groups: DashboardStats['upcomingGrou
     </CardContent>
   </Card>
 )
+
+// Categorías de eventos con colores e iconos
+const EVENT_CATEGORIES: Record<string, { color: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'secondary'; icon: string; label: string }> = {
+  culto: { color: 'primary', icon: 'ri-church-line', label: 'Culto' },
+  evento: { color: 'info', icon: 'ri-calendar-event-line', label: 'Evento' },
+  reunion: { color: 'warning', icon: 'ri-team-line', label: 'Reunion' },
+  actividad: { color: 'success', icon: 'ri-run-line', label: 'Actividad' },
+  capacitacion: { color: 'secondary', icon: 'ri-book-open-line', label: 'Capacitacion' }
+}
+
+// Tarjeta de próximos eventos del calendario
+const UpcomingEventsCard = ({ events }: { events: DashboardStats['upcomingEvents'] }) => {
+  const formatEventDate = (date: Date, allDay: boolean) => {
+    const d = new Date(date)
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short'
+    }
+
+    if (!allDay) {
+      options.hour = '2-digit'
+      options.minute = '2-digit'
+    }
+
+    return d.toLocaleDateString('es-ES', options)
+  }
+
+  const isToday = (date: Date) => {
+    const today = new Date()
+    const d = new Date(date)
+
+    return d.toDateString() === today.toDateString()
+  }
+
+  const isTomorrow = (date: Date) => {
+    const tomorrow = new Date()
+
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    const d = new Date(date)
+
+    return d.toDateString() === tomorrow.toDateString()
+  }
+
+  return (
+    <Card className='h-full'>
+      <CardHeader
+        title='Proximos Eventos'
+        titleTypographyProps={{ variant: 'h6' }}
+        subheader='Del calendario'
+        action={
+          <IconButton href='/dashboard/calendario' component='a' size='small'>
+            <i className='ri-arrow-right-line' />
+          </IconButton>
+        }
+      />
+      <CardContent className='flex flex-col gap-4'>
+        {events.length === 0 ? (
+          <Box className='text-center py-6'>
+            <CustomAvatar skin='light' color='secondary' size={56} sx={{ mx: 'auto', mb: 2 }}>
+              <i className='ri-calendar-line text-[28px]' />
+            </CustomAvatar>
+            <Typography variant='body2' color='text.secondary'>
+              No hay eventos programados
+            </Typography>
+          </Box>
+        ) : (
+          events.map(event => {
+            const category = EVENT_CATEGORIES[event.category] || EVENT_CATEGORIES.evento
+            const eventDate = new Date(event.startDate)
+
+            return (
+              <Box key={event.id} className='flex items-start gap-3'>
+                <CustomAvatar skin='light' color={category.color} size={42} variant='rounded'>
+                  <i className={`${category.icon} text-xl`} />
+                </CustomAvatar>
+                <Box className='flex-1 min-w-0'>
+                  <Box className='flex items-center gap-2 mbe-1'>
+                    <Typography variant='body2' fontWeight={500} noWrap className='flex-1'>
+                      {event.title}
+                    </Typography>
+                    {isToday(eventDate) && (
+                      <Chip size='small' label='Hoy' color='error' variant='tonal' sx={{ height: 20 }} />
+                    )}
+                    {isTomorrow(eventDate) && (
+                      <Chip size='small' label='Manana' color='warning' variant='tonal' sx={{ height: 20 }} />
+                    )}
+                  </Box>
+                  <Box className='flex items-center gap-1'>
+                    <i className='ri-time-line text-sm text-textSecondary' />
+                    <Typography variant='caption' color='text.secondary'>
+                      {formatEventDate(eventDate, event.allDay)}
+                    </Typography>
+                  </Box>
+                  {event.location && (
+                    <Box className='flex items-center gap-1'>
+                      <i className='ri-map-pin-line text-sm text-textSecondary' />
+                      <Typography variant='caption' color='text.secondary' noWrap>
+                        {event.location}
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+            )
+          })
+        )}
+      </CardContent>
+    </Card>
+  )
+}
 
 // Top Redes con Timeline
 const TopNetworksCard = ({ networks }: { networks: DashboardStats['topNetworks'] }) => {
@@ -615,24 +727,26 @@ const Dashboard = () => {
         />
       </Grid>
 
-      {/* Sección inferior */}
-      <Grid size={{ xs: 12, md: 4 }}>
+      {/* Sección de Eventos y Reuniones */}
+      <Grid size={{ xs: 12, md: 6 }}>
+        <UpcomingEventsCard events={stats.upcomingEvents} />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 6 }}>
         <UpcomingMeetingsCard groups={stats.upcomingGroups} />
       </Grid>
 
+      {/* Sección inferior */}
       <Grid size={{ xs: 12, md: 4 }}>
         <TopNetworksCard networks={stats.topNetworks} />
       </Grid>
 
       <Grid size={{ xs: 12, md: 4 }}>
-        <Grid container spacing={6}>
-          <Grid size={{ xs: 12 }}>
-            <DistributionCard stats={stats} />
-          </Grid>
-          <Grid size={{ xs: 12 }}>
-            <RecentMembersCard users={stats.recentUsers} />
-          </Grid>
-        </Grid>
+        <DistributionCard stats={stats} />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 4 }}>
+        <RecentMembersCard users={stats.recentUsers} />
       </Grid>
     </Grid>
   )

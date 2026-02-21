@@ -20,12 +20,12 @@ type NoResultData = {
 const noResultData: NoResultData[] = [
   {
     label: 'Dashboard',
-    href: '/dashboards',
+    href: '/dashboard',
     icon: 'ri-home-smile-line'
   },
   {
-    label: 'User Profile',
-    href: '/pages/user-profile',
+    label: 'Mi Cuenta',
+    href: '/dashboard/account-settings',
     icon: 'ri-user-3-line'
   }
 ]

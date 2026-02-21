@@ -1,13 +1,9 @@
 'use client'
 
-// React Imports
 import { useRef, useState } from 'react'
 
-// Next Imports
-import Link from 'next/link'
-import { useParams, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
-// MUI Imports
 import IconButton from '@mui/material/IconButton'
 import Popper from '@mui/material/Popper'
 import Fade from '@mui/material/Fade'
@@ -15,46 +11,49 @@ import Paper from '@mui/material/Paper'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import MenuList from '@mui/material/MenuList'
 import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
 
-// Type Imports
 import type { Locale } from '@configs/i18n'
-
-// Hook Imports
 import { useSettings } from '@core/hooks/useSettings'
+import { useLocale } from '@/contexts/LocaleContext'
 
 type LanguageDataType = {
   langCode: Locale
   langName: string
+  flag: string
 }
 
-const getLocalePath = (pathName: string, locale: string) => {
-  if (!pathName) return '/'
-  const segments = pathName.split('/')
-
-  segments[1] = locale
-
-  return segments.join('/')
-}
-
-// Vars
 const languageData: LanguageDataType[] = [
   {
     langCode: 'es',
-    langName: 'Español'
+    langName: 'Español',
+    flag: '🇪🇸'
+  },
+  {
+    langCode: 'en',
+    langName: 'English',
+    flag: '🇺🇸'
+  },
+  {
+    langCode: 'fr',
+    langName: 'Français',
+    flag: '🇫🇷'
+  },
+  {
+    langCode: 'ar',
+    langName: 'العربية',
+    flag: '🇸🇦'
   }
 ]
 
 const LanguageDropdown = () => {
-  // States
   const [open, setOpen] = useState(false)
-
-  // Refs
   const anchorRef = useRef<HTMLButtonElement>(null)
 
-  // Hooks
-  const pathName = usePathname()
+  const router = useRouter()
   const { settings } = useSettings()
-  const { lang } = useParams()
+  const { locale, setLocale } = useLocale()
 
   const handleClose = () => {
     setOpen(false)
@@ -64,9 +63,12 @@ const LanguageDropdown = () => {
     setOpen(prevOpen => !prevOpen)
   }
 
-  const handleLanguageChange = (lang: Locale) => {
-    document.cookie = `locale=${lang};path=/;max-age=31536000;SameSite=Lax`
+  const handleLanguageChange = (newLocale: Locale) => {
+    setLocale(newLocale)
     handleClose()
+
+    // Recargar la página para aplicar traducciones
+    router.refresh()
   }
 
   return (
@@ -90,15 +92,14 @@ const LanguageDropdown = () => {
             <Paper className={settings.skin === 'bordered' ? 'border shadow-none' : 'shadow-lg'}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList onKeyDown={handleClose}>
-                  {languageData.map(locale => (
+                  {languageData.map(lang => (
                     <MenuItem
-                      key={locale.langCode}
-                      component={Link}
-                      href={getLocalePath(pathName, locale.langCode)}
-                      onClick={() => handleLanguageChange(locale.langCode)}
-                      selected={lang === locale.langCode}
+                      key={lang.langCode}
+                      onClick={() => handleLanguageChange(lang.langCode)}
+                      selected={locale === lang.langCode}
                     >
-                      {locale.langName}
+                      <ListItemIcon sx={{ minWidth: 28 }}>{lang.flag}</ListItemIcon>
+                      <ListItemText>{lang.langName}</ListItemText>
                     </MenuItem>
                   ))}
                 </MenuList>

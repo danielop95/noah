@@ -12,23 +12,23 @@ const data: SearchData[] = [
   {
     id: '1',
     name: 'Inicio',
-    url: '/dashboards',
+    url: '/dashboard',
     icon: 'ri-home-smile-line',
     section: 'Dashboards'
   },
   {
     id: '2',
     name: 'Mi Cuenta',
-    url: '/account-settings',
+    url: '/dashboard/account-settings',
     icon: 'ri-user-settings-line',
-    section: 'Páginas'
+    section: 'Paginas'
   },
   {
     id: '3',
     name: 'Usuarios',
-    url: '/admin/usuarios',
+    url: '/dashboard/admin/usuarios',
     icon: 'ri-group-line',
-    section: 'Administración'
+    section: 'Administracion'
   }
 ]
 

@@ -7,19 +7,15 @@ import { getServerSession } from 'next-auth'
 
 // Type Imports
 import type { ChildrenType } from '@core/types'
-import type { Locale } from '@configs/i18n'
 
 // Config Imports
 import themeConfig from '@configs/themeConfig'
-
-// Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
 
 // Libs
 import { authOptions } from '@/libs/auth'
 import prisma from '@/libs/prisma'
 
-const GuestOnlyRoute = async ({ children, lang }: ChildrenType & { lang: Locale }) => {
+const GuestOnlyRoute = async ({ children }: ChildrenType) => {
   const session = await getServerSession(authOptions)
 
   if (session) {
@@ -27,7 +23,7 @@ const GuestOnlyRoute = async ({ children, lang }: ChildrenType & { lang: Locale 
     const currentTenantSlug = headersList.get('x-tenant-slug')
     const host = headersList.get('host') || ''
 
-    // Si el usuario tiene organización, verificar que esté en el subdominio correcto
+    // Si el usuario tiene organizacion, verificar que este en el subdominio correcto
     if (session.user?.organizationId) {
       const userOrg = await prisma.organization.findUnique({
         where: { id: session.user.organizationId },
@@ -35,17 +31,18 @@ const GuestOnlyRoute = async ({ children, lang }: ChildrenType & { lang: Locale 
       })
 
       if (userOrg?.slug && userOrg.slug !== currentTenantSlug) {
-        // Usuario no está en su subdominio - redirigir al correcto
+        // Usuario no esta en su subdominio - redirigir al correcto
         const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
         const mainDomain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || host.split('.').slice(-2).join('.')
-        const redirectUrl = `${protocol}://${userOrg.slug}.${mainDomain}/${lang}${themeConfig.homePageUrl}`
+        const redirectUrl = `${protocol}://${userOrg.slug}.${mainDomain}${themeConfig.homePageUrl}`
 
         redirect(redirectUrl)
       }
     }
 
-    // Usuario está en el subdominio correcto o no tiene organización
-    redirect(getLocalizedUrl(themeConfig.homePageUrl, lang))
+    // Usuario esta en el subdominio correcto o no tiene organizacion
+    // Redirigir al dashboard
+    redirect(themeConfig.homePageUrl)
   }
 
   return <>{children}</>

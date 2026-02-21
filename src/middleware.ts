@@ -5,11 +5,14 @@ import type { NextRequest } from 'next/server'
 // Config Imports
 import { i18n } from '@configs/i18n'
 
-// Util Imports
-import { ensurePrefix } from '@/utils/string'
-
 // Constants
 const MAIN_DOMAIN = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost'
+
+// Rutas publicas (sin subdominio requerido)
+const PUBLIC_PATHS = ['/', '/login', '/registrar-iglesia', '/forgot-password']
+
+// Rutas que deben ignorarse completamente
+const IGNORED_PATHS = ['/api', '/_next', '/favicon.ico', '/images', '/uploads']
 
 /**
  * Extrae el slug del subdominio del hostname.
@@ -59,77 +62,126 @@ const extractTenantSlug = (hostname: string): string | null => {
   return null
 }
 
+/**
+ * Obtiene el idioma del navegador del usuario
+ */
+const getLocaleFromAcceptLanguage = (request: NextRequest): string => {
+  const acceptLanguage = request.headers.get('accept-language')
+
+  if (!acceptLanguage) {
+    return i18n.defaultLocale
+  }
+
+  // Parsear Accept-Language header
+  const languages = acceptLanguage.split(',').map(lang => {
+    const [code] = lang.trim().split(';')
+
+    return code.split('-')[0].toLowerCase()
+  })
+
+  // Buscar el primer idioma soportado
+  for (const lang of languages) {
+    if (i18n.locales.includes(lang as (typeof i18n.locales)[number])) {
+      return lang
+    }
+  }
+
+  return i18n.defaultLocale
+}
+
+/**
+ * Obtiene el locale de la cookie o del navegador
+ */
 const getLocale = (request: NextRequest): string => {
-  // @ts-ignore locales are readonly
-  const locales: string[] = i18n.locales
+  // Intentar obtener de la cookie
+  const localeCookie = request.cookies.get(i18n.cookieName)
 
-  // Try to get locale from cookie
-  const localeCookie = request.cookies.get('locale')
-
-  if (localeCookie?.value && locales.includes(localeCookie.value)) {
+  if (localeCookie?.value && i18n.locales.includes(localeCookie.value as (typeof i18n.locales)[number])) {
     return localeCookie.value
   }
 
-  // Always return default locale if no valid cookie is found
-  return i18n.defaultLocale
+  // Detectar del navegador
+  return getLocaleFromAcceptLanguage(request)
 }
 
 export const middleware = (request: NextRequest) => {
   const pathname = request.nextUrl.pathname
   const hostname = request.headers.get('host') || ''
 
+  // Ignorar rutas estaticas y de API
+  if (IGNORED_PATHS.some(path => pathname.startsWith(path))) {
+    return NextResponse.next()
+  }
+
   // Detectar tenant por subdominio
   const tenantSlug = extractTenantSlug(hostname)
 
-  // Check if there is any supported locale in the pathname
-  const pathnameIsMissingLocale = i18n.locales.every(
-    locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  )
+  // Obtener locale
+  const locale = getLocale(request)
 
-  // Redirect if there is no locale
-  if (pathnameIsMissingLocale) {
-    const locale = getLocale(request)
-    const redirectUrl = new URL(`/${locale}${ensurePrefix(pathname, '/')}`, request.url)
-    const response = NextResponse.redirect(redirectUrl)
+  // Preparar headers con tenant si existe
+  const requestHeaders = new Headers(request.headers)
 
-    // Establecer cookie de idioma si no existe (usuarios nuevos)
-    const localeCookie = request.cookies.get('locale')
+  if (tenantSlug) {
+    requestHeaders.set('x-tenant-slug', tenantSlug)
+  }
 
-    if (!localeCookie) {
-      response.cookies.set('locale', locale, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 365, // 1 año
-        sameSite: 'lax'
-      })
+  // Verificar si es una ruta antigua con prefijo de idioma (ej: /es/login)
+  const localeMatch = pathname.match(/^\/(es|en|fr|ar)(\/.*)?$/)
+
+  if (localeMatch) {
+    // Extraer la ruta sin el prefijo de idioma
+    const pathWithoutLocale = localeMatch[2] || '/'
+
+    // Redirigir a la nueva ruta sin prefijo de idioma
+    const redirectUrl = new URL(pathWithoutLocale, request.url)
+
+    return NextResponse.redirect(redirectUrl, { status: 301 })
+  }
+
+  // Crear respuesta base
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders
+    }
+  })
+
+  // Establecer cookie de idioma si no existe
+  if (!request.cookies.get(i18n.cookieName)) {
+    const isProduction = process.env.NODE_ENV === 'production'
+    const cookieDomain = isProduction ? `.${MAIN_DOMAIN}` : undefined
+
+    response.cookies.set(i18n.cookieName, locale, {
+      path: '/',
+      maxAge: i18n.cookieMaxAge,
+      sameSite: 'lax',
+      ...(cookieDomain && { domain: cookieDomain })
+    })
+  }
+
+  // Logica especifica segun si hay tenant o no
+  if (tenantSlug) {
+    // CON SUBDOMINIO (tenant)
+
+    // Redirigir raiz al dashboard
+    if (pathname === '/') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
+
+    return response
+  } else {
+    // SIN SUBDOMINIO (dominio principal)
+
+    // Verificar si es una ruta publica permitida
+    const isPublicPath = PUBLIC_PATHS.some(path => pathname === path || pathname.startsWith(`${path}/`))
+
+    // Si no es ruta publica, redirigir al login
+    if (!isPublicPath && pathname !== '/') {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
 
     return response
   }
-
-  // Si hay tenant, agregar header para que la app lo pueda leer
-  if (tenantSlug) {
-    const requestHeaders = new Headers(request.headers)
-
-    requestHeaders.set('x-tenant-slug', tenantSlug)
-
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders
-      }
-    })
-  }
-
-  // Si NO hay tenant (dominio principal), redirigir /login a /landing
-  const locale = getLocale(request)
-  const loginPattern = new RegExp(`^/(${i18n.locales.join('|')})/login/?$`)
-
-  if (loginPattern.test(pathname)) {
-    const redirectUrl = new URL(pathname.replace('/login', '/landing'), request.url)
-
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  return NextResponse.next()
 }
 
 export const config = {

@@ -166,9 +166,8 @@ const AccountTab = () => {
       <CardHeader
         title='Foto de Perfil'
         subheader='Sube una foto para personalizar tu perfil'
-        className='pbe-0'
       />
-      <CardContent>
+      <CardContent className='pbs-0'>
         <div className='flex max-sm:flex-col items-center gap-6'>
           <Avatar
             src={formData.image || undefined}
@@ -215,9 +214,8 @@ const AccountTab = () => {
       <CardHeader
         title='Información Personal'
         subheader='Actualiza tu información básica'
-        className='pbe-0'
       />
-      <CardContent>
+      <CardContent className='pbs-0'>
         {success && <Alert severity='success' className='mbe-4'>Perfil actualizado correctamente</Alert>}
         {error && <Alert severity='error' className='mbe-4'>{error}</Alert>}
 
@@ -352,9 +350,8 @@ const AccountTab = () => {
       <CardHeader
         title='Ubicación'
         subheader='Tu dirección y ubicación geográfica'
-        className='pbe-0'
       />
-      <CardContent>
+      <CardContent className='pbs-0'>
         <Grid container spacing={4}>
           <Grid size={{ xs: 12, sm: 6 }}>
             <TextField

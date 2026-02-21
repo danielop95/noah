@@ -186,7 +186,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
             <Tooltip title='Ver'>
               <IconButton
                 size='small'
-                onClick={() => router.push(getLocalizedUrl(`/admin/redes/${row.original.id}`, locale as Locale))}
+                onClick={() => router.push(`/dashboard/admin/redes/${row.original.id}`)}
               >
                 <i className='ri-eye-line text-textSecondary' />
               </IconButton>

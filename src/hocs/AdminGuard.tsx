@@ -2,7 +2,6 @@
 import { getServerSession } from 'next-auth'
 
 // Type Imports
-import type { Locale } from '@configs/i18n'
 import type { ChildrenType } from '@core/types'
 
 // Component Imports
@@ -15,11 +14,11 @@ import { authOptions } from '@/libs/auth'
 // Server Action Imports
 import { getServerMode } from '@core/utils/serverHelpers'
 
-export default async function AdminGuard({ children, locale }: ChildrenType & { locale: Locale }) {
+export default async function AdminGuard({ children }: ChildrenType) {
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    return <AuthRedirect lang={locale} />
+    return <AuthRedirect />
   }
 
   if (session.user.role !== 'admin') {
