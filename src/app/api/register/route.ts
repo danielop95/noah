@@ -32,6 +32,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Nombre, apellido, email y contraseña son requeridos' }, { status: 400 })
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ message: 'Formato de email inválido' }, { status: 400 })
+    }
+
+    // Validate password strength
+    if (password.length < 8) {
+      return NextResponse.json({ message: 'La contraseña debe tener al menos 8 caracteres' }, { status: 400 })
+    }
+
     // Check if email already exists
     const existingUser = await prisma.user.findUnique({
       where: { email }

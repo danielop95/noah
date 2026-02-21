@@ -116,17 +116,15 @@ export const authOptions: NextAuthOptions = {
         path: '/',
         secure: process.env.NODE_ENV === 'production',
         // Permitir cookies en todos los subdominios
-        domain: process.env.NODE_ENV === 'production' ? '.noah.app' : undefined
+        domain: process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_MAIN_DOMAIN
+          ? `.${process.env.NEXT_PUBLIC_MAIN_DOMAIN}`
+          : undefined
       }
     }
   },
 
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === 'credentials') {
-        return true
-      }
-
+    async signIn() {
       return true
     },
 
@@ -166,13 +164,5 @@ export const authOptions: NextAuthOptions = {
     }
   },
 
-  debug: process.env.NODE_ENV === 'development',
-
-  events: {
-    // Events are configured but silent in production
-    // Uncomment console.log statements for debugging
-    async signIn() {},
-    async signOut() {},
-    async createUser() {}
-  }
+  debug: process.env.NODE_ENV === 'development'
 }

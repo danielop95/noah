@@ -24,7 +24,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 // Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type NetworkMember = {
+type NetworkUser = {
   id: string
   name: string | null
   firstName: string | null
@@ -34,15 +34,15 @@ type NetworkMember = {
   phone: string | null
   networkRole: string | null
   isActive: boolean
+  createdAt: Date
 }
 
 type Props = {
-  members: NetworkMember[]
-  groupId: string
-  networkName: string
+  members: NetworkUser[]
+  networkId: string
 }
 
-const getDisplayName = (user: NetworkMember) =>
+const getDisplayName = (user: NetworkUser) =>
   user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Sin nombre'
 
 const getInitials = (name: string) =>
@@ -53,36 +53,49 @@ const getInitials = (name: string) =>
     .substring(0, 2)
     .toUpperCase()
 
-const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
+const formatDate = (date: Date) => {
+  return new Date(date).toLocaleDateString('es-CO', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
+const NetworkMembersTab = ({ members, networkId }: Props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedMember, setSelectedMember] = useState<NetworkMember | null>(null)
+  const [selectedUser, setSelectedUser] = useState<NetworkUser | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, member: NetworkMember) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, user: NetworkUser) => {
     setAnchorEl(event.currentTarget)
-    setSelectedMember(member)
+    setSelectedUser(user)
   }
 
   const handleMenuClose = () => {
     setAnchorEl(null)
-    setSelectedMember(null)
+    setSelectedUser(null)
   }
 
   const handleViewProfile = () => {
-    if (selectedMember) {
-      router.push(`/dashboard/admin/usuarios/${selectedMember.id}`)
+    if (selectedUser) {
+      router.push(`/dashboard/admin/usuarios/${selectedUser.id}`)
     }
 
     handleMenuClose()
   }
 
-  const handleAddAsLeader = () => {
-    // TODO: Implementar agregar como líder
+  const handlePromoteToLeader = () => {
+    // TODO: Implementar promocion a lider
     handleMenuClose()
   }
 
-  // Filtrar miembros por búsqueda
+  const handleRemoveFromNetwork = () => {
+    // TODO: Implementar remover de la red
+    handleMenuClose()
+  }
+
+  // Filtrar miembros por busqueda
   const filteredMembers = members.filter(member => {
     if (!searchQuery) return true
 
@@ -100,17 +113,17 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
           <i className='ri-group-line text-3xl' />
         </CustomAvatar>
         <Typography variant='h6' className='mbe-1'>
-          Sin miembros en la red
+          Sin miembros asignados
         </Typography>
-        <Typography variant='body2' color='text.secondary' className='mbe-4 text-center'>
-          La red "{networkName}" no tiene miembros asignados
+        <Typography variant='body2' color='text.secondary' className='mbe-4'>
+          Agrega miembros a esta red
         </Typography>
         <Button
           variant='contained'
           startIcon={<i className='ri-user-add-line' />}
           onClick={() => router.push('/dashboard/admin/redes')}
         >
-          Ir a Redes
+          Agregar Miembros
         </Button>
       </Box>
     )
@@ -118,7 +131,7 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
 
   return (
     <Box className='p-4'>
-      {/* Header con búsqueda */}
+      {/* Header con busqueda y accion */}
       <Box className='flex items-center justify-between gap-4 mbe-4 flex-wrap'>
         <TextField
           size='small'
@@ -136,17 +149,19 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
           }}
           sx={{ minWidth: 200 }}
         />
-        <Chip
-          icon={<i className='ri-bubble-chart-line' />}
-          label={networkName}
-          color='primary'
+        <Button
+          size='small'
           variant='outlined'
-        />
+          startIcon={<i className='ri-user-add-line' />}
+          onClick={() => router.push('/dashboard/admin/redes')}
+        >
+          Agregar
+        </Button>
       </Box>
 
       {/* Contador */}
       <Typography variant='caption' color='text.secondary' className='mbe-3 block'>
-        Mostrando {filteredMembers.length} de {members.length} miembros de la red
+        Mostrando {filteredMembers.length} de {members.length} miembros
       </Typography>
 
       {/* Lista de miembros */}
@@ -181,16 +196,6 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
                     <Typography variant='body2' fontWeight={500} noWrap>
                       {displayName}
                     </Typography>
-                    {member.networkRole === 'leader' && (
-                      <Chip
-                        icon={<i className='ri-star-fill' />}
-                        label='Líder de red'
-                        size='small'
-                        color='warning'
-                        variant='tonal'
-                        sx={{ height: 20, fontSize: '0.7rem' }}
-                      />
-                    )}
                     {!member.isActive && (
                       <Chip
                         label='Inactivo'
@@ -205,7 +210,10 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
                     {member.email}
                   </Typography>
                 </Box>
-                <Box className='flex items-center gap-1'>
+                <Box className='flex items-center gap-2'>
+                  <Typography variant='caption' color='text.disabled' className='hidden sm:block'>
+                    {formatDate(member.createdAt)}
+                  </Typography>
                   <Tooltip title='Ver perfil'>
                     <IconButton
                       size='small'
@@ -227,7 +235,7 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
         </Box>
       )}
 
-      {/* Menú de acciones */}
+      {/* Menu de acciones */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -241,15 +249,21 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
           </ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleAddAsLeader}>
+        <MenuItem onClick={handlePromoteToLeader}>
           <ListItemIcon>
-            <i className='ri-star-line' />
+            <i className='ri-arrow-up-line' />
           </ListItemIcon>
-          <ListItemText>Agregar como líder</ListItemText>
+          <ListItemText>Promover a lider</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleRemoveFromNetwork} sx={{ color: 'error.main' }}>
+          <ListItemIcon sx={{ color: 'error.main' }}>
+            <i className='ri-user-unfollow-line' />
+          </ListItemIcon>
+          <ListItemText>Remover de la red</ListItemText>
         </MenuItem>
       </Menu>
     </Box>
   )
 }
 
-export default GroupMembersTab
+export default NetworkMembersTab

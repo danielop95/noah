@@ -30,6 +30,7 @@ import type { Locale } from '@configs/i18n'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import { getMainDomain } from '@/utils/domain'
 
 // Schema de validación
 const registerChurchSchema = object({
@@ -120,17 +121,17 @@ const RegisterChurch = () => {
 
       if (signInRes?.ok) {
         // Redirigir al subdominio del tenant creado
-        const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+        const domain = getMainDomain()
         const protocol = window.location.protocol
-        const redirectUrl = `${protocol}//${data.slug}.${domain}/${locale}/dashboards`
+        const redirectUrl = `${protocol}//${data.slug}.${domain}/dashboard`
 
         window.location.href = redirectUrl
       } else {
         // Fallback al login del subdominio
-        const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+        const domain = getMainDomain()
         const protocol = window.location.protocol
 
-        window.location.href = `${protocol}//${data.slug}.${domain}/${locale}/login`
+        window.location.href = `${protocol}//${data.slug}.${domain}/login`
       }
     } catch {
       setErrorMessage('Error de conexión. Intenta de nuevo.')

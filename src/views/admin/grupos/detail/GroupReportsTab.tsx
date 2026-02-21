@@ -92,19 +92,16 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
 
   const handleViewReport = () => {
     // TODO: Implementar vista de detalle del reporte
-    console.log('Ver reporte:', selectedReport?.id)
     handleMenuClose()
   }
 
   const handleEditReport = () => {
     // TODO: Implementar edición de reporte
-    console.log('Editar reporte:', selectedReport?.id)
     handleMenuClose()
   }
 
   const handleDeleteReport = () => {
     // TODO: Implementar eliminación de reporte
-    console.log('Eliminar reporte:', selectedReport?.id)
     handleMenuClose()
   }
 

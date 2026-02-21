@@ -32,6 +32,7 @@ import type { Locale } from '@configs/i18n'
 
 // Util Imports
 import { getLocalizedUrl } from '@/utils/i18n'
+import { getMainDomain } from '@/utils/domain'
 
 const registerChurchSchema = object({
   churchName: pipe(string(), nonEmpty('El nombre de la iglesia es requerido')),
@@ -113,13 +114,13 @@ const RegisterTabContent = () => {
       })
 
       if (signInRes?.ok) {
-        const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+        const domain = getMainDomain()
         const protocol = window.location.protocol
-        const redirectUrl = `${protocol}//${data.slug}.${domain}/${locale}/dashboards`
+        const redirectUrl = `${protocol}//${data.slug}.${domain}/dashboard`
 
         window.location.href = redirectUrl
       } else {
-        router.replace(getLocalizedUrl('/login', locale as Locale))
+        router.replace('/login')
       }
     } catch {
       setRegisterError('Error de conexion. Intenta de nuevo.')

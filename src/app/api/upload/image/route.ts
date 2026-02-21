@@ -26,6 +26,11 @@ export async function POST(req: Request) {
     const file = formData.get('image') as File | null
     const folder = (formData.get('folder') as string) || 'general'
 
+    // Sanitizar folder para prevenir path traversal
+    if (!/^[a-zA-Z0-9_-]+$/.test(folder)) {
+      return NextResponse.json({ message: 'Nombre de carpeta inválido' }, { status: 400 })
+    }
+
     if (!file) {
       return NextResponse.json({ message: 'No se proporciono ningun archivo' }, { status: 400 })
     }
@@ -38,7 +43,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'El archivo es muy grande. Maximo 2MB' }, { status: 400 })
     }
 
-    const extension = file.name.split('.').pop() || 'png'
+    const ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'svg', 'webp']
+    const extension = file.name.split('.').pop()?.toLowerCase() || ''
+
+    if (!ALLOWED_EXTENSIONS.includes(extension)) {
+      return NextResponse.json({ message: 'Extensión de archivo no permitida' }, { status: 400 })
+    }
     const filename = `${randomUUID()}-${Date.now()}.${extension}`
 
     const bytes = await file.arrayBuffer()

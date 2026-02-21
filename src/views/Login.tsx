@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 // MUI Imports
 import Typography from '@mui/material/Typography'
@@ -29,10 +29,8 @@ import type { InferInput } from 'valibot'
 
 // Type Imports
 import type { Mode } from '@core/types'
-import type { Locale } from '@configs/i18n'
 
-// Util Imports
-import { getLocalizedUrl } from '@/utils/i18n'
+import { getMainDomain } from '@/utils/domain'
 
 type TenantBranding = {
   name: string
@@ -78,7 +76,6 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
   // Hooks
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { lang: locale } = useParams()
 
   const {
     control,
@@ -112,10 +109,10 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
 
         if (userOrgSlug && currentTenantSlug && userOrgSlug !== currentTenantSlug) {
           // Usuario pertenece a otro tenant - redirigir al subdominio correcto
-          const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+          const domain = getMainDomain()
           const protocol = window.location.protocol
-          const redirectPath = searchParams.get('redirectTo') ?? '/dashboards'
-          const redirectUrl = `${protocol}//${userOrgSlug}.${domain}/${locale}${redirectPath}`
+          const redirectPath = searchParams.get('redirectTo') ?? '/dashboard'
+          const redirectUrl = `${protocol}//${userOrgSlug}.${domain}${redirectPath}`
 
           window.location.href = redirectUrl
 
@@ -129,15 +126,15 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
           return
         }
 
-        // Usuario válido para este tenant o sin tenant (dominio principal)
-        const redirectURL = searchParams.get('redirectTo') ?? '/dashboards'
+        // Usuario valido para este tenant o sin tenant (dominio principal)
+        const redirectURL = searchParams.get('redirectTo') ?? '/dashboard'
 
-        router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+        router.replace(redirectURL)
       } catch {
-        // Error al obtener organización - intentar redirección normal
-        const redirectURL = searchParams.get('redirectTo') ?? '/dashboards'
+        // Error al obtener organizacion - intentar redireccion normal
+        const redirectURL = searchParams.get('redirectTo') ?? '/dashboard'
 
-        router.replace(getLocalizedUrl(redirectURL, locale as Locale))
+        router.replace(redirectURL)
       }
     } else {
       if (res?.error) {

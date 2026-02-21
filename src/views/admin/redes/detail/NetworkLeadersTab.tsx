@@ -22,27 +22,25 @@ import Tooltip from '@mui/material/Tooltip'
 // Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type GroupLeader = {
+type NetworkUser = {
   id: string
-  user: {
-    id: string
-    name: string | null
-    firstName: string | null
-    lastName: string | null
-    email: string | null
-    image: string | null
-    phone: string | null
-    isActive: boolean
-  }
+  name: string | null
+  firstName: string | null
+  lastName: string | null
+  email: string | null
+  image: string | null
+  phone: string | null
+  networkRole: string | null
+  isActive: boolean
+  createdAt: Date
 }
 
 type Props = {
-  leaders: GroupLeader[]
-  groupId: string
+  leaders: NetworkUser[]
   networkId: string
 }
 
-const getDisplayName = (user: GroupLeader['user']) =>
+const getDisplayName = (user: NetworkUser) =>
   user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Sin nombre'
 
 const getInitials = (name: string) =>
@@ -53,31 +51,36 @@ const getInitials = (name: string) =>
     .substring(0, 2)
     .toUpperCase()
 
-const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
+const NetworkLeadersTab = ({ leaders, networkId }: Props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedLeader, setSelectedLeader] = useState<GroupLeader | null>(null)
+  const [selectedUser, setSelectedUser] = useState<NetworkUser | null>(null)
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, leader: GroupLeader) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, user: NetworkUser) => {
     setAnchorEl(event.currentTarget)
-    setSelectedLeader(leader)
+    setSelectedUser(user)
   }
 
   const handleMenuClose = () => {
     setAnchorEl(null)
-    setSelectedLeader(null)
+    setSelectedUser(null)
   }
 
   const handleViewProfile = () => {
-    if (selectedLeader) {
-      router.push(`/dashboard/admin/usuarios/${selectedLeader.user.id}`)
+    if (selectedUser) {
+      router.push(`/dashboard/admin/usuarios/${selectedUser.id}`)
     }
 
     handleMenuClose()
   }
 
-  const handleRemoveLeader = () => {
-    // TODO: Implementar remover líder del grupo
+  const handleChangeTooMember = () => {
+    // TODO: Implementar cambio a miembro
+    handleMenuClose()
+  }
+
+  const handleRemoveFromNetwork = () => {
+    // TODO: Implementar remover de la red
     handleMenuClose()
   }
 
@@ -88,17 +91,17 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
           <i className='ri-star-line text-3xl' />
         </CustomAvatar>
         <Typography variant='h6' className='mbe-1'>
-          Sin líderes asignados
+          Sin lideres asignados
         </Typography>
         <Typography variant='body2' color='text.secondary' className='mbe-4'>
-          Este grupo necesita al menos un líder
+          Esta red necesita al menos un lider
         </Typography>
         <Button
           variant='contained'
           startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/grupos')}
+          onClick={() => router.push('/dashboard/admin/redes')}
         >
-          Agregar Líder
+          Agregar Lider
         </Button>
       </Box>
     )
@@ -106,25 +109,25 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
 
   return (
     <Box className='p-4'>
-      {/* Header con acción */}
+      {/* Header con accion */}
       <Box className='flex items-center justify-between mbe-4'>
         <Typography variant='subtitle2' color='text.secondary'>
-          {leaders.length} {leaders.length === 1 ? 'líder' : 'líderes'} en este grupo
+          {leaders.length} {leaders.length === 1 ? 'lider' : 'lideres'} en esta red
         </Typography>
         <Button
           size='small'
           variant='outlined'
           startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/grupos')}
+          onClick={() => router.push('/dashboard/admin/redes')}
         >
           Agregar
         </Button>
       </Box>
 
-      {/* Lista de líderes */}
+      {/* Lista de lideres */}
       <Box className='flex flex-col gap-3'>
         {leaders.map(leader => {
-          const displayName = getDisplayName(leader.user)
+          const displayName = getDisplayName(leader)
 
           return (
             <Box
@@ -133,7 +136,7 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
               sx={{ bgcolor: 'action.hover' }}
             >
               <Avatar
-                src={leader.user.image || undefined}
+                src={leader.image || undefined}
                 sx={{ width: 48, height: 48 }}
               >
                 {getInitials(displayName)}
@@ -145,13 +148,13 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
                   </Typography>
                   <Chip
                     icon={<i className='ri-star-fill' />}
-                    label='Líder'
+                    label='Lider'
                     size='small'
                     color='warning'
                     variant='tonal'
                     sx={{ height: 22 }}
                   />
-                  {!leader.user.isActive && (
+                  {!leader.isActive && (
                     <Chip
                       label='Inactivo'
                       size='small'
@@ -162,11 +165,11 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
                   )}
                 </Box>
                 <Typography variant='body2' color='text.secondary' noWrap>
-                  {leader.user.email}
+                  {leader.email}
                 </Typography>
-                {leader.user.phone && (
+                {leader.phone && (
                   <Typography variant='caption' color='text.secondary'>
-                    {leader.user.phone}
+                    {leader.phone}
                   </Typography>
                 )}
               </Box>
@@ -174,7 +177,7 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
                 <Tooltip title='Ver perfil'>
                   <IconButton
                     size='small'
-                    onClick={() => router.push(`/dashboard/admin/usuarios/${leader.user.id}`)}
+                    onClick={() => router.push(`/dashboard/admin/usuarios/${leader.id}`)}
                   >
                     <i className='ri-eye-line' />
                   </IconButton>
@@ -191,7 +194,7 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
         })}
       </Box>
 
-      {/* Menú de acciones */}
+      {/* Menu de acciones */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -205,15 +208,21 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
           </ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleRemoveLeader} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleChangeTooMember}>
+          <ListItemIcon>
+            <i className='ri-arrow-down-line' />
+          </ListItemIcon>
+          <ListItemText>Cambiar a miembro</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleRemoveFromNetwork} sx={{ color: 'error.main' }}>
           <ListItemIcon sx={{ color: 'error.main' }}>
             <i className='ri-user-unfollow-line' />
           </ListItemIcon>
-          <ListItemText>Remover del grupo</ListItemText>
+          <ListItemText>Remover de la red</ListItemText>
         </MenuItem>
       </Menu>
     </Box>
   )
 }
 
-export default GroupLeadersTab
+export default NetworkLeadersTab

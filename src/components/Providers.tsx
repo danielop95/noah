@@ -1,15 +1,15 @@
 // Type Imports
 import type { ChildrenType, Direction } from '@core/types'
 import type { TenantBranding } from '@/services/organizationService'
+import type { Locale } from '@configs/i18n'
 
 // Context Imports
 import { NextAuthProvider } from '@/contexts/nextAuthProvider'
 import { VerticalNavProvider } from '@menu/contexts/verticalNavContext'
 import { SettingsProvider } from '@core/contexts/settingsContext'
 import { TenantProvider } from '@/contexts/TenantContext'
+import { LocaleProvider } from '@/contexts/LocaleContext'
 import ThemeProvider from '@components/theme'
-import ReduxProvider from '@/redux-store/ReduxProvider'
-
 // Styled Component Imports
 import AppReactToastify from '@/libs/styles/AppReactToastify'
 
@@ -19,11 +19,12 @@ import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serve
 type Props = ChildrenType & {
   direction: Direction
   tenantBranding?: TenantBranding | null
+  initialLocale?: Locale
 }
 
 const Providers = async (props: Props) => {
   // Props
-  const { children, direction, tenantBranding } = props
+  const { children, direction, tenantBranding, initialLocale } = props
 
   // Extraer color primario del branding del tenant
   const tenantPrimaryColor = tenantBranding?.colors?.primary || null
@@ -35,16 +36,18 @@ const Providers = async (props: Props) => {
 
   return (
     <NextAuthProvider basePath={process.env.NEXTAUTH_BASEPATH}>
-      <TenantProvider tenant={tenantBranding || null}>
-        <VerticalNavProvider>
-          <SettingsProvider settingsCookie={settingsCookie} mode={mode} tenantPrimaryColor={tenantPrimaryColor}>
-            <ThemeProvider direction={direction} systemMode={systemMode}>
-              <ReduxProvider>{children}</ReduxProvider>
-              <AppReactToastify direction={direction} hideProgressBar />
-            </ThemeProvider>
-          </SettingsProvider>
-        </VerticalNavProvider>
-      </TenantProvider>
+      <LocaleProvider initialLocale={initialLocale}>
+        <TenantProvider tenant={tenantBranding || null}>
+          <VerticalNavProvider>
+            <SettingsProvider settingsCookie={settingsCookie} mode={mode} tenantPrimaryColor={tenantPrimaryColor}>
+              <ThemeProvider direction={direction} systemMode={systemMode}>
+                {children}
+                <AppReactToastify direction={direction} hideProgressBar />
+              </ThemeProvider>
+            </SettingsProvider>
+          </VerticalNavProvider>
+        </TenantProvider>
+      </LocaleProvider>
     </NextAuthProvider>
   )
 }

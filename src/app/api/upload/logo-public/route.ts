@@ -38,8 +38,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'El archivo es muy grande. Maximo 2MB' }, { status: 400 })
     }
 
-    // Generar nombre unico temporal
-    const extension = file.name.split('.').pop() || 'png'
+    // Validar extensión del filename contra tipo MIME declarado
+    const ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'svg', 'webp']
+    const extension = file.name.split('.').pop()?.toLowerCase() || ''
+
+    if (!ALLOWED_EXTENSIONS.includes(extension)) {
+      return NextResponse.json({ message: 'Extensión de archivo no permitida' }, { status: 400 })
+    }
     const tempId = randomUUID()
     const filename = `temp-${tempId}.${extension}`
 

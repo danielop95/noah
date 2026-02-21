@@ -28,6 +28,8 @@ import type { InferInput } from 'valibot'
 // Type Imports
 import type { Locale } from '@configs/i18n'
 
+import { getMainDomain } from '@/utils/domain'
+
 const loginSchema = object({
   email: pipe(string(), minLength(1, 'El email es requerido'), email('Ingresa un email valido')),
   password: pipe(string(), nonEmpty('La contrasena es requerida'), minLength(5, 'Minimo 5 caracteres'))
@@ -66,10 +68,10 @@ const LoginTabContent = () => {
         const orgData = await orgRes.json()
 
         if (orgData.organization?.slug) {
-          const domain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost:3000'
+          const domain = getMainDomain()
           const protocol = window.location.protocol
-          const redirectPath = searchParams.get('redirectTo') ?? '/dashboards'
-          const redirectUrl = `${protocol}//${orgData.organization.slug}.${domain}/${locale}${redirectPath}`
+          const redirectPath = searchParams.get('redirectTo') ?? '/dashboard'
+          const redirectUrl = `${protocol}//${orgData.organization.slug}.${domain}${redirectPath}`
 
           window.location.href = redirectUrl
         } else {
