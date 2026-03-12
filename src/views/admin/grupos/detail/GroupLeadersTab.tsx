@@ -1,12 +1,9 @@
 'use client'
 
-// React Imports
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
-// Next Imports
 import { useRouter } from 'next/navigation'
 
-// MUI Imports
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
@@ -19,30 +16,29 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import Tooltip from '@mui/material/Tooltip'
 
-// Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
+import UserPickerDialog from '@/components/UserPickerDialog'
 
-type GroupLeader = {
+import { addUserToGroup, removeUserFromGroup, getAvailableUsersForGroup } from '@/app/server/groupActions'
+
+type LeaderUser = {
   id: string
-  user: {
-    id: string
-    name: string | null
-    firstName: string | null
-    lastName: string | null
-    email: string | null
-    image: string | null
-    phone: string | null
-    isActive: boolean
-  }
+  name: string | null
+  firstName: string | null
+  lastName: string | null
+  email: string | null
+  image: string | null
+  phone: string | null
+  isActive: boolean
 }
 
 type Props = {
-  leaders: GroupLeader[]
+  leaders: LeaderUser[]
   groupId: string
   networkId: string
 }
 
-const getDisplayName = (user: GroupLeader['user']) =>
+const getDisplayName = (user: LeaderUser) =>
   user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Sin nombre'
 
 const getInitials = (name: string) =>
@@ -56,9 +52,10 @@ const getInitials = (name: string) =>
 const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedLeader, setSelectedLeader] = useState<GroupLeader | null>(null)
+  const [selectedLeader, setSelectedLeader] = useState<LeaderUser | null>(null)
+  const [pickerOpen, setPickerOpen] = useState(false)
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, leader: GroupLeader) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, leader: LeaderUser) => {
     setAnchorEl(event.currentTarget)
     setSelectedLeader(leader)
   }
@@ -70,61 +67,96 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
 
   const handleViewProfile = () => {
     if (selectedLeader) {
-      router.push(`/dashboard/admin/usuarios/${selectedLeader.user.id}`)
+      router.push(`/dashboard/admin/usuarios/${selectedLeader.id}`)
     }
 
     handleMenuClose()
   }
 
-  const handleRemoveLeader = () => {
-    // TODO: Implementar remover líder del grupo
+  const handleRemoveLeader = async () => {
+    if (!selectedLeader) return
+
+    if (!confirm(`¿Remover a ${getDisplayName(selectedLeader)} de este grupo?`)) {
+      handleMenuClose()
+
+      return
+    }
+
+    try {
+      await removeUserFromGroup(selectedLeader.id)
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al remover')
+    }
+
     handleMenuClose()
+  }
+
+  const fetchAvailable = useCallback(async () => {
+    const users = await getAvailableUsersForGroup(groupId)
+
+    // Exclude users already leaders of this group
+    const leaderIds = new Set(leaders.map(l => l.id))
+
+    return users.filter(u => !leaderIds.has(u.id))
+  }, [groupId, leaders])
+
+  const handleAddLeader = async (userId: string) => {
+    await addUserToGroup(groupId, userId, 'leader')
+    router.refresh()
   }
 
   if (leaders.length === 0) {
     return (
-      <Box className='flex flex-col items-center justify-center py-12'>
-        <CustomAvatar skin='light' color='warning' size={64} sx={{ mb: 2 }}>
-          <i className='ri-star-line text-3xl' />
-        </CustomAvatar>
-        <Typography variant='h6' className='mbe-1'>
-          Sin líderes asignados
-        </Typography>
-        <Typography variant='body2' color='text.secondary' className='mbe-4'>
-          Este grupo necesita al menos un líder
-        </Typography>
-        <Button
-          variant='contained'
-          startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/grupos')}
-        >
-          Agregar Líder
-        </Button>
-      </Box>
+      <>
+        <Box className='flex flex-col items-center justify-center py-12'>
+          <CustomAvatar skin='light' color='warning' size={64} sx={{ mb: 2 }}>
+            <i className='ri-star-line text-3xl' />
+          </CustomAvatar>
+          <Typography variant='h6' className='mbe-1'>
+            Sin lideres asignados
+          </Typography>
+          <Typography variant='body2' color='text.secondary' className='mbe-4'>
+            Este grupo necesita al menos un lider
+          </Typography>
+          <Button
+            variant='contained'
+            startIcon={<i className='ri-user-add-line' />}
+            onClick={() => setPickerOpen(true)}
+          >
+            Agregar Lider
+          </Button>
+        </Box>
+        <UserPickerDialog
+          open={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          title='Agregar Lider al Grupo'
+          fetchUsers={fetchAvailable}
+          onSelect={handleAddLeader}
+        />
+      </>
     )
   }
 
   return (
     <Box className='p-4'>
-      {/* Header con acción */}
       <Box className='flex items-center justify-between mbe-4'>
         <Typography variant='subtitle2' color='text.secondary'>
-          {leaders.length} {leaders.length === 1 ? 'líder' : 'líderes'} en este grupo
+          {leaders.length} {leaders.length === 1 ? 'lider' : 'lideres'} en este grupo
         </Typography>
         <Button
           size='small'
           variant='outlined'
           startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/grupos')}
+          onClick={() => setPickerOpen(true)}
         >
           Agregar
         </Button>
       </Box>
 
-      {/* Lista de líderes */}
       <Box className='flex flex-col gap-3'>
         {leaders.map(leader => {
-          const displayName = getDisplayName(leader.user)
+          const displayName = getDisplayName(leader)
 
           return (
             <Box
@@ -132,10 +164,7 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
               className='flex items-center gap-3 p-3 rounded-lg'
               sx={{ bgcolor: 'action.hover' }}
             >
-              <Avatar
-                src={leader.user.image || undefined}
-                sx={{ width: 48, height: 48 }}
-              >
+              <Avatar src={leader.image || undefined} sx={{ width: 48, height: 48 }}>
                 {getInitials(displayName)}
               </Avatar>
               <Box className='flex-1 min-w-0'>
@@ -145,28 +174,22 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
                   </Typography>
                   <Chip
                     icon={<i className='ri-star-fill' />}
-                    label='Líder'
+                    label='Lider'
                     size='small'
                     color='warning'
                     variant='tonal'
                     sx={{ height: 22 }}
                   />
-                  {!leader.user.isActive && (
-                    <Chip
-                      label='Inactivo'
-                      size='small'
-                      color='error'
-                      variant='outlined'
-                      sx={{ height: 22 }}
-                    />
+                  {!leader.isActive && (
+                    <Chip label='Inactivo' size='small' color='error' variant='outlined' sx={{ height: 22 }} />
                   )}
                 </Box>
                 <Typography variant='body2' color='text.secondary' noWrap>
-                  {leader.user.email}
+                  {leader.email}
                 </Typography>
-                {leader.user.phone && (
+                {leader.phone && (
                   <Typography variant='caption' color='text.secondary'>
-                    {leader.user.phone}
+                    {leader.phone}
                   </Typography>
                 )}
               </Box>
@@ -174,15 +197,12 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
                 <Tooltip title='Ver perfil'>
                   <IconButton
                     size='small'
-                    onClick={() => router.push(`/dashboard/admin/usuarios/${leader.user.id}`)}
+                    onClick={() => router.push(`/dashboard/admin/usuarios/${leader.id}`)}
                   >
                     <i className='ri-eye-line' />
                   </IconButton>
                 </Tooltip>
-                <IconButton
-                  size='small'
-                  onClick={(e) => handleMenuOpen(e, leader)}
-                >
+                <IconButton size='small' onClick={e => handleMenuOpen(e, leader)}>
                   <i className='ri-more-2-line' />
                 </IconButton>
               </Box>
@@ -191,7 +211,6 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
         })}
       </Box>
 
-      {/* Menú de acciones */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -200,18 +219,22 @@ const GroupLeadersTab = ({ leaders, groupId, networkId }: Props) => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem onClick={handleViewProfile}>
-          <ListItemIcon>
-            <i className='ri-user-line' />
-          </ListItemIcon>
+          <ListItemIcon><i className='ri-user-line' /></ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleRemoveLeader} sx={{ color: 'error.main' }}>
-          <ListItemIcon sx={{ color: 'error.main' }}>
-            <i className='ri-user-unfollow-line' />
-          </ListItemIcon>
+          <ListItemIcon sx={{ color: 'error.main' }}><i className='ri-user-unfollow-line' /></ListItemIcon>
           <ListItemText>Remover del grupo</ListItemText>
         </MenuItem>
       </Menu>
+
+      <UserPickerDialog
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        title='Agregar Lider al Grupo'
+        fetchUsers={fetchAvailable}
+        onSelect={handleAddLeader}
+      />
     </Box>
   )
 }

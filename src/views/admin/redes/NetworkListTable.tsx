@@ -37,6 +37,8 @@ import { rankItem } from '@tanstack/match-sorter-utils'
 import type { UserOption } from './UserMultiSelect'
 import NetworkDrawer from './NetworkDrawer'
 import { deleteNetwork } from '@/app/server/networkActions'
+import ExportButton from '@/components/ExportButton'
+import type { ExportColumn } from '@/components/ExportButton'
 
 type NetworkUser = {
   id: string
@@ -254,6 +256,22 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
     onRefresh()
   }
 
+  const networkExportColumns: ExportColumn[] = [
+    { header: 'Red', accessor: r => (r as NetworkRow).name, width: 20 },
+    { header: 'Descripción', accessor: r => (r as NetworkRow).description || '', width: 30 },
+    {
+      header: 'Líderes',
+      accessor: r => {
+        const leaders = (r as NetworkRow).users.filter(u => u.networkRole === 'leader')
+
+        return leaders.map(l => getDisplayName(l)).join(', ')
+      },
+      width: 24
+    },
+    { header: 'Miembros', accessor: r => (r as NetworkRow).users.filter(u => u.networkRole === 'member').length, width: 10 },
+    { header: 'Estado', accessor: r => ((r as NetworkRow).isActive ? 'Activa' : 'Inactiva'), width: 10 }
+  ]
+
   const handleOpenCreate = () => {
     setSelectedNetwork(null)
     setDrawerOpen(true)
@@ -289,9 +307,12 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
             <MenuItem value='inactive'>Inactiva</MenuItem>
           </TextField>
         </div>
-        <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleOpenCreate}>
-          Nueva Red
-        </Button>
+        <div className='flex gap-2'>
+          <ExportButton data={filteredNetworks} columns={networkExportColumns} fileName='redes' title='Redes' />
+          <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleOpenCreate}>
+            Nueva Red
+          </Button>
+        </div>
       </div>
 
       {/* Table */}

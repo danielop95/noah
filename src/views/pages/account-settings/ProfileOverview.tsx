@@ -13,13 +13,11 @@ import { styled } from '@mui/material/styles'
 // Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type GroupLeadership = {
-  group: {
-    id: string
-    name: string
-    network: { id: string; name: string } | null
-    _count: { reports: number }
-  }
+type UserGroup = {
+  id: string
+  name: string
+  network: { id: string; name: string } | null
+  _count: { reports: number }
 }
 
 type ProfileData = {
@@ -29,15 +27,17 @@ type ProfileData = {
   lastName: string | null
   email: string | null
   image: string | null
-  role: string | null
+  roleId: string | null
+  userRole: { id: string; name: string; slug: string; hierarchy: number } | null
   phone: string | null
   city: string | null
   country: string | null
   isActive?: boolean
   networkRole: string | null
+  groupRole: string | null
   network: { id: string; name: string; imageUrl?: string | null } | null
   organization: { id: string; name: string; logoUrl: string | null } | null
-  groupLeaderships: GroupLeadership[]
+  group: UserGroup | null
   stats: {
     reportsCount: number
     groupsLeading: number
@@ -95,8 +95,8 @@ const ProfileOverview = ({ profile }: Props) => {
         {/* Chips de estado */}
         <Box className='flex gap-2 mbs-2'>
           <Chip
-            label={profile.role === 'admin' ? 'Administrador' : 'Miembro'}
-            color={profile.role === 'admin' ? 'primary' : 'secondary'}
+            label={profile.userRole?.name || 'Miembro'}
+            color={profile.userRole && profile.userRole.hierarchy <= 2 ? 'primary' : 'secondary'}
             size='small'
           />
           {profile.isActive !== undefined && (
@@ -195,35 +195,31 @@ const ProfileOverview = ({ profile }: Props) => {
         <Typography variant='overline' color='text.disabled' className='mbe-3 block'>
           Mi Grupo
         </Typography>
-        {profile.groupLeaderships.length > 0 ? (
-          <Box className='flex flex-col gap-3'>
-            {profile.groupLeaderships.map(({ group }) => (
-              <Box key={group.id} className='flex items-center gap-3'>
-                <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
-                  <i className='ri-team-line' />
-                </CustomAvatar>
-                <Box className='flex-1'>
-                  <Typography variant='body1' fontWeight={500}>
-                    {group.name}
+        {profile.group ? (
+          <Box className='flex items-center gap-3'>
+            <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
+              <i className='ri-team-line' />
+            </CustomAvatar>
+            <Box className='flex-1'>
+              <Typography variant='body1' fontWeight={500}>
+                {profile.group.name}
+              </Typography>
+              <Box className='flex items-center gap-2'>
+                <Chip
+                  label={profile.groupRole === 'leader' ? 'Lider' : 'Miembro'}
+                  size='small'
+                  color={profile.groupRole === 'leader' ? 'success' : 'default'}
+                  variant='tonal'
+                  icon={profile.groupRole === 'leader' ? <i className='ri-shield-star-line' /> : undefined}
+                  sx={{ height: 22 }}
+                />
+                {profile.group._count.reports > 0 && (
+                  <Typography variant='caption' color='text.secondary'>
+                    {profile.group._count.reports} reportes
                   </Typography>
-                  <Box className='flex items-center gap-2'>
-                    <Chip
-                      label='Lider'
-                      size='small'
-                      color='success'
-                      variant='tonal'
-                      icon={<i className='ri-shield-star-line' />}
-                      sx={{ height: 22 }}
-                    />
-                    {group._count.reports > 0 && (
-                      <Typography variant='caption' color='text.secondary'>
-                        {group._count.reports} reportes
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
+                )}
               </Box>
-            ))}
+            </Box>
           </Box>
         ) : (
           <Box className='flex items-center gap-3'>

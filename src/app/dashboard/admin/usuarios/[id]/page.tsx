@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import UserDetailView from '@/views/admin/usuarios/detail'
 
 // Server Action Imports
@@ -28,9 +28,9 @@ const UserViewPage = async ({ params }: Props) => {
   }
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='usuarios.ver'>
       <UserDetailView user={user} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

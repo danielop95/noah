@@ -38,6 +38,8 @@ import MenuItem from '@mui/material/MenuItem'
 
 import ReportDrawer from './ReportDrawer'
 import ReportStatsCards from './ReportStatsCards'
+import ExportButton from '@/components/ExportButton'
+import type { ExportColumn } from '@/components/ExportButton'
 import { deleteReport } from '@/app/server/reportActions'
 import type { ReportWithDetails, GroupOptionForReports, ReportStats } from '@/app/server/reportActions'
 
@@ -229,8 +231,9 @@ const ReportListTable = ({
         header: 'Acciones',
         cell: ({ row }) => {
           const report = row.original
-          const canEdit = report.reporterId === currentUserId
-          const canDelete = isAdmin || report.reporterId === currentUserId
+          const isLeaderOfGroup = groups.some(g => g.id === report.groupId)
+          const canEdit = isAdmin || isLeaderOfGroup
+          const canDelete = isAdmin || isLeaderOfGroup
 
           return (
             <Box className='flex items-center gap-1'>
@@ -266,7 +269,7 @@ const ReportListTable = ({
         }
       })
     ],
-    [currentUserId, isAdmin]
+    [isAdmin, groups]
   )
 
   const table = useReactTable({
@@ -314,6 +317,34 @@ const ReportListTable = ({
   }
 
   const hasActiveFilters = groupFilter !== 'all' || networkFilter !== 'all' || startDate || endDate || globalFilter
+
+  const exportColumns: ExportColumn[] = [
+    { header: 'Fecha', accessor: r => formatDate((r as ReportWithDetails).meetingDate), width: 20 },
+    { header: 'Grupo', accessor: r => (r as ReportWithDetails).group.name, width: 20 },
+    { header: 'Red', accessor: r => (r as ReportWithDetails).group.network.name, width: 16 },
+    { header: 'Total Asistentes', accessor: r => (r as ReportWithDetails).totalAttendees, width: 16 },
+    { header: 'Líderes', accessor: r => (r as ReportWithDetails).leadersCount, width: 10 },
+    { header: 'Visitas', accessor: r => (r as ReportWithDetails).visitorsCount, width: 10 },
+    {
+      header: 'Ofrenda',
+      accessor: r => {
+        const report = r as ReportWithDetails
+
+        return report.reportOffering ? (report.offeringAmount ?? 0) : ''
+      },
+      width: 14
+    },
+    {
+      header: 'Reportado por',
+      accessor: r => {
+        const rep = (r as ReportWithDetails).reporter
+
+        return rep.firstName ? `${rep.firstName} ${rep.lastName || ''}`.trim() : (rep.name || '')
+      },
+      width: 20
+    },
+    { header: 'Notas', accessor: r => (r as ReportWithDetails).notes || '', width: 30 }
+  ]
 
   return (
     <>
@@ -402,6 +433,8 @@ const ReportListTable = ({
         )}
 
         <Box className='flex-grow' />
+
+        <ExportButton data={filteredReports} columns={exportColumns} fileName='reportes' title='Reportes de Grupos' />
 
         <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleOpenCreate}>
           Nuevo Reporte

@@ -24,13 +24,11 @@ import SecurityTab from './security'
 // Server Action Imports
 import { getFullProfile } from '@/app/server/actions'
 
-type GroupLeadership = {
-  group: {
-    id: string
-    name: string
-    network: { id: string; name: string } | null
-    _count: { reports: number }
-  }
+type UserGroup = {
+  id: string
+  name: string
+  network: { id: string; name: string } | null
+  _count: { reports: number }
 }
 
 type ProfileData = {
@@ -40,14 +38,16 @@ type ProfileData = {
   lastName: string | null
   email: string | null
   image: string | null
-  role: string | null
+  roleId: string | null
+  userRole: { id: string; name: string; slug: string; hierarchy: number } | null
   phone: string | null
   city: string | null
   country: string | null
   networkRole: string | null
+  groupRole: string | null
   network: { id: string; name: string } | null
   organization: { id: string; name: string; logoUrl: string | null } | null
-  groupLeaderships: GroupLeadership[]
+  group: UserGroup | null
   stats: {
     reportsCount: number
     groupsLeading: number

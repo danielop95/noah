@@ -34,7 +34,7 @@ const DashboardLayout = async ({ children }: ChildrenType) => {
   const dictionary = await getDictionaryFromCookie()
   const mode = await getMode()
   const systemMode = await getSystemMode()
-  const userRole = session?.user?.role || 'user'
+  const userHierarchy = session?.user?.roleHierarchy ?? 999
 
   return (
     <AuthGuard>
@@ -42,7 +42,7 @@ const DashboardLayout = async ({ children }: ChildrenType) => {
         systemMode={systemMode}
         verticalLayout={
           <VerticalLayout
-            navigation={<Navigation dictionary={dictionary} mode={mode} userRole={userRole} />}
+            navigation={<Navigation dictionary={dictionary} mode={mode} userHierarchy={userHierarchy} />}
             navbar={<Navbar />}
             footer={<VerticalFooter />}
           >
@@ -50,7 +50,7 @@ const DashboardLayout = async ({ children }: ChildrenType) => {
           </VerticalLayout>
         }
         horizontalLayout={
-          <HorizontalLayout header={<Header dictionary={dictionary} userRole={userRole} />} footer={<HorizontalFooter />}>
+          <HorizontalLayout header={<Header dictionary={dictionary} userHierarchy={userHierarchy} />} footer={<HorizontalFooter />}>
             {children}
           </HorizontalLayout>
         }

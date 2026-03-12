@@ -52,6 +52,8 @@ type UserOption = {
   lastName: string | null
   image: string | null
   email: string | null
+  groupId: string | null
+  groupRole: string | null
 }
 
 const getDisplayName = (user: UserOption) => {
@@ -91,12 +93,14 @@ const GroupDrawer = ({ open, onClose, group, networks, onRefresh }: GroupDrawerP
 
   const isEditing = !!group
 
-  // Usuarios disponibles según la red seleccionada
+  // Usuarios disponibles: de la red seleccionada y sin grupo asignado (o del grupo actual en edición)
   const availableUsers = useMemo(() => {
     const network = networks.find(n => n.id === networkId)
 
-    return network?.users || []
-  }, [networks, networkId])
+    if (!network) return []
+
+    return network.users.filter(u => !u.groupId || u.groupId === group?.id)
+  }, [networks, networkId, group])
 
   // Usuarios seleccionados como objetos
   const selectedLeaders = useMemo(() => {
@@ -116,7 +120,7 @@ const GroupDrawer = ({ open, onClose, group, networks, onRefresh }: GroupDrawerP
       setNeighborhood(group.neighborhood || '')
       setMeetingDay(group.meetingDay || '')
       setMeetingTime(group.meetingTime || '')
-      setLeaderIds(group.leaders.map(l => l.user.id))
+      setLeaderIds(group.leaders.map(l => l.id))
     } else {
       setName('')
       setDescription('')

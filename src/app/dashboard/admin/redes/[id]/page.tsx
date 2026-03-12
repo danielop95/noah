@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import NetworkDetailView from '@/views/admin/redes/detail'
 
 // Server Action Imports
@@ -28,9 +28,9 @@ const NetworkDetailPage = async ({ params }: Props) => {
   }
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='redes.ver'>
       <NetworkDetailView network={network} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

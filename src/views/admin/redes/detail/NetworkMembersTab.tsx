@@ -1,12 +1,9 @@
 'use client'
 
-// React Imports
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
-// Next Imports
 import { useRouter } from 'next/navigation'
 
-// MUI Imports
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
@@ -21,8 +18,15 @@ import Tooltip from '@mui/material/Tooltip'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 
-// Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
+import UserPickerDialog from '@/components/UserPickerDialog'
+
+import {
+  addUserToNetwork,
+  removeUserFromNetwork,
+  changeNetworkRole,
+  getAvailableUsersForNetwork
+} from '@/app/server/networkActions'
 
 type NetworkUser = {
   id: string
@@ -66,6 +70,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedUser, setSelectedUser] = useState<NetworkUser | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [pickerOpen, setPickerOpen] = useState(false)
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, user: NetworkUser) => {
     setAnchorEl(event.currentTarget)
@@ -85,17 +90,48 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
     handleMenuClose()
   }
 
-  const handlePromoteToLeader = () => {
-    // TODO: Implementar promocion a lider
+  const handlePromoteToLeader = async () => {
+    if (!selectedUser) return
+
+    try {
+      await changeNetworkRole(selectedUser.id, 'leader')
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al promover')
+    }
+
     handleMenuClose()
   }
 
-  const handleRemoveFromNetwork = () => {
-    // TODO: Implementar remover de la red
+  const handleRemoveFromNetwork = async () => {
+    if (!selectedUser) return
+
+    if (!confirm(`¿Remover a ${getDisplayName(selectedUser)} de esta red?`)) {
+      handleMenuClose()
+
+      return
+    }
+
+    try {
+      await removeUserFromNetwork(selectedUser.id)
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al remover')
+    }
+
     handleMenuClose()
   }
 
-  // Filtrar miembros por busqueda
+  const fetchAvailable = useCallback(
+    () => getAvailableUsersForNetwork(networkId),
+    [networkId]
+  )
+
+  const handleAddUser = async (userId: string) => {
+    await addUserToNetwork(networkId, userId, 'member')
+    router.refresh()
+  }
+
   const filteredMembers = members.filter(member => {
     if (!searchQuery) return true
 
@@ -108,36 +144,44 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
 
   if (members.length === 0) {
     return (
-      <Box className='flex flex-col items-center justify-center py-12'>
-        <CustomAvatar skin='light' color='info' size={64} sx={{ mb: 2 }}>
-          <i className='ri-group-line text-3xl' />
-        </CustomAvatar>
-        <Typography variant='h6' className='mbe-1'>
-          Sin miembros asignados
-        </Typography>
-        <Typography variant='body2' color='text.secondary' className='mbe-4'>
-          Agrega miembros a esta red
-        </Typography>
-        <Button
-          variant='contained'
-          startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/redes')}
-        >
-          Agregar Miembros
-        </Button>
-      </Box>
+      <>
+        <Box className='flex flex-col items-center justify-center py-12'>
+          <CustomAvatar skin='light' color='info' size={64} sx={{ mb: 2 }}>
+            <i className='ri-group-line text-3xl' />
+          </CustomAvatar>
+          <Typography variant='h6' className='mbe-1'>
+            Sin miembros asignados
+          </Typography>
+          <Typography variant='body2' color='text.secondary' className='mbe-4'>
+            Agrega miembros a esta red
+          </Typography>
+          <Button
+            variant='contained'
+            startIcon={<i className='ri-user-add-line' />}
+            onClick={() => setPickerOpen(true)}
+          >
+            Agregar Miembros
+          </Button>
+        </Box>
+        <UserPickerDialog
+          open={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          title='Agregar Miembro a la Red'
+          fetchUsers={fetchAvailable}
+          onSelect={handleAddUser}
+        />
+      </>
     )
   }
 
   return (
     <Box className='p-4'>
-      {/* Header con busqueda y accion */}
       <Box className='flex items-center justify-between gap-4 mbe-4 flex-wrap'>
         <TextField
           size='small'
           placeholder='Buscar miembro...'
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           slotProps={{
             input: {
               startAdornment: (
@@ -153,22 +197,20 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
           size='small'
           variant='outlined'
           startIcon={<i className='ri-user-add-line' />}
-          onClick={() => router.push('/dashboard/admin/redes')}
+          onClick={() => setPickerOpen(true)}
         >
           Agregar
         </Button>
       </Box>
 
-      {/* Contador */}
       <Typography variant='caption' color='text.secondary' className='mbe-3 block'>
         Mostrando {filteredMembers.length} de {members.length} miembros
       </Typography>
 
-      {/* Lista de miembros */}
       {filteredMembers.length === 0 ? (
         <Box className='text-center py-8'>
           <Typography color='text.secondary'>
-            No se encontraron miembros con "{searchQuery}"
+            No se encontraron miembros con &quot;{searchQuery}&quot;
           </Typography>
         </Box>
       ) : (
@@ -185,10 +227,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
                   '&:hover': { bgcolor: 'action.selected' }
                 }}
               >
-                <Avatar
-                  src={member.image || undefined}
-                  sx={{ width: 44, height: 44 }}
-                >
+                <Avatar src={member.image || undefined} sx={{ width: 44, height: 44 }}>
                   {getInitials(displayName)}
                 </Avatar>
                 <Box className='flex-1 min-w-0'>
@@ -197,13 +236,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
                       {displayName}
                     </Typography>
                     {!member.isActive && (
-                      <Chip
-                        label='Inactivo'
-                        size='small'
-                        color='error'
-                        variant='outlined'
-                        sx={{ height: 20 }}
-                      />
+                      <Chip label='Inactivo' size='small' color='error' variant='outlined' sx={{ height: 20 }} />
                     )}
                   </Box>
                   <Typography variant='caption' color='text.secondary' noWrap>
@@ -222,10 +255,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
                       <i className='ri-eye-line' />
                     </IconButton>
                   </Tooltip>
-                  <IconButton
-                    size='small'
-                    onClick={(e) => handleMenuOpen(e, member)}
-                  >
+                  <IconButton size='small' onClick={e => handleMenuOpen(e, member)}>
                     <i className='ri-more-2-line' />
                   </IconButton>
                 </Box>
@@ -235,7 +265,6 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
         </Box>
       )}
 
-      {/* Menu de acciones */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -244,24 +273,26 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem onClick={handleViewProfile}>
-          <ListItemIcon>
-            <i className='ri-user-line' />
-          </ListItemIcon>
+          <ListItemIcon><i className='ri-user-line' /></ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
         <MenuItem onClick={handlePromoteToLeader}>
-          <ListItemIcon>
-            <i className='ri-arrow-up-line' />
-          </ListItemIcon>
+          <ListItemIcon><i className='ri-arrow-up-line' /></ListItemIcon>
           <ListItemText>Promover a lider</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleRemoveFromNetwork} sx={{ color: 'error.main' }}>
-          <ListItemIcon sx={{ color: 'error.main' }}>
-            <i className='ri-user-unfollow-line' />
-          </ListItemIcon>
+          <ListItemIcon sx={{ color: 'error.main' }}><i className='ri-user-unfollow-line' /></ListItemIcon>
           <ListItemText>Remover de la red</ListItemText>
         </MenuItem>
       </Menu>
+
+      <UserPickerDialog
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        title='Agregar Miembro a la Red'
+        fetchUsers={fetchAvailable}
+        onSelect={handleAddUser}
+      />
     </Box>
   )
 }

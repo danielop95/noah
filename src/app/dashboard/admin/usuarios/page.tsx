@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import UserList from '@/views/apps/user/list'
 
 // Server Action Imports
@@ -9,9 +9,9 @@ const UsersPage = async () => {
   const users = await getAllUsers()
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='usuarios.ver'>
       <UserList users={users} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

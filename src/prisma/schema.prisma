@@ -40,7 +40,9 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String?   @default("user")
+  // Rol del usuario (FK a Role)
+  roleId        String?
+  userRole      Role?     @relation(fields: [roleId], references: [id], onDelete: SetNull)
   password      String?
 
   // Profile fields
@@ -74,8 +76,10 @@ model User {
   network     Network? @relation(fields: [networkId], references: [id], onDelete: SetNull)
   networkRole String?  // 'leader' | 'member'
 
-  // Grupos donde es líder
-  groupLeaderships GroupLeader[]
+  // Grupo (un usuario solo puede pertenecer a un grupo)
+  groupId   String?
+  group     Group?   @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  groupRole String?  // 'leader' | 'member'
 
   // Reportes creados
   groupReports     GroupReport[]
@@ -94,10 +98,53 @@ model Organization {
   updatedAt   DateTime @updatedAt
 
   users           User[]
+  roles           Role[]
   networks        Network[]
   groups          Group[]
   groupReports    GroupReport[]
   calendarEvents  CalendarEvent[]
+}
+
+// ===================
+// Módulo de Roles y Permisos
+// ===================
+
+model Role {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String?
+  hierarchy      Int      // 1 = más poder (Admin=1, Aux=2, Pastor=3, Líder=4, Voluntario=5, Usuario=6)
+  isSystem       Boolean  @default(false) // Roles protegidos (Admin, Usuario) no se pueden eliminar
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  permissions    RolePermission[]
+  users          User[]
+}
+
+model Permission {
+  id          String @id @default(cuid())
+  module      String // "usuarios", "redes", "grupos", "reportes", "calendario", "configuracion", "roles", "dashboard"
+  action      String // "ver", "crear", "editar", "eliminar", "exportar"
+  description String // "Ver lista de usuarios"
+
+  roles       RolePermission[]
+
+  @@unique([module, action])
+}
+
+model RolePermission {
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
 }
 
 model VerificationToken {
@@ -164,23 +211,11 @@ model Group {
   meetingDay     String?  // lunes, martes, etc.
   meetingTime    String?  // "19:00"
 
-  // Líderes (many-to-many)
-  leaders        GroupLeader[]
+  // Miembros del grupo (líderes y miembros)
+  members        User[]
 
   // Reportes de este grupo
   reports        GroupReport[]
-}
-
-model GroupLeader {
-  id        String   @id @default(cuid())
-  groupId   String
-  userId    String
-  createdAt DateTime @default(now())
-
-  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([groupId, userId])
 }
 
 // ===================

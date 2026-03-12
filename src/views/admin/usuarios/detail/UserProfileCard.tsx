@@ -14,16 +14,12 @@ import { styled } from '@mui/material/styles'
 // Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
 
-type GroupLeadership = {
-  group: {
-    id: string
-    name: string
-    network: { id: string; name: string } | null
-    leaders: Array<{
-      user: { id: string; name: string | null; firstName: string | null; lastName: string | null; image: string | null }
-    }>
-    _count: { reports: number }
-  }
+type UserGroup = {
+  id: string
+  name: string
+  network: { id: string; name: string } | null
+  members: Array<{ id: string; name: string | null; firstName: string | null; lastName: string | null; image: string | null }>
+  _count: { reports: number }
 }
 
 type UserData = {
@@ -33,7 +29,8 @@ type UserData = {
   lastName: string | null
   email: string | null
   image: string | null
-  role: string | null
+  roleId: string | null
+  userRole: { id: string; name: string; slug: string; hierarchy: number } | null
   phone: string | null
   city: string | null
   country: string | null
@@ -44,9 +41,10 @@ type UserData = {
   documentNumber: string | null
   isActive: boolean
   networkRole: string | null
+  groupRole: string | null
   network: { id: string; name: string; imageUrl?: string | null } | null
   organization: { id: string; name: string; logoUrl: string | null } | null
-  groupLeaderships: GroupLeadership[]
+  group: UserGroup | null
   stats: {
     reportsCount: number
     groupsLeading: number
@@ -95,8 +93,8 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         {/* Chips de estado */}
         <Box className='flex gap-2 mbs-2'>
           <Chip
-            label={user.role === 'admin' ? 'Administrador' : 'Miembro'}
-            color={user.role === 'admin' ? 'primary' : 'secondary'}
+            label={user.userRole?.name || 'Sin rol'}
+            color={user.userRole && user.userRole.hierarchy <= 2 ? 'primary' : 'secondary'}
             size='small'
           />
           <Chip
@@ -159,35 +157,31 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         <Typography variant='overline' color='text.disabled' className='mbe-3 block'>
           Mi Grupo
         </Typography>
-        {user.groupLeaderships.length > 0 ? (
-          <Box className='flex flex-col gap-3'>
-            {user.groupLeaderships.map(({ group }) => (
-              <Box key={group.id} className='flex items-center gap-3'>
-                <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
-                  <i className='ri-team-line' />
-                </CustomAvatar>
-                <Box className='flex-1'>
-                  <Typography variant='body1' fontWeight={500}>
-                    {group.name}
+        {user.group ? (
+          <Box className='flex items-center gap-3'>
+            <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
+              <i className='ri-team-line' />
+            </CustomAvatar>
+            <Box className='flex-1'>
+              <Typography variant='body1' fontWeight={500}>
+                {user.group.name}
+              </Typography>
+              <Box className='flex items-center gap-2'>
+                <Chip
+                  label={user.groupRole === 'leader' ? 'Lider' : 'Miembro'}
+                  size='small'
+                  color={user.groupRole === 'leader' ? 'success' : 'default'}
+                  variant='tonal'
+                  icon={user.groupRole === 'leader' ? <i className='ri-shield-star-line' /> : undefined}
+                  sx={{ height: 22 }}
+                />
+                {user.group._count.reports > 0 && (
+                  <Typography variant='caption' color='text.secondary'>
+                    {user.group._count.reports} reportes
                   </Typography>
-                  <Box className='flex items-center gap-2'>
-                    <Chip
-                      label='Lider'
-                      size='small'
-                      color='success'
-                      variant='tonal'
-                      icon={<i className='ri-shield-star-line' />}
-                      sx={{ height: 22 }}
-                    />
-                    {group._count.reports > 0 && (
-                      <Typography variant='caption' color='text.secondary'>
-                        {group._count.reports} reportes
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
+                )}
               </Box>
-            ))}
+            </Box>
           </Box>
         ) : (
           <Box className='flex items-center gap-3'>

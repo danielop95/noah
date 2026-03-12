@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import GroupDetailView from '@/views/admin/grupos/detail'
 
 // Server Action Imports
@@ -28,9 +28,9 @@ const GroupDetailPage = async ({ params }: Props) => {
   }
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='grupos.ver'>
       <GroupDetailView group={group} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

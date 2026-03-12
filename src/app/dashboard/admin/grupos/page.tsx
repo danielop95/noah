@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import GruposView from '@/views/admin/grupos'
 
 // Server Action Imports
@@ -14,9 +14,9 @@ const GruposPage = async () => {
   const [groups, networks] = await Promise.all([getAllGroups(), getNetworksForGroups()])
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='grupos.ver'>
       <GruposView groups={groups} networks={networks} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

@@ -37,14 +37,12 @@ type NetworkUser = {
 }
 
 type GroupLeader = {
-  user: {
-    id: string
-    name: string | null
-    firstName: string | null
-    lastName: string | null
-    image: string | null
-    email: string | null
-  }
+  id: string
+  name: string | null
+  firstName: string | null
+  lastName: string | null
+  image: string | null
+  email: string | null
 }
 
 type GroupData = {

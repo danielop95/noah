@@ -16,7 +16,11 @@ declare module 'next-auth' {
       name?: string | null
       email?: string | null
       image?: string | null
-      role?: string
+      roleId?: string | null
+      roleSlug?: string | null
+      roleName?: string | null
+      roleHierarchy?: number | null
+      permissions?: string[]
       organizationId?: string | null
     }
   }
@@ -26,7 +30,11 @@ declare module 'next-auth' {
     email?: string | null
     name?: string | null
     image?: string | null
-    role?: string
+    roleId?: string | null
+    roleSlug?: string | null
+    roleName?: string | null
+    roleHierarchy?: number | null
+    permissions?: string[]
     organizationId?: string | null
   }
 }
@@ -34,7 +42,11 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT {
     id?: string
-    role?: string
+    roleId?: string | null
+    roleSlug?: string | null
+    roleName?: string | null
+    roleHierarchy?: number | null
+    permissions?: string[]
     organizationId?: string | null
   }
 }
@@ -56,7 +68,16 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
+          include: {
+            userRole: {
+              include: {
+                permissions: {
+                  include: { permission: true }
+                }
+              }
+            }
+          }
         })
 
         if (!user || !user.password) {
@@ -73,11 +94,19 @@ export const authOptions: NextAuthOptions = {
           throw new Error(JSON.stringify({ message: ['Tu cuenta ha sido desactivada. Contacta al administrador.'] }))
         }
 
+        const permissions = user.userRole?.permissions.map(
+          rp => `${rp.permission.module}.${rp.permission.action}`
+        ) || []
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: user.role || 'user',
+          roleId: user.roleId,
+          roleSlug: user.userRole?.slug || null,
+          roleName: user.userRole?.name || null,
+          roleHierarchy: user.userRole?.hierarchy || null,
+          permissions,
           image: user.image,
           organizationId: user.organizationId
         }
@@ -120,7 +149,11 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role || 'user',
+          roleId: user.roleId,
+          roleSlug: user.roleSlug,
+          roleName: user.roleName,
+          roleHierarchy: user.roleHierarchy,
+          permissions: user.permissions || [],
           organizationId: user.organizationId,
           provider: account.provider
         }
@@ -134,7 +167,11 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string
         session.user.name = token.name
         session.user.email = token.email
-        session.user.role = (token.role as string) || 'user'
+        session.user.roleId = token.roleId as string | null
+        session.user.roleSlug = token.roleSlug as string | null
+        session.user.roleName = token.roleName as string | null
+        session.user.roleHierarchy = token.roleHierarchy as number | null
+        session.user.permissions = (token.permissions as string[]) || []
         session.user.organizationId = token.organizationId as string | null
       }
 

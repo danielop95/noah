@@ -41,10 +41,10 @@ const StyledDiv = styled.div<StyledDivProps>`
 
 type NavigationProps = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
-  userRole?: string
+  userHierarchy?: number
 }
 
-const Navigation = ({ dictionary, userRole }: NavigationProps) => {
+const Navigation = ({ dictionary, userHierarchy }: NavigationProps) => {
   // Hooks
   const { settings } = useSettings()
   const { isBreakpointReached } = useHorizontalNav()
@@ -65,7 +65,7 @@ const Navigation = ({ dictionary, userRole }: NavigationProps) => {
           className: classnames(horizontalLayoutClasses.navigationContentWrapper, 'flex items-center is-full plb-2.5')
         })}
       >
-        <HorizontalMenu dictionary={dictionary} userRole={userRole} />
+        <HorizontalMenu dictionary={dictionary} userHierarchy={userHierarchy} />
       </StyledDiv>
     </div>
   )

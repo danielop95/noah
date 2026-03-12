@@ -1,10 +1,10 @@
 'use server'
 
 import prisma from '@/libs/prisma'
-import { requireAdmin, getAdminOrganizationId } from './helpers'
+import { requirePermission, getAdminOrganizationId } from './helpers'
 
 export async function getAllUsers() {
-  const session = await requireAdmin()
+  const session = await requirePermission('usuarios', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -19,7 +19,10 @@ export async function getAllUsers() {
       name: true,
       email: true,
       image: true,
-      role: true,
+      roleId: true,
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      },
       firstName: true,
       lastName: true,
       phone: true,
@@ -31,12 +34,10 @@ export async function getAllUsers() {
       network: {
         select: { id: true, name: true }
       },
-      groupLeaderships: {
-        select: {
-          group: {
-            select: { id: true, name: true }
-          }
-        }
+      groupId: true,
+      groupRole: true,
+      group: {
+        select: { id: true, name: true }
       }
     }
   })
@@ -45,7 +46,7 @@ export async function getAllUsers() {
 }
 
 export async function getUserById(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('usuarios', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -53,7 +54,12 @@ export async function getUserById(id: string) {
   }
 
   const user = await prisma.user.findUnique({
-    where: { id }
+    where: { id },
+    include: {
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      }
+    }
   })
 
   if (!user) return null
@@ -71,7 +77,7 @@ export async function getUserById(id: string) {
 export async function updateUserByAdmin(
   id: string,
   data: {
-    role?: string
+    roleId?: string
     isActive?: boolean
     firstName?: string
     lastName?: string
@@ -90,7 +96,7 @@ export async function updateUserByAdmin(
     neighborhood?: string
   }
 ) {
-  const session = await requireAdmin()
+  const session = await requirePermission('usuarios', 'editar')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -119,7 +125,12 @@ export async function updateUserByAdmin(
 
   const user = await prisma.user.update({
     where: { id },
-    data: updateData
+    data: updateData,
+    include: {
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      }
+    }
   })
 
   const { password: _, ...profile } = user
@@ -128,7 +139,7 @@ export async function updateUserByAdmin(
 }
 
 export async function deactivateUser(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('usuarios', 'eliminar')
 
   if (session.user.id === id) {
     throw new Error('No puedes desactivar tu propia cuenta')
@@ -152,7 +163,12 @@ export async function deactivateUser(id: string) {
 
   const user = await prisma.user.update({
     where: { id },
-    data: { isActive: false }
+    data: { isActive: false },
+    include: {
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      }
+    }
   })
 
   const { password: _, ...profile } = user
@@ -169,7 +185,7 @@ export async function updateOrganizationSettings(
     logoUrl?: string | null
   }
 ) {
-  const session = await requireAdmin()
+  const session = await requirePermission('configuracion', 'editar')
 
   // Verificar que el admin pertenece a esta organizacion
   const user = await prisma.user.findUnique({

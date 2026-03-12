@@ -120,8 +120,8 @@ const UserDropdown = () => {
                         <Typography className='font-medium' color='text.primary'>
                           {session?.user?.name || ''}
                         </Typography>
-                        {session?.user?.role === 'admin' && (
-                          <Chip label='Admin' color='primary' size='small' variant='tonal' />
+                        {session?.user?.roleName && (
+                          <Chip label={session.user.roleName} color='primary' size='small' variant='tonal' />
                         )}
                       </div>
                       <Typography variant='caption'>{session?.user?.email || ''}</Typography>
@@ -132,7 +132,7 @@ const UserDropdown = () => {
                     <i className='ri-user-settings-line' />
                     <Typography color='text.primary'>Mi Cuenta</Typography>
                   </MenuItem>
-                  {session?.user?.role === 'admin' && (
+                  {(session?.user?.roleHierarchy ?? 999) <= 2 && (
                     <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/dashboard/admin/usuarios')}>
                       <i className='ri-group-line' />
                       <Typography color='text.primary'>Usuarios</Typography>

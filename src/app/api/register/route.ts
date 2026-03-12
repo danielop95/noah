@@ -56,6 +56,9 @@ export async function POST(req: Request) {
     // Get the single organization
     const org = await getSingleOrganization()
 
+    // Get default "usuario" role
+    const defaultRole = await prisma.role.findUnique({ where: { slug: 'usuario' } })
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
@@ -80,7 +83,7 @@ export async function POST(req: Request) {
         address: address || null,
         neighborhood: neighborhood || null,
         organizationId: org.id,
-        role: 'user',
+        roleId: defaultRole?.id || null,
         isActive: true
       }
     })

@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem'
 import InputAdornment from '@mui/material/InputAdornment'
 import Avatar from '@mui/material/Avatar'
 
-import { createReport, updateReport } from '@/app/server/reportActions'
+import { createReport, updateReport, checkReportExists } from '@/app/server/reportActions'
 import type { ReportWithDetails, GroupOptionForReports } from '@/app/server/reportActions'
 
 type ReportDrawerProps = {
@@ -61,6 +61,46 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
   // UI state
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null)
+  const [checkingDuplicate, setCheckingDuplicate] = useState(false)
+
+  // Check for duplicate report when group or date changes
+  useEffect(() => {
+    if (!groupId || !meetingDate) {
+      setDuplicateWarning(null)
+
+      return
+    }
+
+    let cancelled = false
+
+    const check = async () => {
+      setCheckingDuplicate(true)
+
+      try {
+        const result = await checkReportExists(groupId, meetingDate, report?.id)
+
+        if (!cancelled) {
+          if (result.exists) {
+            setDuplicateWarning(`Ya existe un reporte para este grupo en esta fecha (creado por ${result.reporterName})`)
+          } else {
+            setDuplicateWarning(null)
+          }
+        }
+      } catch {
+        // Ignore errors in background check
+      } finally {
+        if (!cancelled) setCheckingDuplicate(false)
+      }
+    }
+
+    const timeout = setTimeout(check, 300)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timeout)
+    }
+  }, [groupId, meetingDate, report?.id])
 
   // Reset form when report or open changes
   useEffect(() => {
@@ -107,6 +147,12 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
 
     if (!meetingDate) {
       setError('Debe seleccionar una fecha')
+
+      return
+    }
+
+    if (duplicateWarning) {
+      setError('Ya existe un reporte para este grupo en esta fecha')
 
       return
     }
@@ -235,6 +281,8 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
             disabled={saving}
             className='mb-4'
             required
+            error={!!duplicateWarning}
+            helperText={duplicateWarning || (checkingDuplicate ? 'Verificando disponibilidad...' : undefined)}
             slotProps={{ inputLabel: { shrink: true } }}
           />
 
@@ -362,7 +410,7 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
           <Button variant='outlined' onClick={handleClose} disabled={saving}>
             Cancelar
           </Button>
-          <Button variant='contained' onClick={handleSubmit} disabled={saving}>
+          <Button variant='contained' onClick={handleSubmit} disabled={saving || !!duplicateWarning}>
             {saving ? 'Guardando...' : isEditing ? 'Actualizar' : 'Guardar'}
           </Button>
         </Box>

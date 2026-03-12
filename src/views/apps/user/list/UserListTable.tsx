@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 // Next Imports
 import { useParams, useRouter } from 'next/navigation'
@@ -14,12 +14,6 @@ import MenuItem from '@mui/material/MenuItem'
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
 import TablePagination from '@mui/material/TablePagination'
-import Drawer from '@mui/material/Drawer'
-import Button from '@mui/material/Button'
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import Select from '@mui/material/Select'
-import Alert from '@mui/material/Alert'
 
 // Third-party Imports
 import {
@@ -40,14 +34,20 @@ import type { Locale } from '@configs/i18n'
 import { getLocalizedUrl } from '@/utils/i18n'
 
 // Server Action Imports
-import { updateUserByAdmin, deactivateUser } from '@/app/server/adminActions'
+import { getRolesForAssignment } from '@/app/server/roleActions'
+
+// Component Imports
+import ExportButton from '@/components/ExportButton'
+import type { ExportColumn } from '@/components/ExportButton'
+import UserEditDrawer from '@/components/UserEditDrawer'
 
 type UserRow = {
   id: string
   name: string | null
   email: string | null
   image: string | null
-  role: string | null
+  roleId: string | null
+  userRole: { id: string; name: string; slug: string; hierarchy: number } | null
   firstName: string | null
   lastName: string | null
   phone: string | null
@@ -57,7 +57,9 @@ type UserRow = {
   networkId: string | null
   networkRole: string | null
   network: { id: string; name: string } | null
-  groupLeaderships: Array<{ group: { id: string; name: string } }>
+  groupId: string | null
+  groupRole: string | null
+  group: { id: string; name: string } | null
 }
 
 const fuzzyFilter: FilterFn<UserRow> = (row, columnId, value, addMeta) => {
@@ -77,17 +79,18 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
   const [statusFilter, setStatusFilter] = useState('')
   const [editDrawerOpen, setEditDrawerOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null)
-  const [editRole, setEditRole] = useState('')
-  const [editActive, setEditActive] = useState(true)
-  const [editError, setEditError] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
+  const [availableRoles, setAvailableRoles] = useState<Array<{ id: string; name: string; slug: string; hierarchy: number }>>([])
+
+  useEffect(() => {
+    getRolesForAssignment().then(setAvailableRoles).catch(() => {})
+  }, [])
 
   const router = useRouter()
   const { lang: locale } = useParams()
 
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
-      if (roleFilter && user.role !== roleFilter) return false
+      if (roleFilter && user.userRole?.slug !== roleFilter) return false
       if (statusFilter === 'active' && !user.isActive) return false
       if (statusFilter === 'inactive' && user.isActive) return false
 
@@ -122,15 +125,15 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
           <Typography variant='body2'>{getValue() || '-'}</Typography>
         )
       }),
-      columnHelper.accessor('role', {
+      columnHelper.accessor('userRole', {
         header: 'Rol',
         cell: ({ getValue }) => {
-          const role = getValue() || 'user'
+          const userRole = getValue()
 
           return (
             <Chip
-              label={role === 'admin' ? 'Admin' : 'Usuario'}
-              color={role === 'admin' ? 'primary' : 'default'}
+              label={userRole?.name || 'Sin rol'}
+              color={userRole && userRole.hierarchy <= 2 ? 'primary' : 'default'}
               size='small'
               variant='tonal'
             />
@@ -160,33 +163,23 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
       }),
       columnHelper.display({
         id: 'groups',
-        header: 'Grupos',
+        header: 'Grupo',
         cell: ({ row }) => {
-          const groups = row.original.groupLeaderships || []
+          const group = row.original.group
+          const groupRole = row.original.groupRole
 
-          if (groups.length === 0) {
+          if (!group) {
             return <Typography variant='body2' className='text-textSecondary'>-</Typography>
           }
 
           return (
-            <div className='flex flex-wrap gap-1'>
-              {groups.slice(0, 2).map(({ group }) => (
-                <Chip
-                  key={group.id}
-                  label={group.name}
-                  size='small'
-                  variant='outlined'
-                  icon={<i className='ri-team-line text-xs' />}
-                />
-              ))}
-              {groups.length > 2 && (
-                <Chip
-                  label={`+${groups.length - 2}`}
-                  size='small'
-                  variant='tonal'
-                />
-              )}
-            </div>
+            <Chip
+              label={group.name}
+              size='small'
+              variant='tonal'
+              color={groupRole === 'leader' ? 'success' : 'info'}
+              icon={groupRole === 'leader' ? <i className='ri-star-line text-xs' /> : undefined}
+            />
           )
         }
       }),
@@ -222,9 +215,6 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               size='small'
               onClick={() => {
                 setSelectedUser(row.original)
-                setEditRole(row.original.role || 'user')
-                setEditActive(row.original.isActive)
-                setEditError(null)
                 setEditDrawerOpen(true)
               }}
             >
@@ -250,60 +240,33 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
     initialState: { pagination: { pageSize: 10 } }
   })
 
-  const handleSaveEdit = async () => {
-    if (!selectedUser) return
-
-    setSaving(true)
-    setEditError(null)
-
-    try {
-      await updateUserByAdmin(selectedUser.id, {
-        role: editRole,
-        isActive: editActive
-      })
-
-      // Update local state
-      setUsers(prev =>
-        prev.map(u =>
-          u.id === selectedUser.id ? { ...u, role: editRole, isActive: editActive } : u
-        )
-      )
-
-      setEditDrawerOpen(false)
-    } catch (err) {
-      setEditError(err instanceof Error ? err.message : 'Error al guardar')
-    } finally {
-      setSaving(false)
-    }
+  const handleEditSaved = () => {
+    router.refresh()
   }
 
-  const handleDeactivate = async () => {
-    if (!selectedUser) return
+  const userExportColumns: ExportColumn[] = [
+    {
+      header: 'Nombre',
+      accessor: r => {
+        const u = r as UserRow
 
-    setSaving(true)
-    setEditError(null)
-
-    try {
-      await deactivateUser(selectedUser.id)
-
-      setUsers(prev =>
-        prev.map(u =>
-          u.id === selectedUser.id ? { ...u, isActive: false } : u
-        )
-      )
-
-      setEditDrawerOpen(false)
-    } catch (err) {
-      setEditError(err instanceof Error ? err.message : 'Error al desactivar')
-    } finally {
-      setSaving(false)
-    }
-  }
+        return u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Sin nombre'
+      },
+      width: 24
+    },
+    { header: 'Email', accessor: r => (r as UserRow).email || '', width: 28 },
+    { header: 'Teléfono', accessor: r => (r as UserRow).phone || '', width: 14 },
+    { header: 'Rol', accessor: r => (r as UserRow).userRole?.name || 'Sin rol', width: 10 },
+    { header: 'Red', accessor: r => (r as UserRow).network?.name || '', width: 16 },
+    { header: 'Grupo', accessor: r => (r as UserRow).group?.name || '', width: 16 },
+    { header: 'Estado', accessor: r => ((r as UserRow).isActive ? 'Activo' : 'Inactivo'), width: 10 },
+    { header: 'Ciudad', accessor: r => (r as UserRow).city || '', width: 14 }
+  ]
 
   return (
     <>
       {/* Filters */}
-      <div className='flex flex-wrap gap-4 p-4'>
+      <div className='flex flex-wrap gap-4 p-4 items-center'>
         <TextField
           size='small'
           placeholder='Buscar usuario...'
@@ -325,8 +288,9 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
           className='min-is-[120px]'
         >
           <MenuItem value=''>Todos</MenuItem>
-          <MenuItem value='admin'>Admin</MenuItem>
-          <MenuItem value='user'>Usuario</MenuItem>
+          {availableRoles.map(r => (
+            <MenuItem key={r.id} value={r.slug}>{r.name}</MenuItem>
+          ))}
         </TextField>
         <TextField
           select
@@ -340,6 +304,13 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
           <MenuItem value='active'>Activo</MenuItem>
           <MenuItem value='inactive'>Inactivo</MenuItem>
         </TextField>
+        <div className='flex-grow' />
+        <ExportButton
+          data={filteredUsers}
+          columns={userExportColumns}
+          fileName='usuarios'
+          title='Usuarios'
+        />
       </div>
 
       {/* Table */}
@@ -394,66 +365,12 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
       />
 
       {/* Edit Drawer */}
-      <Drawer
-        anchor='right'
+      <UserEditDrawer
         open={editDrawerOpen}
         onClose={() => setEditDrawerOpen(false)}
-        PaperProps={{ sx: { width: { xs: '100%', sm: 400 } } }}
-      >
-        <div className='flex flex-col gap-6 p-6'>
-          <div className='flex justify-between items-center'>
-            <Typography variant='h6'>Editar Usuario</Typography>
-            <IconButton onClick={() => setEditDrawerOpen(false)}>
-              <i className='ri-close-line' />
-            </IconButton>
-          </div>
-
-          {editError && <Alert severity='error'>{editError}</Alert>}
-
-          {selectedUser && (
-            <>
-              <div className='flex items-center gap-3'>
-                <Avatar src={selectedUser.image || ''} alt={selectedUser.name || ''} />
-                <div>
-                  <Typography className='font-medium'>{selectedUser.name}</Typography>
-                  <Typography variant='body2' className='text-textSecondary'>
-                    {selectedUser.email}
-                  </Typography>
-                </div>
-              </div>
-
-              <FormControl fullWidth>
-                <InputLabel>Rol</InputLabel>
-                <Select value={editRole} label='Rol' onChange={e => setEditRole(e.target.value)}>
-                  <MenuItem value='user'>Usuario</MenuItem>
-                  <MenuItem value='admin'>Admin</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth>
-                <InputLabel>Estado</InputLabel>
-                <Select
-                  value={editActive ? 'active' : 'inactive'}
-                  label='Estado'
-                  onChange={e => setEditActive(e.target.value === 'active')}
-                >
-                  <MenuItem value='active'>Activo</MenuItem>
-                  <MenuItem value='inactive'>Inactivo</MenuItem>
-                </Select>
-              </FormControl>
-
-              <div className='flex gap-4'>
-                <Button variant='contained' onClick={handleSaveEdit} disabled={saving}>
-                  {saving ? 'Guardando...' : 'Guardar'}
-                </Button>
-                <Button variant='outlined' color='error' onClick={handleDeactivate} disabled={saving || !selectedUser.isActive}>
-                  Desactivar
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
-      </Drawer>
+        user={selectedUser}
+        onSaved={handleEditSaved}
+      />
     </>
   )
 }

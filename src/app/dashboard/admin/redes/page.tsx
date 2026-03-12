@@ -1,5 +1,5 @@
 // Component Imports
-import AdminGuard from '@/hocs/AdminGuard'
+import PermissionGuard from '@/hocs/PermissionGuard'
 import RedesView from '@/views/admin/redes'
 
 // Server Action Imports
@@ -14,9 +14,9 @@ const RedesPage = async () => {
   const [networks, users] = await Promise.all([getAllNetworks(), getOrganizationUsers()])
 
   return (
-    <AdminGuard>
+    <PermissionGuard permission='redes.ver'>
       <RedesView networks={networks} users={users} />
-    </AdminGuard>
+    </PermissionGuard>
   )
 }
 

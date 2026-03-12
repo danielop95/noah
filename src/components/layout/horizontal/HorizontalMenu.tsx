@@ -54,10 +54,10 @@ const RenderVerticalExpandIcon = ({ open, transitionDuration }: RenderVerticalEx
 
 type HorizontalMenuProps = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
-  userRole?: string
+  userHierarchy?: number
 }
 
-const HorizontalMenu = ({ dictionary, userRole }: HorizontalMenuProps) => {
+const HorizontalMenu = ({ dictionary, userHierarchy }: HorizontalMenuProps) => {
   // Hooks
   const verticalNavOptions = useVerticalNav()
   const theme = useTheme()
@@ -68,7 +68,7 @@ const HorizontalMenu = ({ dictionary, userRole }: HorizontalMenuProps) => {
   const { transitionDuration } = verticalNavOptions
 
   // Filtrar menú por rol
-  const filteredMenuData = filterHorizontalMenuByRole(menuData(dictionary), userRole)
+  const filteredMenuData = filterHorizontalMenuByRole(menuData(dictionary), userHierarchy ?? 999)
 
   return (
     <HorizontalNav

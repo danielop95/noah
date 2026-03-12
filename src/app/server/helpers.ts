@@ -32,12 +32,44 @@ export async function requireAuth() {
 }
 
 /**
- * Require admin role
+ * Check if the current session has a specific permission
+ */
+export async function checkPermission(module: string, action: string): Promise<boolean> {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user) return false
+
+  const permissions = session.user.permissions || []
+
+  return permissions.includes(`${module}.${action}`)
+}
+
+/**
+ * Require a specific permission or throw
+ */
+export async function requirePermission(module: string, action: string) {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user) {
+    throw new Error('No autorizado: debe iniciar sesión')
+  }
+
+  const permissions = session.user.permissions || []
+
+  if (!permissions.includes(`${module}.${action}`)) {
+    throw new Error(`No autorizado: se requiere permiso ${module}.${action}`)
+  }
+
+  return session
+}
+
+/**
+ * Require admin role (hierarchy 1) — shortcut for critical operations
  */
 export async function requireAdmin() {
   const session = await getServerSession(authOptions)
 
-  if (!session || session.user.role !== 'admin') {
+  if (!session?.user || (session.user.roleHierarchy ?? 999) > 1) {
     throw new Error('No autorizado: se requiere rol de administrador')
   }
 
@@ -58,7 +90,6 @@ export async function getUserOrganizationId(userId: string): Promise<string | nu
 
 /**
  * Get organization ID for current admin user
- * Alias for getUserOrganizationId for semantic clarity
  */
 export const getAdminOrganizationId = getUserOrganizationId
 
@@ -79,9 +110,10 @@ export async function requireOrganizationId(userId: string): Promise<string> {
  * Check if user is leader of a specific group
  */
 export async function isUserGroupLeader(userId: string, groupId: string): Promise<boolean> {
-  const leadership = await prisma.groupLeader.findUnique({
-    where: { groupId_userId: { groupId, userId } }
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { groupId: true, groupRole: true }
   })
 
-  return !!leadership
+  return user?.groupId === groupId && user?.groupRole === 'leader'
 }

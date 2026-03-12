@@ -35,14 +35,13 @@ export async function getFullProfile(userId: string) {
       organization: {
         select: { id: true, name: true, logoUrl: true }
       },
-      groupLeaderships: {
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      },
+      group: {
         include: {
-          group: {
-            include: {
-              network: { select: { id: true, name: true } },
-              _count: { select: { reports: true } }
-            }
-          }
+          network: { select: { id: true, name: true } },
+          _count: { select: { reports: true } }
         }
       }
     }
@@ -68,7 +67,7 @@ export async function getFullProfile(userId: string) {
     ...profile,
     stats: {
       reportsCount,
-      groupsLeading: user.groupLeaderships.length,
+      groupsLeading: user.groupRole === 'leader' && user.groupId ? 1 : 0,
       totalAttendees: reportsStats._sum.totalAttendees || 0,
       totalVisitors: reportsStats._sum.visitorsCount || 0,
       avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0)
@@ -82,7 +81,7 @@ export async function getFullProfile(userId: string) {
 export async function getUserFullDetails(userId: string) {
   const session = await getServerSession(authOptions)
 
-  if (!session || session.user.role !== 'admin') {
+  if (!session || (session.user.roleHierarchy ?? 999) > 2) {
     throw new Error('No autorizado')
   }
 
@@ -93,21 +92,17 @@ export async function getUserFullDetails(userId: string) {
       organization: {
         select: { id: true, name: true, logoUrl: true }
       },
-      groupLeaderships: {
+      userRole: {
+        select: { id: true, name: true, slug: true, hierarchy: true }
+      },
+      group: {
         include: {
-          group: {
-            include: {
-              network: { select: { id: true, name: true } },
-              leaders: {
-                include: {
-                  user: {
-                    select: { id: true, name: true, firstName: true, lastName: true, image: true }
-                  }
-                }
-              },
-              _count: { select: { reports: true } }
-            }
-          }
+          network: { select: { id: true, name: true } },
+          members: {
+            where: { groupRole: 'leader' },
+            select: { id: true, name: true, firstName: true, lastName: true, image: true }
+          },
+          _count: { select: { reports: true } }
         }
       },
       groupReports: {
@@ -140,7 +135,7 @@ export async function getUserFullDetails(userId: string) {
     ...profile,
     stats: {
       reportsCount,
-      groupsLeading: user.groupLeaderships.length,
+      groupsLeading: user.groupRole === 'leader' && user.groupId ? 1 : 0,
       totalAttendees: reportsStats._sum.totalAttendees || 0,
       totalVisitors: reportsStats._sum.visitorsCount || 0,
       avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0)
@@ -177,12 +172,9 @@ export async function getNetworkFullDetails(networkId: string) {
       },
       groups: {
         include: {
-          leaders: {
-            include: {
-              user: {
-                select: { id: true, name: true, firstName: true, lastName: true, image: true, email: true }
-              }
-            }
+          members: {
+            where: { groupRole: 'leader' },
+            select: { id: true, name: true, firstName: true, lastName: true, image: true, email: true }
           },
           _count: { select: { reports: true } }
         }
@@ -256,8 +248,15 @@ export async function getNetworkFullDetails(networkId: string) {
     ? Math.round(((newMembersThisMonth - newMembersLastMonth) / newMembersLastMonth) * 100)
     : newMembersThisMonth > 0 ? 100 : 0
 
+  // Mapear members → leaders para compatibilidad con el view
+  const groupsWithLeaders = network.groups.map(({ members, ...group }) => ({
+    ...group,
+    leaders: members
+  }))
+
   return {
     ...network,
+    groups: groupsWithLeaders,
     stats: {
       totalGroups: network.groups.length,
       activeGroups: activeGroups.length,

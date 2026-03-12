@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/libs/prisma'
-import { requireAuth, requireAdmin, getUserOrganizationId } from './helpers'
+import { requirePermission, getUserOrganizationId } from './helpers'
 
 // Tipos
 export type CalendarEventInput = {
@@ -20,7 +20,7 @@ export type CalendarEventInput = {
 // ===================
 
 export async function getAllCalendarEvents() {
-  const session = await requireAuth()
+  const session = await requirePermission('calendario', 'ver')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -59,7 +59,7 @@ export async function getAllCalendarEvents() {
 }
 
 export async function getCalendarEventById(id: string) {
-  const session = await requireAuth()
+  const session = await requirePermission('calendario', 'ver')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -93,7 +93,7 @@ export async function getCalendarEventById(id: string) {
 // ===================
 
 export async function createCalendarEvent(data: CalendarEventInput) {
-  const session = await requireAdmin()
+  const session = await requirePermission('calendario', 'crear')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -123,7 +123,7 @@ export async function createCalendarEvent(data: CalendarEventInput) {
 // ===================
 
 export async function updateCalendarEvent(id: string, data: Partial<CalendarEventInput>) {
-  const session = await requireAdmin()
+  const session = await requirePermission('calendario', 'editar')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -164,7 +164,7 @@ export async function updateCalendarEvent(id: string, data: Partial<CalendarEven
 // ===================
 
 export async function deleteCalendarEvent(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('calendario', 'eliminar')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -193,7 +193,7 @@ export async function deleteCalendarEvent(id: string) {
 // ===================
 
 export async function updateCalendarEventDates(id: string, startDate: Date | string, endDate: Date | string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('calendario', 'editar')
   const organizationId = await getUserOrganizationId(session.user.id)
 
   if (!organizationId) {

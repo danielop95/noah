@@ -28,14 +28,12 @@ import { styled } from '@mui/material/styles'
 import CustomAvatar from '@core/components/mui/Avatar'
 
 type GroupLeader = {
-  user: {
-    id: string
-    name: string | null
-    firstName: string | null
-    lastName: string | null
-    image: string | null
-    email: string | null
-  }
+  id: string
+  name: string | null
+  firstName: string | null
+  lastName: string | null
+  image: string | null
+  email: string | null
 }
 
 type GroupData = {
@@ -66,7 +64,7 @@ const GroupCard = styled(Card)(({ theme }) => ({
   }
 }))
 
-const getDisplayName = (user: GroupLeader['user']) =>
+const getDisplayName = (user: GroupLeader) =>
   user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Sin nombre'
 
 const getDayLabel = (day: string | null) => {
@@ -245,7 +243,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                         title={
                           <Box>
                             {group.leaders.map(l => (
-                              <div key={l.user.id}>{getDisplayName(l.user)}</div>
+                              <div key={l.id}>{getDisplayName(l)}</div>
                             ))}
                           </Box>
                         }
@@ -253,11 +251,11 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                         <AvatarGroup max={3} sx={{ justifyContent: 'flex-start' }}>
                           {group.leaders.map(l => (
                             <Avatar
-                              key={l.user.id}
-                              src={l.user.image || undefined}
+                              key={l.id}
+                              src={l.image || undefined}
                               sx={{ width: 24, height: 24, fontSize: '0.75rem' }}
                             >
-                              {getDisplayName(l.user).charAt(0)}
+                              {getDisplayName(l).charAt(0)}
                             </Avatar>
                           ))}
                         </AvatarGroup>

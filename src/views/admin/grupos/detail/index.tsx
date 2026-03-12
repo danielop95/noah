@@ -128,6 +128,7 @@ const GroupDetailView = ({ group }: Props) => {
                   members={group.networkMembers}
                   groupId={group.id}
                   networkName={group.network.name}
+                  groupMembers={group.groupMembers}
                 />
               </TabPanel>
               <TabPanel value='reports' className='p-0'>

@@ -45,6 +45,8 @@ import DialogActions from '@mui/material/DialogActions'
 import GroupDrawer from './GroupDrawer'
 import { deleteGroup } from '@/app/server/groupActions'
 import type { GroupWithDetails, NetworkOption } from '@/app/server/groupActions'
+import ExportButton from '@/components/ExportButton'
+import type { ExportColumn } from '@/components/ExportButton'
 
 type GroupListTableProps = {
   groups: GroupWithDetails[]
@@ -156,12 +158,12 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
 
           return (
             <AvatarGroup max={3} sx={{ justifyContent: 'flex-start' }}>
-              {leaders.map(({ user }) => {
-                const displayName = user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'Usuario'
+              {leaders.map(leader => {
+                const displayName = leader.name || `${leader.firstName || ''} ${leader.lastName || ''}`.trim() || leader.email || 'Usuario'
 
                 return (
-                  <Tooltip key={user.id} title={displayName}>
-                    <Avatar src={user.image || undefined} sx={{ width: 32, height: 32 }}>
+                  <Tooltip key={leader.id} title={displayName}>
+                    <Avatar src={leader.image || undefined} sx={{ width: 32, height: 32 }}>
                       {displayName.charAt(0).toUpperCase()}
                     </Avatar>
                   </Tooltip>
@@ -275,6 +277,32 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
     }
   })
 
+  const groupExportColumns: ExportColumn[] = [
+    { header: 'Grupo', accessor: r => (r as GroupWithDetails).name, width: 20 },
+    { header: 'Red', accessor: r => (r as GroupWithDetails).network.name, width: 16 },
+    {
+      header: 'Líderes',
+      accessor: r => {
+        const leaders = (r as GroupWithDetails).leaders
+
+        return leaders.map(l => l.name || `${l.firstName || ''} ${l.lastName || ''}`.trim() || l.email || '').join(', ')
+      },
+      width: 24
+    },
+    { header: 'Modalidad', accessor: r => ((r as GroupWithDetails).modality === 'virtual' ? 'Virtual' : 'Presencial'), width: 12 },
+    {
+      header: 'Horario',
+      accessor: r => {
+        const g = r as GroupWithDetails
+
+        return g.meetingDay ? `${DAYS_LABELS[g.meetingDay] || g.meetingDay} ${g.meetingTime || ''}`.trim() : ''
+      },
+      width: 16
+    },
+    { header: 'Estado', accessor: r => ((r as GroupWithDetails).isActive ? 'Activo' : 'Inactivo'), width: 10 },
+    { header: 'Descripción', accessor: r => (r as GroupWithDetails).description || '', width: 30 }
+  ]
+
   const handleDelete = async () => {
     if (!groupToDelete) return
 
@@ -343,16 +371,19 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
             </Select>
           </FormControl>
         </Box>
-        <Button
-          variant='contained'
-          startIcon={<i className='ri-add-line' />}
-          onClick={() => {
-            setSelectedGroup(null)
-            setDrawerOpen(true)
-          }}
-        >
-          Nuevo Grupo
-        </Button>
+        <Box className='flex gap-2'>
+          <ExportButton data={filteredGroups} columns={groupExportColumns} fileName='grupos' title='Grupos' />
+          <Button
+            variant='contained'
+            startIcon={<i className='ri-add-line' />}
+            onClick={() => {
+              setSelectedGroup(null)
+              setDrawerOpen(true)
+            }}
+          >
+            Nuevo Grupo
+          </Button>
+        </Box>
       </Box>
 
       <TableContainer>

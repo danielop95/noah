@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session || session.user.role !== 'admin') {
+    if (!session || (session.user.roleHierarchy ?? 999) > 2) {
       return NextResponse.json({ message: 'No autorizado' }, { status: 401 })
     }
 

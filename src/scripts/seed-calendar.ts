@@ -32,7 +32,7 @@ async function main() {
   const admin = await prisma.user.findFirst({
     where: {
       organizationId: organization.id,
-      role: 'admin'
+      userRole: { slug: 'admin' }
     }
   })
 

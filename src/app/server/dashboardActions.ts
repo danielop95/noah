@@ -113,9 +113,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
       where: { organizationId, isActive: true }
     }),
 
-    // Total de admins
+    // Total de admins (hierarchy <= 2)
     prisma.user.count({
-      where: { organizationId, role: 'admin' }
+      where: { organizationId, userRole: { hierarchy: { lte: 2 } } }
     }),
 
     // Usuarios con red asignada
@@ -211,12 +211,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
         network: {
           select: { name: true }
         },
-        leaders: {
-          select: {
-            user: {
-              select: { name: true, firstName: true, lastName: true }
-            }
-          },
+        members: {
+          where: { groupRole: 'leader' },
+          select: { name: true, firstName: true, lastName: true },
           take: 2
         }
       }
@@ -279,9 +276,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     meetingTime: group.meetingTime,
     modality: group.modality,
     networkName: group.network.name,
-    leaderNames: group.leaders.map(l => {
-      const u = l.user
-
+    leaderNames: group.members.map(u => {
       return u.firstName || u.name?.split(' ')[0] || 'Lider'
     })
   }))

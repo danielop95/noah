@@ -110,6 +110,7 @@
     "redes": "Reseaux",
     "grupos": "Groupes",
     "reportes": "Rapports",
-    "configuracion": "Parametres"
+    "configuracion": "Parametres",
+    "roles": "Roles et Permissions"
   }
 }

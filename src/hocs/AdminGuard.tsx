@@ -21,7 +21,7 @@ export default async function AdminGuard({ children }: ChildrenType) {
     return <AuthRedirect />
   }
 
-  if (session.user.role !== 'admin') {
+  if ((session.user.roleHierarchy ?? 999) > 1) {
     const mode = await getServerMode()
 
     return <NotAuthorized mode={mode} />

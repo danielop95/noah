@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/libs/prisma'
-import { requireAdmin, getAdminOrganizationId } from './helpers'
+import { requirePermission, getAdminOrganizationId } from './helpers'
 
 // Tipos para las respuestas
 export type NetworkUser = {
@@ -28,7 +28,7 @@ export type NetworkWithUsers = {
 }
 
 export async function getAllNetworks(): Promise<NetworkWithUsers[]> {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -60,7 +60,7 @@ export async function getAllNetworks(): Promise<NetworkWithUsers[]> {
 }
 
 export async function getNetworkById(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -99,7 +99,7 @@ export async function createNetwork(data: {
   leaderIds: string[]
   memberIds: string[]
 }) {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'crear')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -195,7 +195,7 @@ export async function updateNetwork(
     memberIds?: string[]
   }
 ) {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'editar')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -311,7 +311,7 @@ export async function updateNetwork(
 }
 
 export async function deleteNetwork(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'eliminar')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -333,10 +333,127 @@ export async function deleteNetwork(id: string) {
   return { success: true, name: network.name }
 }
 
+// ============================================
+// GRANULAR USER MANAGEMENT
+// ============================================
+
+export async function addUserToNetwork(networkId: string, userId: string, role: 'leader' | 'member') {
+  const session = await requirePermission('redes', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  // Validate network
+  const network = await prisma.network.findUnique({
+    where: { id: networkId },
+    select: { organizationId: true }
+  })
+
+  if (!network || network.organizationId !== organizationId) {
+    throw new Error('Red no encontrada')
+  }
+
+  // Validate user
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { organizationId: true, networkId: true, name: true }
+  })
+
+  if (!user || user.organizationId !== organizationId) {
+    throw new Error('Usuario no encontrado')
+  }
+
+  if (user.networkId && user.networkId !== networkId) {
+    throw new Error(`${user.name || 'El usuario'} ya pertenece a otra red`)
+  }
+
+  if (user.networkId === networkId) {
+    throw new Error(`${user.name || 'El usuario'} ya pertenece a esta red`)
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { networkId, networkRole: role }
+  })
+
+  return { success: true }
+}
+
+export async function removeUserFromNetwork(userId: string) {
+  const session = await requirePermission('redes', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { organizationId: true, networkId: true, groupId: true }
+  })
+
+  if (!user || user.organizationId !== organizationId) {
+    throw new Error('Usuario no encontrado')
+  }
+
+  // Also remove from group if they have one (group requires network membership)
+  await prisma.user.update({
+    where: { id: userId },
+    data: { networkId: null, networkRole: null, groupId: null, groupRole: null }
+  })
+
+  return { success: true }
+}
+
+export async function changeNetworkRole(userId: string, newRole: 'leader' | 'member') {
+  const session = await requirePermission('redes', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { organizationId: true, networkId: true }
+  })
+
+  if (!user || user.organizationId !== organizationId || !user.networkId) {
+    throw new Error('Usuario no encontrado o no pertenece a una red')
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { networkRole: newRole }
+  })
+
+  return { success: true }
+}
+
+export async function getAvailableUsersForNetwork(networkId: string) {
+  const session = await requirePermission('redes', 'ver')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  return prisma.user.findMany({
+    where: {
+      organizationId,
+      isActive: true,
+      networkId: null
+    },
+    select: {
+      id: true,
+      name: true,
+      firstName: true,
+      lastName: true,
+      image: true,
+      email: true
+    },
+    orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }, { name: 'asc' }]
+  })
+}
+
 // Helper para obtener usuarios disponibles (para selectores)
 // Ahora excluye usuarios que ya están en otra red
 export async function getOrganizationUsers(excludeNetworkId?: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('redes', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -366,4 +483,18 @@ export async function getOrganizationUsers(excludeNetworkId?: string) {
   })
 
   return users
+}
+
+/** Lightweight list of networks for select dropdowns */
+export async function getNetworksForSelect() {
+  const session = await requirePermission('redes', 'ver')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  return prisma.network.findMany({
+    where: { organizationId, isActive: true },
+    select: { id: true, name: true },
+    orderBy: { name: 'asc' }
+  })
 }

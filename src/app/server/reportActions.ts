@@ -72,15 +72,25 @@ export async function getAllReports(filters?: {
     throw new Error('El usuario no pertenece a ninguna organización')
   }
 
-  const isAdmin = user.role === 'admin'
+  const hasFullAccess = user.permissions?.includes('reportes.ver') && (user.roleHierarchy ?? 999) <= 2
 
   // Build where clause
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = { organizationId }
 
-  // Non-admin users can only see reports they created
-  if (!isAdmin) {
-    where.reporterId = user.id
+  // Non-admin users see reports from their group (if leader)
+  if (!hasFullAccess) {
+    const currentUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { groupId: true, groupRole: true }
+    })
+
+    if (currentUser?.groupId && currentUser.groupRole === 'leader') {
+      where.groupId = currentUser.groupId
+    } else {
+      // No es líder de ningún grupo, no ve reportes
+      return []
+    }
   }
 
   // Apply filters
@@ -173,11 +183,15 @@ export async function getReportById(id: string): Promise<ReportWithDetails | nul
     throw new Error('Reporte no encontrado o no autorizado')
   }
 
-  // Permission check: admin or reporter
-  const isAdmin = user.role === 'admin'
+  // Permission check: admin/auxiliar or leader of the group
+  const hasFullAccess = (user.roleHierarchy ?? 999) <= 2
 
-  if (!isAdmin && report.reporterId !== user.id) {
-    throw new Error('No autorizado para ver este reporte')
+  if (!hasFullAccess) {
+    const isLeader = await isUserGroupLeader(user.id, report.groupId)
+
+    if (!isLeader) {
+      throw new Error('No autorizado para ver este reporte')
+    }
   }
 
   return {
@@ -202,14 +216,26 @@ export async function getReportStats(filters?: {
     throw new Error('El usuario no pertenece a ninguna organización')
   }
 
-  const isAdmin = user.role === 'admin'
+  const hasFullAccess = user.permissions?.includes('reportes.ver') && (user.roleHierarchy ?? 999) <= 2
 
   // Build where clause (same as getAllReports)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = { organizationId }
 
-  if (!isAdmin) {
-    where.reporterId = user.id
+  if (!hasFullAccess) {
+    const currentUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { groupId: true, groupRole: true }
+    })
+
+    if (currentUser?.groupId && currentUser.groupRole === 'leader') {
+      where.groupId = currentUser.groupId
+    } else {
+      return {
+        totalReports: 0, totalAttendees: 0, totalLeaders: 0,
+        totalVisitors: 0, totalOffering: 0, averageAttendees: 0
+      }
+    }
   }
 
   if (filters?.groupId) {
@@ -267,10 +293,10 @@ export async function getGroupsForReporting(): Promise<GroupOptionForReports[]> 
     throw new Error('El usuario no pertenece a ninguna organización')
   }
 
-  const isAdmin = user.role === 'admin'
+  const hasFullAccess = (user.roleHierarchy ?? 999) <= 2
 
-  if (isAdmin) {
-    // Admin can see all active groups
+  if (hasFullAccess) {
+    // Admin/auxiliar can see all active groups
     const groups = await prisma.group.findMany({
       where: { organizationId, isActive: true },
       select: {
@@ -286,32 +312,37 @@ export async function getGroupsForReporting(): Promise<GroupOptionForReports[]> 
     return groups
   }
 
-  // For leaders, only return groups they lead
-  const leaderships = await prisma.groupLeader.findMany({
-    where: { userId: user.id },
-    include: {
-      group: {
-        select: {
-          id: true,
-          name: true,
-          imageUrl: true,
-          networkId: true,
-          isActive: true,
-          network: { select: { id: true, name: true } }
-        }
-      }
+  // For leaders, only return their group
+  const currentUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: { groupId: true, groupRole: true }
+  })
+
+  if (!currentUser?.groupId || currentUser.groupRole !== 'leader') {
+    return []
+  }
+
+  const group = await prisma.group.findUnique({
+    where: { id: currentUser.groupId },
+    select: {
+      id: true,
+      name: true,
+      imageUrl: true,
+      networkId: true,
+      isActive: true,
+      network: { select: { id: true, name: true } }
     }
   })
 
-  return leaderships
-    .filter(l => l.group.isActive)
-    .map(l => ({
-      id: l.group.id,
-      name: l.group.name,
-      imageUrl: l.group.imageUrl,
-      networkId: l.group.networkId,
-      network: l.group.network
-    }))
+  if (!group || !group.isActive) return []
+
+  return [{
+    id: group.id,
+    name: group.name,
+    imageUrl: group.imageUrl,
+    networkId: group.networkId,
+    network: group.network
+  }]
 }
 
 /**
@@ -320,7 +351,7 @@ export async function getGroupsForReporting(): Promise<GroupOptionForReports[]> 
 export async function getNetworksForReportFilters() {
   const user = await getSessionUser()
 
-  if (user.role !== 'admin') {
+  if ((user.roleHierarchy ?? 999) > 2) {
     return []
   }
 
@@ -364,7 +395,7 @@ export async function createReport(data: {
   // Verify user is a leader of this group (or admin)
   const isLeader = await isUserGroupLeader(user.id, data.groupId)
 
-  if (!isLeader && user.role !== 'admin') {
+  if (!isLeader && (user.roleHierarchy ?? 999) > 2) {
     throw new Error('Solo los líderes pueden crear reportes para sus grupos')
   }
 
@@ -485,9 +516,15 @@ export async function updateReport(
     throw new Error('Reporte no encontrado o no autorizado')
   }
 
-  // Only creator can edit
-  if (report.reporterId !== user.id) {
-    throw new Error('Solo el creador del reporte puede editarlo')
+  // Admin/auxiliar or leader of the group can edit
+  const hasFullAccess = (user.roleHierarchy ?? 999) <= 2
+
+  if (!hasFullAccess) {
+    const isLeader = await isUserGroupLeader(user.id, report.groupId)
+
+    if (!isLeader) {
+      throw new Error('Solo los líderes del grupo o administradores pueden editar este reporte')
+    }
   }
 
   // Build update data
@@ -603,6 +640,7 @@ export async function deleteReport(id: string) {
     select: {
       reporterId: true,
       organizationId: true,
+      groupId: true,
       group: { select: { name: true } },
       meetingDate: true
     }
@@ -612,11 +650,15 @@ export async function deleteReport(id: string) {
     throw new Error('Reporte no encontrado o no autorizado')
   }
 
-  // Admin or creator can delete
-  const isAdmin = user.role === 'admin'
+  // Admin/auxiliar or leader of the group can delete
+  const hasFullAccess = (user.roleHierarchy ?? 999) <= 2
 
-  if (!isAdmin && report.reporterId !== user.id) {
-    throw new Error('No autorizado para eliminar este reporte')
+  if (!hasFullAccess) {
+    const isLeader = await isUserGroupLeader(user.id, report.groupId)
+
+    if (!isLeader) {
+      throw new Error('No autorizado para eliminar este reporte')
+    }
   }
 
   await prisma.groupReport.delete({ where: { id } })
@@ -626,4 +668,37 @@ export async function deleteReport(id: string) {
     groupName: report.group.name,
     date: report.meetingDate
   }
+}
+
+/**
+ * Check if a report already exists for a group on a specific date
+ * Used for real-time validation in the UI
+ */
+export async function checkReportExists(
+  groupId: string,
+  meetingDate: string,
+  excludeReportId?: string
+): Promise<{ exists: boolean; reporterName?: string }> {
+  const date = new Date(meetingDate)
+
+  date.setHours(0, 0, 0, 0)
+
+  const existing = await prisma.groupReport.findUnique({
+    where: { groupId_meetingDate: { groupId, meetingDate: date } },
+    select: {
+      id: true,
+      reporter: { select: { firstName: true, lastName: true, name: true } }
+    }
+  })
+
+  if (!existing || (excludeReportId && existing.id === excludeReportId)) {
+    return { exists: false }
+  }
+
+  const reporter = existing.reporter
+  const reporterName = reporter.firstName
+    ? `${reporter.firstName} ${reporter.lastName || ''}`.trim()
+    : reporter.name || 'otro líder'
+
+  return { exists: true, reporterName }
 }

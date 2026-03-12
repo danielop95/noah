@@ -36,7 +36,7 @@ type RenderExpandIconProps = {
 type Props = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
   scrollMenu: (container: any, isPerfectScrollbar: boolean) => void
-  userRole?: string
+  userHierarchy?: number
 }
 
 const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) => (
@@ -45,7 +45,7 @@ const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) =
   </StyledVerticalNavExpandIcon>
 )
 
-const VerticalMenu = ({ dictionary, scrollMenu, userRole }: Props) => {
+const VerticalMenu = ({ dictionary, scrollMenu, userHierarchy }: Props) => {
   // Hooks
   const theme = useTheme()
   const verticalNavOptions = useVerticalNav()
@@ -53,8 +53,8 @@ const VerticalMenu = ({ dictionary, scrollMenu, userRole }: Props) => {
   // Vars
   const { isBreakpointReached, transitionDuration } = verticalNavOptions
 
-  // Filtrar menú por rol del usuario
-  const filteredMenuData = filterVerticalMenuByRole(menuData(dictionary), userRole)
+  // Filtrar menú por jerarquía del usuario
+  const filteredMenuData = filterVerticalMenuByRole(menuData(dictionary), userHierarchy ?? 999)
 
   const ScrollWrapper = isBreakpointReached ? 'div' : PerfectScrollbar
 

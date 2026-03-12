@@ -1,12 +1,9 @@
 'use client'
 
-// React Imports
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
-// Next Imports
 import { useRouter } from 'next/navigation'
 
-// MUI Imports
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
@@ -21,8 +18,10 @@ import Tooltip from '@mui/material/Tooltip'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 
-// Custom Components
 import CustomAvatar from '@core/components/mui/Avatar'
+import UserPickerDialog from '@/components/UserPickerDialog'
+
+import { addUserToGroup, removeUserFromGroup, getAvailableUsersForGroup } from '@/app/server/groupActions'
 
 type NetworkMember = {
   id: string
@@ -33,6 +32,8 @@ type NetworkMember = {
   image: string | null
   phone: string | null
   networkRole: string | null
+  groupRole?: string | null
+  groupId?: string | null
   isActive: boolean
 }
 
@@ -40,6 +41,7 @@ type Props = {
   members: NetworkMember[]
   groupId: string
   networkName: string
+  groupMembers: { id: string; groupRole: string | null }[]
 }
 
 const getDisplayName = (user: NetworkMember) =>
@@ -53,11 +55,14 @@ const getInitials = (name: string) =>
     .substring(0, 2)
     .toUpperCase()
 
-const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
+const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [selectedMember, setSelectedMember] = useState<NetworkMember | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [pickerOpen, setPickerOpen] = useState(false)
+
+  const groupMemberIds = new Set(groupMembers.map(m => m.id))
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, member: NetworkMember) => {
     setAnchorEl(event.currentTarget)
@@ -77,12 +82,62 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
     handleMenuClose()
   }
 
-  const handleAddAsLeader = () => {
-    // TODO: Implementar agregar como líder
+  const handleAddAsLeader = async () => {
+    if (!selectedMember) return
+
+    try {
+      await addUserToGroup(groupId, selectedMember.id, 'leader')
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al agregar')
+    }
+
     handleMenuClose()
   }
 
-  // Filtrar miembros por búsqueda
+  const handleAddAsMember = async () => {
+    if (!selectedMember) return
+
+    try {
+      await addUserToGroup(groupId, selectedMember.id, 'member')
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al agregar')
+    }
+
+    handleMenuClose()
+  }
+
+  const handleRemoveFromGroup = async () => {
+    if (!selectedMember) return
+
+    if (!confirm(`¿Remover a ${getDisplayName(selectedMember)} de este grupo?`)) {
+      handleMenuClose()
+
+      return
+    }
+
+    try {
+      await removeUserFromGroup(selectedMember.id)
+      router.refresh()
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Error al remover')
+    }
+
+    handleMenuClose()
+  }
+
+  const fetchAvailable = useCallback(async () => {
+    const users = await getAvailableUsersForGroup(groupId)
+
+    return users.filter(u => !u.groupId)
+  }, [groupId])
+
+  const handleAddUserFromPicker = async (userId: string) => {
+    await addUserToGroup(groupId, userId, 'member')
+    router.refresh()
+  }
+
   const filteredMembers = members.filter(member => {
     if (!searchQuery) return true
 
@@ -103,7 +158,7 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
           Sin miembros en la red
         </Typography>
         <Typography variant='body2' color='text.secondary' className='mbe-4 text-center'>
-          La red "{networkName}" no tiene miembros asignados
+          La red &quot;{networkName}&quot; no tiene miembros asignados
         </Typography>
         <Button
           variant='contained'
@@ -118,13 +173,12 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
 
   return (
     <Box className='p-4'>
-      {/* Header con búsqueda */}
       <Box className='flex items-center justify-between gap-4 mbe-4 flex-wrap'>
         <TextField
           size='small'
           placeholder='Buscar miembro...'
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           slotProps={{
             input: {
               startAdornment: (
@@ -136,30 +190,39 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
           }}
           sx={{ minWidth: 200 }}
         />
-        <Chip
-          icon={<i className='ri-bubble-chart-line' />}
-          label={networkName}
-          color='primary'
-          variant='outlined'
-        />
+        <Box className='flex items-center gap-2'>
+          <Chip
+            icon={<i className='ri-bubble-chart-line' />}
+            label={networkName}
+            color='primary'
+            variant='outlined'
+          />
+          <Button
+            size='small'
+            variant='outlined'
+            startIcon={<i className='ri-user-add-line' />}
+            onClick={() => setPickerOpen(true)}
+          >
+            Agregar
+          </Button>
+        </Box>
       </Box>
 
-      {/* Contador */}
       <Typography variant='caption' color='text.secondary' className='mbe-3 block'>
         Mostrando {filteredMembers.length} de {members.length} miembros de la red
       </Typography>
 
-      {/* Lista de miembros */}
       {filteredMembers.length === 0 ? (
         <Box className='text-center py-8'>
           <Typography color='text.secondary'>
-            No se encontraron miembros con "{searchQuery}"
+            No se encontraron miembros con &quot;{searchQuery}&quot;
           </Typography>
         </Box>
       ) : (
         <Box className='flex flex-col gap-2'>
           {filteredMembers.map(member => {
             const displayName = getDisplayName(member)
+            const isInGroup = groupMemberIds.has(member.id)
 
             return (
               <Box
@@ -170,10 +233,7 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
                   '&:hover': { bgcolor: 'action.selected' }
                 }}
               >
-                <Avatar
-                  src={member.image || undefined}
-                  sx={{ width: 44, height: 44 }}
-                >
+                <Avatar src={member.image || undefined} sx={{ width: 44, height: 44 }}>
                   {getInitials(displayName)}
                 </Avatar>
                 <Box className='flex-1 min-w-0'>
@@ -184,21 +244,24 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
                     {member.networkRole === 'leader' && (
                       <Chip
                         icon={<i className='ri-star-fill' />}
-                        label='Líder de red'
+                        label='Lider de red'
                         size='small'
                         color='warning'
                         variant='tonal'
                         sx={{ height: 20, fontSize: '0.7rem' }}
                       />
                     )}
-                    {!member.isActive && (
+                    {isInGroup && (
                       <Chip
-                        label='Inactivo'
+                        label='En grupo'
                         size='small'
-                        color='error'
-                        variant='outlined'
-                        sx={{ height: 20 }}
+                        color='success'
+                        variant='tonal'
+                        sx={{ height: 20, fontSize: '0.7rem' }}
                       />
+                    )}
+                    {!member.isActive && (
+                      <Chip label='Inactivo' size='small' color='error' variant='outlined' sx={{ height: 20 }} />
                     )}
                   </Box>
                   <Typography variant='caption' color='text.secondary' noWrap>
@@ -214,10 +277,7 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
                       <i className='ri-eye-line' />
                     </IconButton>
                   </Tooltip>
-                  <IconButton
-                    size='small'
-                    onClick={(e) => handleMenuOpen(e, member)}
-                  >
+                  <IconButton size='small' onClick={e => handleMenuOpen(e, member)}>
                     <i className='ri-more-2-line' />
                   </IconButton>
                 </Box>
@@ -227,7 +287,6 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
         </Box>
       )}
 
-      {/* Menú de acciones */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -236,18 +295,36 @@ const GroupMembersTab = ({ members, groupId, networkName }: Props) => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem onClick={handleViewProfile}>
-          <ListItemIcon>
-            <i className='ri-user-line' />
-          </ListItemIcon>
+          <ListItemIcon><i className='ri-user-line' /></ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleAddAsLeader}>
-          <ListItemIcon>
-            <i className='ri-star-line' />
-          </ListItemIcon>
-          <ListItemText>Agregar como líder</ListItemText>
-        </MenuItem>
+        {selectedMember && !groupMemberIds.has(selectedMember.id) && (
+          <>
+            <MenuItem onClick={handleAddAsLeader}>
+              <ListItemIcon><i className='ri-star-line' /></ListItemIcon>
+              <ListItemText>Agregar como lider</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={handleAddAsMember}>
+              <ListItemIcon><i className='ri-user-add-line' /></ListItemIcon>
+              <ListItemText>Agregar como miembro</ListItemText>
+            </MenuItem>
+          </>
+        )}
+        {selectedMember && groupMemberIds.has(selectedMember.id) && (
+          <MenuItem onClick={handleRemoveFromGroup} sx={{ color: 'error.main' }}>
+            <ListItemIcon sx={{ color: 'error.main' }}><i className='ri-user-unfollow-line' /></ListItemIcon>
+            <ListItemText>Remover del grupo</ListItemText>
+          </MenuItem>
+        )}
       </Menu>
+
+      <UserPickerDialog
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        title='Agregar Miembro al Grupo'
+        fetchUsers={fetchAvailable}
+        onSelect={handleAddUserFromPicker}
+      />
     </Box>
   )
 }

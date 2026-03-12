@@ -94,7 +94,6 @@ async function main() {
           lastName: userData.lastName,
           name: `${userData.firstName} ${userData.lastName}`,
           gender: userData.gender,
-          role: 'user',
           isActive: true,
           organizationId: organization.id,
           country: 'CO',

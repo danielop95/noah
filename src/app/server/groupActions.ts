@@ -1,7 +1,7 @@
 'use server'
 
 import prisma from '@/libs/prisma'
-import { requireAdmin, getAdminOrganizationId } from './helpers'
+import { requirePermission, getAdminOrganizationId } from './helpers'
 
 // Tipos para las respuestas
 export type GroupLeaderInfo = {
@@ -29,8 +29,8 @@ export type GroupWithDetails = {
   updatedAt: Date
   networkId: string
   network: { id: string; name: string }
-  leaders: { user: GroupLeaderInfo }[]
-  _count: { leaders: number }
+  leaders: GroupLeaderInfo[]
+  _count: { members: number }
 }
 
 export type NetworkOption = {
@@ -44,11 +44,13 @@ export type NetworkOption = {
     lastName: string | null
     image: string | null
     email: string | null
+    groupId: string | null
+    groupRole: string | null
   }[]
 }
 
 export async function getAllGroups(): Promise<GroupWithDetails[]> {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -61,32 +63,32 @@ export async function getAllGroups(): Promise<GroupWithDetails[]> {
       network: {
         select: { id: true, name: true }
       },
-      leaders: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              firstName: true,
-              lastName: true,
-              image: true,
-              email: true
-            }
-          }
+      members: {
+        where: { groupRole: 'leader' },
+        select: {
+          id: true,
+          name: true,
+          firstName: true,
+          lastName: true,
+          image: true,
+          email: true
         }
       },
       _count: {
-        select: { leaders: true }
+        select: { members: true }
       }
     },
     orderBy: { name: 'asc' }
   })
 
-  return groups as GroupWithDetails[]
+  return groups.map(g => ({
+    ...g,
+    leaders: g.members
+  })) as unknown as GroupWithDetails[]
 }
 
 export async function getGroupById(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -99,18 +101,15 @@ export async function getGroupById(id: string) {
       network: {
         select: { id: true, name: true }
       },
-      leaders: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              firstName: true,
-              lastName: true,
-              image: true,
-              email: true
-            }
-          }
+      members: {
+        where: { groupRole: 'leader' },
+        select: {
+          id: true,
+          name: true,
+          firstName: true,
+          lastName: true,
+          image: true,
+          email: true
         }
       }
     }
@@ -120,7 +119,7 @@ export async function getGroupById(id: string) {
     throw new Error('Grupo no encontrado o no autorizado')
   }
 
-  return group
+  return { ...group, leaders: group.members }
 }
 
 export async function createGroup(data: {
@@ -136,7 +135,7 @@ export async function createGroup(data: {
   meetingTime?: string
   leaderIds: string[]
 }) {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'crear')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -164,11 +163,18 @@ export async function createGroup(data: {
       id: { in: data.leaderIds },
       networkId: data.networkId
     },
-    select: { id: true, name: true }
+    select: { id: true, name: true, groupId: true }
   })
 
   if (leaders.length !== data.leaderIds.length) {
     throw new Error('Algunos lideres no pertenecen a la red seleccionada')
+  }
+
+  // Validar que ningún líder ya pertenece a otro grupo
+  const leadersWithGroup = leaders.filter(l => l.groupId !== null)
+
+  if (leadersWithGroup.length > 0) {
+    throw new Error('Algunos lideres ya pertenecen a otro grupo')
   }
 
   // Validar ubicación si es presencial
@@ -194,24 +200,21 @@ export async function createGroup(data: {
       }
     })
 
-    // Crear relaciones con líderes
-    await tx.groupLeader.createMany({
-      data: data.leaderIds.map(userId => ({
-        groupId: created.id,
-        userId
-      }))
+    // Asignar líderes al grupo
+    await tx.user.updateMany({
+      where: { id: { in: data.leaderIds } },
+      data: { groupId: created.id, groupRole: 'leader' }
     })
 
     return tx.group.findUnique({
       where: { id: created.id },
       include: {
         network: { select: { id: true, name: true } },
-        leaders: {
-          include: {
-            user: { select: { id: true, name: true, image: true } }
-          }
+        members: {
+          where: { groupRole: 'leader' },
+          select: { id: true, name: true, image: true }
         },
-        _count: { select: { leaders: true } }
+        _count: { select: { members: true } }
       }
     })
   })
@@ -236,7 +239,7 @@ export async function updateGroup(
     leaderIds?: string[]
   }
 ) {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'editar')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -278,11 +281,18 @@ export async function updateGroup(
         id: { in: data.leaderIds },
         networkId: targetNetworkId
       },
-      select: { id: true }
+      select: { id: true, groupId: true }
     })
 
     if (leaders.length !== data.leaderIds.length) {
       throw new Error('Algunos lideres no pertenecen a la red seleccionada')
+    }
+
+    // Validar que no pertenezcan a OTRO grupo
+    const leadersInOtherGroup = leaders.filter(l => l.groupId !== null && l.groupId !== id)
+
+    if (leadersInOtherGroup.length > 0) {
+      throw new Error('Algunos lideres ya pertenecen a otro grupo')
     }
   }
 
@@ -327,17 +337,16 @@ export async function updateGroup(
 
     // Si se actualizan líderes
     if (data.leaderIds !== undefined) {
-      // Eliminar líderes actuales
-      await tx.groupLeader.deleteMany({
-        where: { groupId: id }
+      // Quitar asignación de líderes actuales de este grupo
+      await tx.user.updateMany({
+        where: { groupId: id, groupRole: 'leader' },
+        data: { groupId: null, groupRole: null }
       })
 
-      // Crear nuevos líderes
-      await tx.groupLeader.createMany({
-        data: data.leaderIds.map(userId => ({
-          groupId: id,
-          userId
-        }))
+      // Asignar nuevos líderes
+      await tx.user.updateMany({
+        where: { id: { in: data.leaderIds } },
+        data: { groupId: id, groupRole: 'leader' }
       })
     }
 
@@ -345,19 +354,18 @@ export async function updateGroup(
       where: { id },
       include: {
         network: { select: { id: true, name: true } },
-        leaders: {
-          include: {
-            user: { select: { id: true, name: true, image: true } }
-          }
+        members: {
+          where: { groupRole: 'leader' },
+          select: { id: true, name: true, image: true }
         },
-        _count: { select: { leaders: true } }
+        _count: { select: { members: true } }
       }
     })
   })
 }
 
 export async function deleteGroup(id: string) {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'eliminar')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -373,7 +381,7 @@ export async function deleteGroup(id: string) {
     throw new Error('Grupo no encontrado o no autorizado')
   }
 
-  // Los líderes se eliminan automáticamente por onDelete: Cascade
+  // Los miembros se desasignan automáticamente por onDelete: SetNull
   await prisma.group.delete({ where: { id } })
 
   return { success: true, name: group.name }
@@ -381,7 +389,7 @@ export async function deleteGroup(id: string) {
 
 // Helper para obtener redes con sus miembros (para selectores)
 export async function getNetworksForGroups(): Promise<NetworkOption[]> {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -405,7 +413,9 @@ export async function getNetworksForGroups(): Promise<NetworkOption[]> {
           firstName: true,
           lastName: true,
           image: true,
-          email: true
+          email: true,
+          groupId: true,
+          groupRole: true
         },
         orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }]
       }
@@ -414,6 +424,117 @@ export async function getNetworksForGroups(): Promise<NetworkOption[]> {
   })
 
   return networks
+}
+
+// ============================================
+// GRANULAR USER MANAGEMENT
+// ============================================
+
+export async function addUserToGroup(groupId: string, userId: string, role: 'leader' | 'member') {
+  const session = await requirePermission('grupos', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  const group = await prisma.group.findUnique({
+    where: { id: groupId },
+    select: { organizationId: true, networkId: true }
+  })
+
+  if (!group || group.organizationId !== organizationId) {
+    throw new Error('Grupo no encontrado')
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { organizationId: true, networkId: true, groupId: true, name: true }
+  })
+
+  if (!user || user.organizationId !== organizationId) {
+    throw new Error('Usuario no encontrado')
+  }
+
+  if (user.networkId !== group.networkId) {
+    throw new Error(`${user.name || 'El usuario'} no pertenece a la red de este grupo`)
+  }
+
+  if (user.groupId && user.groupId !== groupId) {
+    throw new Error(`${user.name || 'El usuario'} ya pertenece a otro grupo`)
+  }
+
+  if (user.groupId === groupId) {
+    throw new Error(`${user.name || 'El usuario'} ya pertenece a este grupo`)
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { groupId, groupRole: role }
+  })
+
+  return { success: true }
+}
+
+export async function removeUserFromGroup(userId: string) {
+  const session = await requirePermission('grupos', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { organizationId: true, groupId: true }
+  })
+
+  if (!user || user.organizationId !== organizationId) {
+    throw new Error('Usuario no encontrado')
+  }
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: { groupId: null, groupRole: null }
+  })
+
+  return { success: true }
+}
+
+export async function getAvailableUsersForGroup(groupId: string) {
+  const session = await requirePermission('grupos', 'ver')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  const group = await prisma.group.findUnique({
+    where: { id: groupId },
+    select: { organizationId: true, networkId: true }
+  })
+
+  if (!group || group.organizationId !== organizationId) {
+    throw new Error('Grupo no encontrado')
+  }
+
+  // Return users in the same network who are NOT already in a group
+  return prisma.user.findMany({
+    where: {
+      organizationId,
+      isActive: true,
+      networkId: group.networkId,
+      OR: [
+        { groupId: null },
+        { groupId: groupId } // include users already in this group (for role changes)
+      ]
+    },
+    select: {
+      id: true,
+      name: true,
+      firstName: true,
+      lastName: true,
+      image: true,
+      email: true,
+      groupId: true,
+      groupRole: true
+    },
+    orderBy: [{ firstName: 'asc' }, { lastName: 'asc' }, { name: 'asc' }]
+  })
 }
 
 // ============================================
@@ -440,16 +561,24 @@ export type GroupFullDetails = {
   }
   leaders: {
     id: string
-    user: {
-      id: string
-      name: string | null
-      firstName: string | null
-      lastName: string | null
-      email: string | null
-      image: string | null
-      phone: string | null
-      isActive: boolean
-    }
+    name: string | null
+    firstName: string | null
+    lastName: string | null
+    email: string | null
+    image: string | null
+    phone: string | null
+    isActive: boolean
+  }[]
+  groupMembers: {
+    id: string
+    name: string | null
+    firstName: string | null
+    lastName: string | null
+    email: string | null
+    image: string | null
+    phone: string | null
+    groupRole: string | null
+    isActive: boolean
   }[]
   networkMembers: {
     id: string
@@ -494,7 +623,7 @@ export type GroupFullDetails = {
 }
 
 export async function getGroupFullDetails(groupId: string): Promise<GroupFullDetails | null> {
-  const session = await requireAdmin()
+  const session = await requirePermission('grupos', 'ver')
   const organizationId = await getAdminOrganizationId(session.user.id)
 
   if (!organizationId) {
@@ -507,20 +636,17 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
       network: {
         select: { id: true, name: true, imageUrl: true }
       },
-      leaders: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              firstName: true,
-              lastName: true,
-              email: true,
-              image: true,
-              phone: true,
-              isActive: true
-            }
-          }
+      members: {
+        select: {
+          id: true,
+          name: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          image: true,
+          phone: true,
+          groupRole: true,
+          isActive: true
         }
       }
     }
@@ -529,6 +655,10 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
   if (!group || group.organizationId !== organizationId) {
     return null
   }
+
+  // Separar líderes y miembros
+  const leaders = group.members.filter(m => m.groupRole === 'leader')
+  const groupMembers = group.members
 
   // Calculate date ranges
   const now = new Date()
@@ -544,7 +674,6 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
     lastReport,
     networkMembers
   ] = await Promise.all([
-    // All-time stats
     prisma.groupReport.aggregate({
       where: { groupId },
       _count: { id: true },
@@ -555,13 +684,11 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
       },
       _avg: { totalAttendees: true }
     }),
-    // Reports this month
     prisma.groupReport.aggregate({
       where: { groupId, meetingDate: { gte: startOfMonth } },
       _count: { id: true },
       _avg: { totalAttendees: true }
     }),
-    // Reports last month (for growth calculation)
     prisma.groupReport.aggregate({
       where: {
         groupId,
@@ -569,7 +696,6 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
       },
       _avg: { totalAttendees: true }
     }),
-    // Recent reports (last 10)
     prisma.groupReport.findMany({
       where: { groupId },
       orderBy: { meetingDate: 'desc' },
@@ -586,13 +712,11 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
         }
       }
     }),
-    // Last report date
     prisma.groupReport.findFirst({
       where: { groupId },
       orderBy: { meetingDate: 'desc' },
       select: { meetingDate: true }
     }),
-    // Network members
     prisma.user.findMany({
       where: { networkId: group.networkId },
       select: {
@@ -633,7 +757,8 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
     meetingTime: group.meetingTime,
     createdAt: group.createdAt,
     network: group.network,
-    leaders: group.leaders,
+    leaders,
+    groupMembers,
     networkMembers,
     stats: {
       totalReports: allTimeStats._count.id,
@@ -651,4 +776,22 @@ export async function getGroupFullDetails(groupId: string): Promise<GroupFullDet
       offeringAmount: r.offeringAmount ? Number(r.offeringAmount) : null
     }))
   }
+}
+
+/** Lightweight list of groups for select dropdowns, optionally filtered by networkId */
+export async function getGroupsForSelect(networkId?: string) {
+  const session = await requirePermission('grupos', 'ver')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) throw new Error('No autorizado')
+
+  return prisma.group.findMany({
+    where: {
+      organizationId,
+      isActive: true,
+      ...(networkId ? { networkId } : {})
+    },
+    select: { id: true, name: true, networkId: true },
+    orderBy: { name: 'asc' }
+  })
 }

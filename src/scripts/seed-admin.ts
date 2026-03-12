@@ -44,7 +44,6 @@ async function main() {
       firstName,
       lastName,
       name: `${firstName} ${lastName}`,
-      role: 'admin',
       isActive: true
     }
   })

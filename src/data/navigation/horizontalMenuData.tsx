@@ -26,25 +26,31 @@ const horizontalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>
   {
     label: dictionary['navigation'].administracion,
     icon: 'ri-shield-star-line',
-    roles: ['admin'],
+    maxHierarchy: 2,
     children: [
       {
         label: dictionary['navigation'].usuarios,
         icon: 'ri-group-line',
         href: '/dashboard/admin/usuarios',
-        roles: ['admin']
+        maxHierarchy: 2
       },
       {
         label: dictionary['navigation'].redes,
         icon: 'ri-bubble-chart-line',
         href: '/dashboard/admin/redes',
-        roles: ['admin']
+        maxHierarchy: 2
       },
       {
         label: dictionary['navigation'].grupos,
         icon: 'ri-team-line',
         href: '/dashboard/admin/grupos',
-        roles: ['admin']
+        maxHierarchy: 2
+      },
+      {
+        label: dictionary['navigation'].roles,
+        icon: 'ri-shield-keyhole-line',
+        href: '/dashboard/admin/roles',
+        maxHierarchy: 2
       }
     ]
   }

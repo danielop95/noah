@@ -13,7 +13,7 @@ import { getAllCalendarEvents } from '@/app/server/calendarActions'
 
 const CalendarioPage = async () => {
   const session = await getServerSession(authOptions)
-  const isAdmin = session?.user?.role === 'admin'
+  const isAdmin = (session?.user?.roleHierarchy ?? 999) <= 2
 
   // Obtener eventos del servidor
   const events = await getAllCalendarEvents()

@@ -31,7 +31,7 @@ const ReportesPage = async () => {
   const groups = await getGroupsForReporting()
 
   // If user is not admin and doesn't lead any groups, show unauthorized
-  if (session.user.role !== 'admin' && groups.length === 0) {
+  if ((session.user.roleHierarchy ?? 999) > 2 && groups.length === 0) {
     const mode = await getServerMode()
 
     return <NotAuthorized mode={mode} />
@@ -45,7 +45,7 @@ const ReportesPage = async () => {
       reports={reports}
       groups={groups}
       networks={networks}
-      isAdmin={session.user.role === 'admin'}
+      isAdmin={(session.user.roleHierarchy ?? 999) <= 2}
       currentUserId={session.user.id}
     />
   )

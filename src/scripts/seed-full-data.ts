@@ -273,7 +273,6 @@ async function main() {
             lastName: userData.lastName,
             name: `${userData.firstName} ${userData.lastName}`,
             gender: userData.gender,
-            role: 'user',
             isActive: true,
             organizationId: organization.id,
             country: 'CO',
@@ -399,17 +398,13 @@ async function main() {
         // Asignar líder al grupo
         const leaderUserId = createdUsers[leaderIndex % createdUsers.length].id
 
-        // Verificar si ya existe el liderazgo
-        const existingLeadership = await prisma.groupLeader.findUnique({
-          where: { groupId_userId: { groupId: group.id, userId: leaderUserId } }
-        })
+        // Asignar líder al grupo via campos en User
+        const leaderUser = await prisma.user.findUnique({ where: { id: leaderUserId }, select: { groupId: true } })
 
-        if (!existingLeadership) {
-          await prisma.groupLeader.create({
-            data: {
-              groupId: group.id,
-              userId: leaderUserId
-            }
+        if (!leaderUser?.groupId) {
+          await prisma.user.update({
+            where: { id: leaderUserId },
+            data: { groupId: group.id, groupRole: 'leader' }
           })
         }
 

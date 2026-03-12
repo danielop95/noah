@@ -14,10 +14,10 @@ import useHorizontalNav from '@menu/hooks/useHorizontalNav'
 
 type HeaderProps = {
   dictionary: Awaited<ReturnType<typeof getDictionary>>
-  userRole?: string
+  userHierarchy?: number
 }
 
-const Header = ({ dictionary, userRole }: HeaderProps) => {
+const Header = ({ dictionary, userHierarchy }: HeaderProps) => {
   // Hooks
   const { isBreakpointReached } = useHorizontalNav()
 
@@ -27,9 +27,9 @@ const Header = ({ dictionary, userRole }: HeaderProps) => {
         <Navbar>
           <NavbarContent />
         </Navbar>
-        {!isBreakpointReached && <Navigation dictionary={dictionary} userRole={userRole} />}
+        {!isBreakpointReached && <Navigation dictionary={dictionary} userHierarchy={userHierarchy} />}
       </LayoutHeader>
-      {isBreakpointReached && <Navigation dictionary={dictionary} userRole={userRole} />}
+      {isBreakpointReached && <Navigation dictionary={dictionary} userHierarchy={userHierarchy} />}
     </>
   )
 }
