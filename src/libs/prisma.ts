@@ -14,7 +14,7 @@ const prismaClientSingleton = () => {
   try {
     const pool = new Pool({
       connectionString: connectionString || '',
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: connectionString?.includes('supabase.com') ? { rejectUnauthorized: false } : false,
       max: 10,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 5000

@@ -45,12 +45,6 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
         icon: 'ri-team-line',
         href: '/dashboard/admin/grupos',
         roles: ['admin']
-      },
-      {
-        label: dictionary['navigation'].configuracion,
-        icon: 'ri-settings-3-line',
-        href: '/dashboard/admin/configuracion',
-        roles: ['admin']
       }
     ]
   }

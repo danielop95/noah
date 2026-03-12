@@ -10,16 +10,9 @@ import styled from '@emotion/styled'
 // Type Imports
 import type { VerticalNavContextProps } from '@menu/contexts/verticalNavContext'
 
-// Component Imports
-import MaterioLogo from '@core/svg/Logo'
-
-// Config Imports
-import themeConfig from '@configs/themeConfig'
-
 // Hook Imports
 import useVerticalNav from '@menu/hooks/useVerticalNav'
 import { useSettings } from '@core/hooks/useSettings'
-import { useTenant } from '@/contexts/TenantContext'
 
 type LogoTextProps = {
   isHovered?: VerticalNavContextProps['isHovered']
@@ -52,7 +45,6 @@ const Logo = ({ color }: { color?: CSSProperties['color'] }) => {
   // Hooks
   const { isHovered, transitionDuration, isBreakpointReached } = useVerticalNav()
   const { settings } = useSettings()
-  const tenant = useTenant()
 
   // Vars
   const { layout } = settings
@@ -73,47 +65,19 @@ const Logo = ({ color }: { color?: CSSProperties['color'] }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHovered, layout, isBreakpointReached])
 
-  // Si hay logo del tenant, mostrar imagen
-  if (tenant?.logoUrl) {
-    return (
-      <div className='flex items-center min-bs-[24px]'>
-        <img
-          src={tenant.logoUrl}
-          alt={tenant.name || 'Logo'}
-          style={{
-            maxWidth: isCollapsed ? 32 : 140,
-            maxHeight: 36,
-            objectFit: 'contain',
-            transition: `max-width ${transitionDuration}ms ease-in-out`
-          }}
-        />
-      </div>
-    )
-  }
-
-  // Si hay tenant pero no logo, mostrar nombre del tenant
-  if (tenant?.name) {
-    return (
-      <div className='flex items-center min-bs-[24px]'>
-        <MaterioLogo className='text-[22px] text-primary' />
-        <LogoText
-          color={color}
-          ref={logoTextRef}
-          isHovered={isHovered}
-          isCollapsed={layout === 'collapsed'}
-          transitionDuration={transitionDuration}
-          isBreakpointReached={isBreakpointReached}
-        >
-          {tenant.name}
-        </LogoText>
-      </div>
-    )
-  }
-
-  // Default: logo de Noah
   return (
     <div className='flex items-center min-bs-[24px]'>
-      <MaterioLogo className='text-[22px] text-primary' />
+      <img
+        src='/images/logo-casa-del-rey.png'
+        alt='Casa del Rey'
+        style={{
+          width: isCollapsed ? 32 : 36,
+          height: isCollapsed ? 32 : 36,
+          objectFit: 'contain',
+          borderRadius: '50%',
+          transition: `width ${transitionDuration}ms ease-in-out, height ${transitionDuration}ms ease-in-out`
+        }}
+      />
       <LogoText
         color={color}
         ref={logoTextRef}
@@ -122,7 +86,7 @@ const Logo = ({ color }: { color?: CSSProperties['color'] }) => {
         transitionDuration={transitionDuration}
         isBreakpointReached={isBreakpointReached}
       >
-        {themeConfig.templateName}
+        Noah
       </LogoText>
     </div>
   )

@@ -47,9 +47,9 @@ const NotAuthorized = ({ mode }: { mode: Mode }) => {
           src='/images/illustrations/characters/8.png'
           className='object-cover bs-[400px] md:bs-[450px] lg:bs-[500px]'
         />
-        <Button href={getLocalizedUrl('/', locale as Locale)} component={Link} variant='contained'>
-          Back to Home
-        </Button>
+        <Link href={getLocalizedUrl('/', locale as Locale)}>
+          <Button variant='contained'>Back to Home</Button>
+        </Link>
       </div>
       <Illustrations maskImg={{ src: miscBackground }} />
     </div>

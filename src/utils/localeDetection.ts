@@ -55,13 +55,7 @@ export const getLocaleFromCookie = (): Locale | null => {
 export const setLocaleCookie = (locale: Locale): void => {
   if (typeof document === 'undefined') return
 
-  const mainDomain = process.env.NEXT_PUBLIC_MAIN_DOMAIN || 'localhost'
-  const isLocalhost = mainDomain === 'localhost' || mainDomain.includes('localhost')
-
-  // En producción, cookie compartida entre subdominios
-  const domain = isLocalhost ? '' : `; domain=.${mainDomain}`
-
-  document.cookie = `${i18n.cookieName}=${locale}; path=/; max-age=${i18n.cookieMaxAge}${domain}; SameSite=Lax`
+  document.cookie = `${i18n.cookieName}=${locale}; path=/; max-age=${i18n.cookieMaxAge}; SameSite=Lax`
 }
 
 /**

@@ -56,7 +56,7 @@ export type Config = {
 const themeConfig: Config = {
   templateName: 'Noah',
   homePageUrl: '/dashboard',
-  settingsCookieName: 'noah-church-saas',
+  settingsCookieName: 'casa-del-rey',
   mode: 'light', // Siempre modo claro
   skin: 'default', // 'default', 'bordered'
   semiDark: false, // true, false

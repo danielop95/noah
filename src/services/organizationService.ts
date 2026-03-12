@@ -15,18 +15,6 @@ export type TenantBranding = {
 }
 
 /**
- * Busca una organización por su slug (subdominio).
- * Retorna null si no se encuentra.
- */
-export const getOrganizationBySlug = async (slug: string) => {
-  if (!slug) return null
-
-  return prisma.organization.findUnique({
-    where: { slug }
-  })
-}
-
-/**
  * Busca una organización por su ID.
  * Retorna null si no se encuentra.
  */

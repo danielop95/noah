@@ -16,9 +16,9 @@ export default function NotFound() {
       <Typography variant='body1' color='text.secondary' className='mb-6'>
         La página que buscas no existe o fue movida.
       </Typography>
-      <Button component={Link} href='/' variant='contained'>
-        Ir al inicio
-      </Button>
+      <Link href='/'>
+        <Button variant='contained'>Ir al inicio</Button>
+      </Link>
     </Box>
   )
 }

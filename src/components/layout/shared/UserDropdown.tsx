@@ -68,7 +68,7 @@ const UserDropdown = () => {
 
   const handleUserLogout = async () => {
     try {
-      // Construir URL absoluta del login en el subdominio actual
+      // Construir URL absoluta del login
       const currentOrigin = window.location.origin
       const loginUrl = `${currentOrigin}/login`
 

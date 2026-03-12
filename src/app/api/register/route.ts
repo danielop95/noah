@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 
 import prisma from '@/libs/prisma'
+import { getSingleOrganization } from '@/utils/getOrganization'
 
 export async function POST(req: Request) {
   try {
@@ -24,7 +25,6 @@ export async function POST(req: Request) {
       city,
       address,
       neighborhood,
-      organizationId
     } = body
 
     // Validate required fields
@@ -53,10 +53,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Ya existe una cuenta con este email' }, { status: 409 })
     }
 
+    // Get the single organization
+    const org = await getSingleOrganization()
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
-    // Create user
+    // Create user assigned to Casa del Rey
     const user = await prisma.user.create({
       data: {
         firstName,
@@ -76,7 +79,7 @@ export async function POST(req: Request) {
         city: city || null,
         address: address || null,
         neighborhood: neighborhood || null,
-        organizationId: organizationId || null,
+        organizationId: org.id,
         role: 'user',
         isActive: true
       }

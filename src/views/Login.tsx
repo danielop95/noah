@@ -30,31 +30,8 @@ import type { InferInput } from 'valibot'
 // Type Imports
 import type { Mode } from '@core/types'
 
-import { getMainDomain } from '@/utils/domain'
-
-type TenantBranding = {
-  name: string
-  logoUrl: string | null
-  primaryColor: string
-} | null
-
 type ErrorType = {
   message: string[]
-}
-
-// Helper para extraer el slug del tenant desde el hostname
-const getTenantSlugFromHostname = (): string | null => {
-  if (typeof window === 'undefined') return null
-
-  const hostname = window.location.hostname
-  const parts = hostname.split('.')
-
-  // Si hay más de una parte (ej: casadelrey.localhost o casadelrey.noah.app)
-  if (parts.length >= 2 && parts[0] !== 'www' && parts[0] !== 'localhost') {
-    return parts[0]
-  }
-
-  return null
 }
 
 type FormData = InferInput<typeof schema>
@@ -68,7 +45,7 @@ const schema = object({
   )
 })
 
-const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
+const Login = ({ mode }: { mode: Mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [errorState, setErrorState] = useState<ErrorType | null>(null)
@@ -99,43 +76,9 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
     })
 
     if (res && res.ok && res.error === null) {
-      // Obtener la organización del usuario y validar el tenant
-      try {
-        const orgRes = await fetch('/api/user/organization')
-        const orgData = await orgRes.json()
+      const redirectURL = searchParams.get('redirectTo') ?? '/dashboard'
 
-        const currentTenantSlug = getTenantSlugFromHostname()
-        const userOrgSlug = orgData.organization?.slug
-
-        if (userOrgSlug && currentTenantSlug && userOrgSlug !== currentTenantSlug) {
-          // Usuario pertenece a otro tenant - redirigir al subdominio correcto
-          const domain = getMainDomain()
-          const protocol = window.location.protocol
-          const redirectPath = searchParams.get('redirectTo') ?? '/dashboard'
-          const redirectUrl = `${protocol}//${userOrgSlug}.${domain}${redirectPath}`
-
-          window.location.href = redirectUrl
-
-          return
-        }
-
-        if (!userOrgSlug && currentTenantSlug) {
-          // Usuario sin organización intentando acceder a un tenant
-          setErrorState({ message: ['Tu cuenta no pertenece a esta iglesia.'] })
-
-          return
-        }
-
-        // Usuario valido para este tenant o sin tenant (dominio principal)
-        const redirectURL = searchParams.get('redirectTo') ?? '/dashboard'
-
-        router.replace(redirectURL)
-      } catch {
-        // Error al obtener organizacion - intentar redireccion normal
-        const redirectURL = searchParams.get('redirectTo') ?? '/dashboard'
-
-        router.replace(redirectURL)
-      }
+      router.replace(redirectURL)
     } else {
       if (res?.error) {
         const error = JSON.parse(res.error)
@@ -149,27 +92,19 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
     <div className='flex bs-full justify-center items-center min-bs-[100dvh] bg-backgroundDefault p-6'>
       <div className='flex flex-col items-center is-full sm:is-auto sm:max-is-[460px]'>
         {/* Brand Header */}
-        <div className='flex flex-col items-center gap-2 mbe-8'>
-          {tenant?.logoUrl ? (
-            <img
-              src={tenant.logoUrl}
-              alt={tenant.name || 'Logo'}
-              style={{ maxWidth: 180, maxHeight: 60, objectFit: 'contain' }}
-            />
-          ) : (
-            <Typography
-              variant='h3'
-              className='font-extrabold tracking-tight'
-              sx={{ color: tenant?.primaryColor || 'var(--mui-palette-primary-main)' }}
-            >
-              {tenant?.name || 'Noah'}
-            </Typography>
-          )}
-          {!tenant && (
-            <Typography variant='body2' className='text-textSecondary tracking-widest uppercase text-xs'>
-              Gestión de Iglesias
-            </Typography>
-          )}
+        <div className='flex flex-col items-center gap-3 mbe-8'>
+          <img
+            src='/images/logo-casa-del-rey.png'
+            alt='Casa del Rey'
+            style={{ width: 80, height: 80, objectFit: 'contain' }}
+          />
+          <Typography
+            variant='h4'
+            className='font-extrabold tracking-tight'
+            sx={{ color: 'var(--mui-palette-text-primary)' }}
+          >
+            Noah
+          </Typography>
         </div>
 
         {/* Login Card */}
@@ -252,23 +187,18 @@ const Login = ({ mode, tenant }: { mode: Mode; tenant?: TenantBranding }) => {
               />
               <div className='flex justify-between items-center flex-wrap gap-x-3 gap-y-1'>
                 <FormControlLabel control={<Checkbox defaultChecked />} label='Recuérdame' />
-                <Typography
-                  className='text-end font-medium'
-                  color='primary.main'
-                  component={Link}
-                  href='/forgot-password'
-                >
+                <Link href='/forgot-password' className='text-end font-medium' style={{ color: 'var(--mui-palette-primary-main)' }}>
                   ¿Olvidaste tu contraseña?
-                </Typography>
+                </Link>
               </div>
               <Button fullWidth variant='contained' type='submit' className='py-3 font-bold text-lg rounded-xl'>
                 Iniciar Sesión
               </Button>
               <div className='flex justify-center items-center flex-wrap gap-2'>
                 <Typography>¿Eres nuevo?</Typography>
-                <Typography component={Link} href='/register' className='font-bold' color='primary.main'>
+                <Link href='/register' className='font-bold' style={{ color: 'var(--mui-palette-primary-main)' }}>
                   Crea una cuenta
-                </Typography>
+                </Link>
               </div>
             </form>
             <Divider className='gap-3 mbs-5'>o</Divider>

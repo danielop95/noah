@@ -1,13 +1,11 @@
 // Type Imports
 import type { ChildrenType, Direction } from '@core/types'
-import type { TenantBranding } from '@/services/organizationService'
 import type { Locale } from '@configs/i18n'
 
 // Context Imports
 import { NextAuthProvider } from '@/contexts/nextAuthProvider'
 import { VerticalNavProvider } from '@menu/contexts/verticalNavContext'
 import { SettingsProvider } from '@core/contexts/settingsContext'
-import { TenantProvider } from '@/contexts/TenantContext'
 import { LocaleProvider } from '@/contexts/LocaleContext'
 import ThemeProvider from '@components/theme'
 // Styled Component Imports
@@ -18,16 +16,12 @@ import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serve
 
 type Props = ChildrenType & {
   direction: Direction
-  tenantBranding?: TenantBranding | null
   initialLocale?: Locale
 }
 
 const Providers = async (props: Props) => {
   // Props
-  const { children, direction, tenantBranding, initialLocale } = props
-
-  // Extraer color primario del branding del tenant
-  const tenantPrimaryColor = tenantBranding?.colors?.primary || null
+  const { children, direction, initialLocale } = props
 
   // Vars
   const mode = await getMode()
@@ -37,16 +31,14 @@ const Providers = async (props: Props) => {
   return (
     <NextAuthProvider basePath={process.env.NEXTAUTH_BASEPATH}>
       <LocaleProvider initialLocale={initialLocale}>
-        <TenantProvider tenant={tenantBranding || null}>
-          <VerticalNavProvider>
-            <SettingsProvider settingsCookie={settingsCookie} mode={mode} tenantPrimaryColor={tenantPrimaryColor}>
-              <ThemeProvider direction={direction} systemMode={systemMode}>
-                {children}
-                <AppReactToastify direction={direction} hideProgressBar />
-              </ThemeProvider>
-            </SettingsProvider>
-          </VerticalNavProvider>
-        </TenantProvider>
+        <VerticalNavProvider>
+          <SettingsProvider settingsCookie={settingsCookie} mode={mode}>
+            <ThemeProvider direction={direction} systemMode={systemMode}>
+              {children}
+              <AppReactToastify direction={direction} hideProgressBar />
+            </ThemeProvider>
+          </SettingsProvider>
+        </VerticalNavProvider>
       </LocaleProvider>
     </NextAuthProvider>
   )

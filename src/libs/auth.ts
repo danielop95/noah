@@ -106,22 +106,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login'
   },
 
-  // Configuración de cookies para soporte de subdominios
-  cookies: {
-    sessionToken: {
-      name: 'next-auth.session-token',
-      options: {
-        httpOnly: true,
-        sameSite: 'lax',
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        // Permitir cookies en todos los subdominios
-        domain: process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_MAIN_DOMAIN
-          ? `.${process.env.NEXT_PUBLIC_MAIN_DOMAIN}`
-          : undefined
-      }
-    }
-  },
+  // Cookies con configuración por defecto (single-tenant, sin subdominios)
 
   callbacks: {
     async signIn() {

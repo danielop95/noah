@@ -29,7 +29,7 @@ type LogoUploaderProps = {
  *
  * El logo se muestra en:
  * - Sidebar del dashboard (junto al nombre de la iglesia)
- * - Pagina de login del subdominio
+ * - Pagina de login
  */
 const LogoUploader = ({ currentLogoUrl, onUpload, onRemove, isPublic = false, disabled = false }: LogoUploaderProps) => {
   const [isUploading, setIsUploading] = useState(false)

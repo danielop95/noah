@@ -383,11 +383,7 @@ const StepAccount = ({ form }: { form: UseFormReturn<Step4Data> }) => {
   )
 }
 
-type RegisterProps = {
-  organizationId?: string | null
-}
-
-const Register = ({ organizationId }: RegisterProps) => {
+const Register = () => {
   const [activeStep, setActiveStep] = useState(0)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -449,8 +445,7 @@ const Register = ({ organizationId }: RegisterProps) => {
         ...form2.getValues(),
         ...form3.getValues(),
         email: data.email,
-        password: data.password,
-        organizationId: organizationId || null
+        password: data.password
       }
 
       const res = await fetch('/api/register', {
@@ -506,12 +501,14 @@ const Register = ({ organizationId }: RegisterProps) => {
     <div className='flex bs-full justify-center items-center min-bs-[100dvh] bg-backgroundDefault p-6'>
       <div className='flex flex-col items-center is-full sm:is-auto sm:max-is-[520px]'>
         {/* Brand Header */}
-        <div className='flex flex-col items-center gap-2 mbe-6'>
-          <Typography variant='h3' className='font-extrabold tracking-tight text-noahNavy'>
+        <div className='flex flex-col items-center gap-3 mbe-6'>
+          <img
+            src='/images/logo-casa-del-rey.png'
+            alt='Casa del Rey'
+            style={{ width: 64, height: 64, objectFit: 'contain' }}
+          />
+          <Typography variant='h4' className='font-extrabold tracking-tight' sx={{ color: 'var(--mui-palette-text-primary)' }}>
             Noah
-          </Typography>
-          <Typography variant='body2' className='text-textSecondary tracking-widest uppercase text-xs'>
-            Church Management
           </Typography>
         </div>
 
@@ -569,14 +566,9 @@ const Register = ({ organizationId }: RegisterProps) => {
 
             <div className='flex justify-center items-center flex-wrap gap-2 mbs-4'>
               <Typography>¿Ya tienes cuenta?</Typography>
-              <Typography
-                component={Link}
-                href={getLocalizedUrl('/login', locale as Locale)}
-                className='font-bold'
-                color='primary.main'
-              >
+              <Link href={getLocalizedUrl('/login', locale as Locale)} className='font-bold' style={{ color: 'var(--mui-palette-primary-main)' }}>
                 Inicia sesión
-              </Typography>
+              </Link>
             </div>
           </CardContent>
         </Card>
