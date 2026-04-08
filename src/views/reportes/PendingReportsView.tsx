@@ -48,8 +48,11 @@ const formatDateWithDay = (date: Date) => {
 
 const formatDateForInput = (date: Date): string => {
   const d = new Date(date)
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
 
-  return d.toISOString().split('T')[0]
+  return `${yyyy}-${mm}-${dd}`
 }
 
 const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: PendingReportsViewProps) => {
@@ -241,7 +244,7 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
             )}
           </Box>
 
-          <div data-print-area>
+          <div data-print-area=''>
             <Typography variant='h5' sx={{ display: 'none', '@media print': { display: 'block' }, mb: 2 }}>
               Reportes Pendientes — Casa del Rey
             </Typography>
@@ -326,7 +329,7 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
                           <Box className='flex flex-col gap-2 mt-2'>
                             {group.missingWeeks.map((week, idx) => (
                               <Box
-                                key={idx}
+                                key={week.weekStart instanceof Date ? week.weekStart.toISOString() : String(week.weekStart)}
                                 className='flex items-center justify-between gap-2 p-2 rounded-lg'
                                 sx={{ bgcolor: 'action.hover' }}
                               >
