@@ -77,8 +77,7 @@ const ExportButton = ({ data, columns, fileName, title, disabled }: ExportButton
 
     try {
       const { default: jsPDF } = await import('jspdf')
-
-      await import('jspdf-autotable')
+      const { default: autoTable } = await import('jspdf-autotable')
 
       const doc = new jsPDF({ orientation: columns.length > 5 ? 'landscape' : 'portrait' })
 
@@ -94,8 +93,7 @@ const ExportButton = ({ data, columns, fileName, title, disabled }: ExportButton
       const headers = columns.map(c => c.header)
       const rows = buildRows()
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(doc as any).autoTable({
+      autoTable(doc, {
         head: [headers],
         body: rows,
         startY: 30,
@@ -121,7 +119,7 @@ const ExportButton = ({ data, columns, fileName, title, disabled }: ExportButton
         ref={buttonRef}
         variant='outlined'
         color='secondary'
-        startIcon={exporting ? <CircularProgress size={16} /> : <i className='ri-download-2-line' />}
+        startIcon={exporting ? <CircularProgress size={16} /> : <i className='solar-download-linear' />}
         onClick={handleOpen}
         disabled={disabled || exporting || !hasData}
         size='small'
@@ -131,13 +129,13 @@ const ExportButton = ({ data, columns, fileName, title, disabled }: ExportButton
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={handleClose}>
         <MenuItem onClick={handleExcel}>
           <ListItemIcon>
-            <i className='ri-file-excel-2-line text-success' />
+            <i className='solar-file-check-linear text-success' />
           </ListItemIcon>
           <ListItemText>Excel (.xlsx)</ListItemText>
         </MenuItem>
         <MenuItem onClick={handlePdf}>
           <ListItemIcon>
-            <i className='ri-file-pdf-2-line text-error' />
+            <i className='solar-file-text-linear text-error' />
           </ListItemIcon>
           <ListItemText>PDF</ListItemText>
         </MenuItem>
