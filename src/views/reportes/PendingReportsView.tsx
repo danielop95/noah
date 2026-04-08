@@ -109,8 +109,7 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
   const handleExportPDF = async () => {
     try {
       const { default: jsPDF } = await import('jspdf')
-
-      await import('jspdf-autotable')
+      const { default: autoTable } = await import('jspdf-autotable')
 
       const doc = new jsPDF({ orientation: 'landscape' })
       const today = new Date()
@@ -168,8 +167,7 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
         return [group.name, group.networkName, `${dia}${hora}`, ultimoReporte, estado, semanas]
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(doc as any).autoTable({
+      autoTable(doc, {
         head: [['Grupo', 'Red', 'Dia / Hora', 'Ultimo Reporte', 'Estado', 'Semanas Pendientes']],
         body: rows,
         startY,
@@ -181,8 +179,8 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
           1: { cellWidth: 35 },
           2: { cellWidth: 30 },
           3: { cellWidth: 38 },
-          4: { cellWidth: 22, halign: 'center' as const },
-          5: { cellWidth: 'auto' as const }
+          4: { cellWidth: 22, halign: 'center' },
+          5: { cellWidth: 'auto' }
         },
         didParseCell: (data: any) => {
           if (data.section === 'body' && data.column.index === 4) {
