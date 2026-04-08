@@ -347,7 +347,17 @@ export async function updateLevel(
     isActive?: boolean
   }
 ): Promise<void> {
-  await requirePermission('instituto', 'editar')
+  const session = await requirePermission('instituto', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  const level = await prisma.iLLevel.findUnique({
+    where: { id },
+    select: { course: { select: { organizationId: true } } }
+  })
+
+  if (!level || level.course.organizationId !== organizationId) {
+    throw new Error('Nivel no encontrado o no autorizado')
+  }
 
   const updateData: Record<string, unknown> = {}
 
@@ -362,7 +372,18 @@ export async function updateLevel(
 }
 
 export async function deleteLevel(id: string): Promise<void> {
-  await requirePermission('instituto', 'eliminar')
+  const session = await requirePermission('instituto', 'eliminar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  const level = await prisma.iLLevel.findUnique({
+    where: { id },
+    select: { course: { select: { organizationId: true } } }
+  })
+
+  if (!level || level.course.organizationId !== organizationId) {
+    throw new Error('Nivel no encontrado o no autorizado')
+  }
+
   await prisma.iLLevel.delete({ where: { id } })
 }
 
@@ -976,6 +997,20 @@ export async function saveGrades(
 ): Promise<void> {
   const session = await requireInstituteTag('maestro')
 
+  // Verificar que el enrollment pertenece a una cohorte del maestro actual (o es admin)
+  const hierarchy = session.user.roleHierarchy ?? 99
+
+  if (hierarchy > 2) {
+    const enrollment = await prisma.iLEnrollment.findUnique({
+      where: { id: enrollmentId },
+      select: { cohort: { select: { teacherId: true } } }
+    })
+
+    if (!enrollment || enrollment.cohort.teacherId !== session.user.id) {
+      throw new Error('No tienes permisos para calificar inscripciones de otras cohortes')
+    }
+  }
+
   await Promise.all(
     grades.map(grade =>
       prisma.iLGrade.upsert({
@@ -1049,6 +1084,8 @@ export async function computeEnrollmentResult(enrollmentId: string): Promise<{
   passed: boolean
   finalGrade: number | null
 }> {
+  await requireInstituteTag('maestro')
+
   const enrollment = await prisma.iLEnrollment.findUnique({
     where: { id: enrollmentId },
     include: {
