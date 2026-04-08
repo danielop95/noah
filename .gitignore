@@ -55,3 +55,4 @@ node_modules/
 # Materio docs y template (archivos de consulta local)
 materio-docs/
 materio-template/
+.worktrees/
