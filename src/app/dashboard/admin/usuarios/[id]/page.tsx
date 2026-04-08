@@ -27,9 +27,11 @@ const UserViewPage = async ({ params }: Props) => {
     )
   }
 
+  const { instituteProfile, ...userData } = user
+
   return (
     <PermissionGuard permission='usuarios.ver'>
-      <UserDetailView user={user} />
+      <UserDetailView user={userData} instituteProfile={instituteProfile} />
     </PermissionGuard>
   )
 }

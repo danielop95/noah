@@ -341,7 +341,7 @@ const MisCursosView = ({ myEnrollments, courses }: Props) => {
                           href='/dashboard/instituto/cohortes'
                           startIcon={<i className='solar-arrow-right-linear' />}
                           fullWidth
-                          variant='tonal'
+                          variant='contained'
                         >
                           Ver cohortes disponibles
                         </Button>

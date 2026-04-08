@@ -117,17 +117,50 @@ export async function getUserFullDetails(userId: string) {
 
   if (!user) return null
 
-  // Contar reportes creados por el usuario
-  const reportsCount = await prisma.groupReport.count({
-    where: { reporterId: userId }
-  })
+  // Ejecutar queries en paralelo: stats de reportes + perfil de Instituto Life
+  const [reportsCount, reportsStats, ilTags, ilEnrollmentsRaw, ilBadges] = await Promise.all([
+    // Contar reportes creados por el usuario
+    prisma.groupReport.count({
+      where: { reporterId: userId }
+    }),
 
-  // Obtener estadísticas de reportes
-  const reportsStats = await prisma.groupReport.aggregate({
-    where: { reporterId: userId },
-    _sum: { totalAttendees: true, visitorsCount: true },
-    _avg: { totalAttendees: true }
-  })
+    // Obtener estadísticas de reportes
+    prisma.groupReport.aggregate({
+      where: { reporterId: userId },
+      _sum: { totalAttendees: true, visitorsCount: true },
+      _avg: { totalAttendees: true }
+    }),
+
+    // Instituto Life: tags activos
+    prisma.iLUserTag.findMany({
+      where: { userId, isActive: true },
+      select: { tag: true }
+    }),
+
+    // Instituto Life: inscripciones
+    prisma.iLEnrollment.findMany({
+      where: { userId },
+      include: {
+        cohort: {
+          include: {
+            level: { include: { course: true } },
+            teacher: { select: { id: true, name: true, firstName: true, lastName: true } }
+          }
+        }
+      },
+      orderBy: { enrolledAt: 'desc' }
+    }),
+
+    // Instituto Life: badges
+    prisma.iLBadge.findMany({
+      where: { userId },
+      include: {
+        course: { select: { name: true } },
+        level: { select: { name: true } }
+      },
+      orderBy: { earnedAt: 'desc' }
+    })
+  ])
 
   const { password: _, ...profile } = user
 
@@ -139,6 +172,20 @@ export async function getUserFullDetails(userId: string) {
       totalAttendees: reportsStats._sum.totalAttendees || 0,
       totalVisitors: reportsStats._sum.visitorsCount || 0,
       avgAttendees: Math.round(reportsStats._avg.totalAttendees || 0)
+    },
+    instituteProfile: {
+      tags: ilTags.map(t => t.tag),
+      activeEnrollment: ilEnrollmentsRaw.find(e => ['pending', 'approved', 'active'].includes(e.status)) ?? null,
+      completedEnrollments: ilEnrollmentsRaw.filter(e => ['completed', 'failed', 'rejected', 'withdrawn'].includes(e.status)),
+      badges: ilBadges.map(b => ({
+        id: b.id,
+        badgeType: b.badgeType,
+        courseId: b.courseId,
+        courseName: b.course.name,
+        levelId: b.levelId,
+        levelName: b.level?.name ?? null,
+        earnedAt: b.earnedAt
+      }))
     }
   }
 }
