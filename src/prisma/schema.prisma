@@ -86,6 +86,16 @@ model User {
 
   // Eventos de calendario creados
   calendarEvents   CalendarEvent[]
+
+  // Instituto Life
+  ilTags               ILUserTag[]    @relation("ILUserTagUser")
+  ilTagsAssigned       ILUserTag[]    @relation("ILUserTagAssigner")
+  ilEnrollments        ILEnrollment[] @relation("ILEnrollmentStudent")
+  ilEnrollmentsApproved ILEnrollment[] @relation("ILEnrollmentApprover")
+  ilBadges             ILBadge[]      @relation("ILBadgeUser")
+  ilCohortsTeaching    ILCohort[]     @relation("ILCohortTeacher")
+  ilAttendanceMarked   ILAttendance[] @relation("ILAttendanceMarker")
+  ilGradesGiven        ILGrade[]      @relation("ILGradeGrader")
 }
 
 model Organization {
@@ -103,6 +113,10 @@ model Organization {
   groups          Group[]
   groupReports    GroupReport[]
   calendarEvents  CalendarEvent[]
+
+  // Instituto Life
+  ilCourses  ILCourse[]
+  ilCohorts  ILCohort[]
 }
 
 // ===================
@@ -291,4 +305,169 @@ model CalendarEvent {
 
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+// ===================
+// Módulo Instituto Life
+// ===================
+
+model ILCourse {
+  id               String      @id @default(cuid())
+  name             String
+  slug             String      @unique
+  description      String?
+  imageUrl         String?
+  evaluationType   String      // 'graded' | 'pass_fail'
+  evaluationConfig Json        // configuración de evaluación
+  isActive         Boolean     @default(true)
+  organizationId   String
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  levels           ILLevel[]
+  cohorts          ILCohort[]
+  badges           ILBadge[]
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model ILLevel {
+  id                   String    @id @default(cuid())
+  courseId             String
+  course               ILCourse  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  name                 String
+  slug                 String
+  sortOrder            Int
+  sessionCount         Int
+  evaluationConfig     Json?     // override opcional
+  prerequisiteLevelId  String?
+  prerequisiteLevel    ILLevel?  @relation("LevelPrerequisite", fields: [prerequisiteLevelId], references: [id])
+  nextLevels           ILLevel[] @relation("LevelPrerequisite")
+  isActive             Boolean   @default(true)
+  cohorts              ILCohort[]
+  badges               ILBadge[]
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@unique([courseId, slug])
+}
+
+model ILCohort {
+  id             String        @id @default(cuid())
+  levelId        String
+  level          ILLevel       @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  courseId       String
+  course         ILCourse      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  teacherId      String
+  teacher        User          @relation("ILCohortTeacher", fields: [teacherId], references: [id])
+  name           String?
+  weekDay        String        // 'lunes' | 'martes' | ... | 'domingo'
+  startTime      String        // '09:00'
+  startDate      DateTime      @db.Date
+  endDate        DateTime      @db.Date
+  maxCapacity    Int
+  status         String        @default("upcoming") // 'upcoming' | 'active' | 'completed' | 'cancelled'
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sessions       ILSession[]
+  enrollments    ILEnrollment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model ILSession {
+  id            String       @id @default(cuid())
+  cohortId      String
+  cohort        ILCohort     @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  sessionNumber Int
+  scheduledDate DateTime     @db.Date
+  topic         String?
+  status        String       @default("scheduled") // 'scheduled' | 'completed' | 'cancelled'
+  attendance    ILAttendance[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@unique([cohortId, sessionNumber])
+}
+
+model ILEnrollment {
+  id           String        @id @default(cuid())
+  userId       String
+  user         User          @relation("ILEnrollmentStudent", fields: [userId], references: [id], onDelete: Cascade)
+  cohortId     String
+  cohort       ILCohort      @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  status       String        @default("pending") // 'pending' | 'approved' | 'rejected' | 'active' | 'completed' | 'failed' | 'withdrawn'
+  enrolledAt   DateTime      @default(now())
+  approvedAt   DateTime?
+  approvedById String?
+  approvedBy   User?         @relation("ILEnrollmentApprover", fields: [approvedById], references: [id])
+  completedAt  DateTime?
+  finalGrade   Decimal?      @db.Decimal(5, 2)
+  passed       Boolean?
+  attendance   ILAttendance[]
+  grades       ILGrade[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([userId, cohortId])
+}
+
+model ILAttendance {
+  id           String       @id @default(cuid())
+  sessionId    String
+  session      ILSession    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  enrollmentId String
+  enrollment   ILEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  present      Boolean
+  markedById   String
+  markedBy     User         @relation("ILAttendanceMarker", fields: [markedById], references: [id])
+  markedAt     DateTime     @default(now())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@unique([sessionId, enrollmentId])
+}
+
+model ILGrade {
+  id           String       @id @default(cuid())
+  enrollmentId String
+  enrollment   ILEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  component    String       // 'test' | 'lectura' | 'asistencia' | 'participacion'
+  score        Decimal      @db.Decimal(5, 2)
+  gradedById   String
+  gradedBy     User         @relation("ILGradeGrader", fields: [gradedById], references: [id])
+  gradedAt     DateTime     @default(now())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@unique([enrollmentId, component])
+}
+
+model ILBadge {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation("ILBadgeUser", fields: [userId], references: [id], onDelete: Cascade)
+  badgeType String    // 'course_completed' | 'level_completed'
+  courseId  String
+  course    ILCourse  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  levelId   String?
+  level     ILLevel?  @relation(fields: [levelId], references: [id])
+  earnedAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, badgeType, courseId, levelId])
+}
+
+model ILUserTag {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation("ILUserTagUser", fields: [userId], references: [id], onDelete: Cascade)
+  tag          String   // 'coordinador' | 'maestro' | 'estudiante'
+  assignedById String
+  assignedBy   User     @relation("ILUserTagAssigner", fields: [assignedById], references: [id])
+  isActive     Boolean  @default(true)
+  assignedAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, tag])
 }
