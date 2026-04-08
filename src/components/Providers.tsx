@@ -24,9 +24,11 @@ const Providers = async (props: Props) => {
   const { children, direction, initialLocale } = props
 
   // Vars
-  const mode = await getMode()
-  const settingsCookie = await getSettingsFromCookie()
-  const systemMode = await getSystemMode()
+  const [mode, settingsCookie, systemMode] = await Promise.all([
+    getMode(),
+    getSettingsFromCookie(),
+    getSystemMode()
+  ])
 
   return (
     <NextAuthProvider basePath={process.env.NEXTAUTH_BASEPATH}>
