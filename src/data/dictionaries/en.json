@@ -112,6 +112,12 @@
     "reportes": "Reports",
     "pendientes": "Pendientes",
     "configuracion": "Settings",
-    "roles": "Roles & Permissions"
+    "roles": "Roles & Permissions",
+    "institutoLife": "Life Institute",
+    "institutoDashboard": "Dashboard",
+    "institutoCursos": "Courses",
+    "institutoCohortes": "Cohorts",
+    "institutoInscripciones": "Enrollments",
+    "institutoMisCursos": "My Courses"
   }
 }

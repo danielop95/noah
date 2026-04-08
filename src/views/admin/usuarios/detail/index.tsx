@@ -18,6 +18,7 @@ import ProfileAbout from './ProfileAbout'
 import ProfileAssignments from './ProfileAssignments'
 import ProfileStats from './ProfileStats'
 import ProfileTimeline from './ProfileTimeline'
+import ProfileInstituto from './ProfileInstituto'
 import UserEditDrawer from '@/components/UserEditDrawer'
 import CustomTabList from '@core/components/mui/TabList'
 
@@ -82,9 +83,15 @@ type UserData = {
 
 type Props = {
   user: UserData
+  instituteProfile?: {
+    tags: string[]
+    activeEnrollment: any | null
+    completedEnrollments: any[]
+    badges: any[]
+  } | null
 }
 
-const UserDetailView = ({ user }: Props) => {
+const UserDetailView = ({ user, instituteProfile }: Props) => {
   const router = useRouter()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('profile')
@@ -131,6 +138,15 @@ const UserDetailView = ({ user }: Props) => {
                   value='activity'
                 />
               )}
+              <Tab
+                label={
+                  <div className='flex items-center gap-1.5'>
+                    <i className='solar-square-academic-cap-linear text-lg' />
+                    Instituto Life
+                  </div>
+                }
+                value='instituto'
+              />
             </CustomTabList>
 
             {/* Profile Tab */}
@@ -172,6 +188,16 @@ const UserDetailView = ({ user }: Props) => {
                 </Grid>
               </TabPanel>
             )}
+
+            {/* Instituto Life Tab */}
+            <TabPanel value='instituto' className='p-0'>
+              <ProfileInstituto
+                tags={instituteProfile?.tags ?? []}
+                activeEnrollment={instituteProfile?.activeEnrollment ?? null}
+                completedEnrollments={instituteProfile?.completedEnrollments ?? []}
+                badges={instituteProfile?.badges ?? []}
+              />
+            </TabPanel>
           </TabContext>
         </Grid>
       </Grid>

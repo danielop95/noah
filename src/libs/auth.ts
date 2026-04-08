@@ -22,6 +22,7 @@ declare module 'next-auth' {
       roleHierarchy?: number | null
       permissions?: string[]
       organizationId?: string | null
+      instituteTags?: string[]
     }
   }
 
@@ -36,6 +37,7 @@ declare module 'next-auth' {
     roleHierarchy?: number | null
     permissions?: string[]
     organizationId?: string | null
+    instituteTags?: string[]
   }
 }
 
@@ -48,6 +50,7 @@ declare module 'next-auth/jwt' {
     roleHierarchy?: number | null
     permissions?: string[]
     organizationId?: string | null
+    instituteTags?: string[]
   }
 }
 
@@ -144,6 +147,11 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account }) {
       if (account && user) {
+        const ilTags = await prisma.iLUserTag.findMany({
+          where: { userId: user.id, isActive: true },
+          select: { tag: true }
+        })
+
         return {
           ...token,
           id: user.id,
@@ -155,6 +163,7 @@ export const authOptions: NextAuthOptions = {
           roleHierarchy: user.roleHierarchy,
           permissions: user.permissions || [],
           organizationId: user.organizationId,
+          instituteTags: ilTags.map(t => t.tag),
           provider: account.provider
         }
       }
@@ -173,6 +182,7 @@ export const authOptions: NextAuthOptions = {
         session.user.roleHierarchy = token.roleHierarchy as number | null
         session.user.permissions = (token.permissions as string[]) || []
         session.user.organizationId = token.organizationId as string | null
+        session.user.instituteTags = token.instituteTags as string[] | undefined
       }
 
       return session

@@ -117,3 +117,39 @@ export async function isUserGroupLeader(userId: string, groupId: string): Promis
 
   return user?.groupId === groupId && user?.groupRole === 'leader'
 }
+
+// =================== Instituto Life helpers ===================
+
+/**
+ * Require a specific instituto tag or admin role
+ */
+export async function requireInstituteTag(tag: 'coordinador' | 'maestro' | 'estudiante') {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user) throw new Error('No autenticado')
+
+  const tags = session.user.instituteTags ?? []
+  const hierarchy = session.user.roleHierarchy ?? 99
+
+  // Admin (hierarchy <= 2) siempre tiene acceso
+  if (hierarchy <= 2) return session
+
+  if (!tags.includes(tag)) throw new Error(`Se requiere rol de ${tag} en el instituto`)
+
+  return session
+}
+
+/**
+ * Check if current user has a specific instituto tag (non-throwing)
+ */
+export async function hasInstituteTag(tag: 'coordinador' | 'maestro' | 'estudiante'): Promise<boolean> {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user) return false
+
+  const hierarchy = session.user.roleHierarchy ?? 99
+
+  if (hierarchy <= 2) return true
+
+  return (session.user.instituteTags ?? []).includes(tag)
+}
