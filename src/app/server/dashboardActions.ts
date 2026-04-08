@@ -2,6 +2,7 @@
 
 import prisma from '@/libs/prisma'
 import { requireAuth, getUserOrganizationId } from './helpers'
+import { getActiveVacationPeriod } from './reportActions'
 
 export type DashboardStats = {
   totalUsers: number
@@ -52,6 +53,19 @@ export type DashboardStats = {
     location: string | null
   }>
   currentUserName: string
+  // Weekly reporting progress
+  reportingProgress: {
+    expected: number
+    reported: number
+    unreportedGroups: Array<{
+      id: string
+      name: string
+      meetingDay: string
+      networkName: string
+    }>
+  }
+  isVacationPeriod: boolean
+  vacationPeriodName: string | null
 }
 
 // Mapeo de días de la semana a números (0 = domingo, 1 = lunes, etc.)
@@ -67,17 +81,18 @@ const DAY_ORDER: Record<string, number> = {
 
 export async function getDashboardStats(): Promise<DashboardStats> {
   const session = await requireAuth()
-  const organizationId = await getUserOrganizationId(session.user.id)
+
+  const [organizationId, currentUser] = await Promise.all([
+    getUserOrganizationId(session.user.id),
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { name: true, firstName: true }
+    })
+  ])
 
   if (!organizationId) {
     throw new Error('El usuario no pertenece a ninguna organización')
   }
-
-  // Obtener nombre del usuario actual
-  const currentUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { name: true, firstName: true }
-  })
 
   const currentUserName = currentUser?.firstName || currentUser?.name?.split(' ')[0] || 'Usuario'
 
@@ -281,6 +296,57 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     })
   }))
 
+  // Weekly reporting progress
+  const activeVacation = await getActiveVacationPeriod(organizationId)
+  let reportingProgress = { expected: 0, reported: 0, unreportedGroups: [] as Array<{ id: string; name: string; meetingDay: string; networkName: string }> }
+
+  if (!activeVacation) {
+    // Calculate expected reports for current week
+    const todayDate = new Date()
+
+    todayDate.setHours(0, 0, 0, 0)
+
+    const todayDay = todayDate.getDay()
+
+    for (const group of allGroups) {
+      if (!group.meetingDay) continue
+
+      const dayNum = DAY_ORDER[group.meetingDay.toLowerCase()] ?? -1
+
+      if (dayNum === -1) continue
+
+      // Calculate expected date for this week
+      const monday = new Date(todayDate)
+
+      monday.setDate(todayDate.getDate() - ((todayDay + 6) % 7))
+
+      const offset = dayNum === 0 ? 6 : dayNum - 1
+      const expectedDate = new Date(monday)
+
+      expectedDate.setDate(monday.getDate() + offset)
+
+      // Only check if expected date is in the past or today
+      if (expectedDate > todayDate) continue
+
+      const report = await prisma.groupReport.findUnique({
+        where: { groupId_meetingDate: { groupId: group.id, meetingDate: expectedDate } }
+      })
+
+      if (report) {
+        reportingProgress.reported++
+      } else {
+        reportingProgress.unreportedGroups.push({
+          id: group.id,
+          name: group.name,
+          meetingDay: group.meetingDay,
+          networkName: group.network.name
+        })
+      }
+
+      reportingProgress.expected++
+    }
+  }
+
   return {
     totalUsers,
     activeUsers,
@@ -298,6 +364,9 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     recentUsers,
     upcomingGroups,
     upcomingEvents: upcomingCalendarEvents,
-    currentUserName
+    currentUserName,
+    reportingProgress,
+    isVacationPeriod: !!activeVacation,
+    vacationPeriodName: activeVacation?.name || null
   }
 }
