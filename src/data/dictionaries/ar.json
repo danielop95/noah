@@ -112,6 +112,12 @@
     "reportes": "التقارير",
     "pendientes": "Pendientes",
     "configuracion": "الإعدادات",
-    "roles": "الأدوار والأذونات"
+    "roles": "الأدوار والأذونات",
+    "institutoLife": "معهد الحياة",
+    "institutoDashboard": "لوحة التحكم",
+    "institutoCursos": "الدورات",
+    "institutoCohortes": "المجموعات",
+    "institutoInscripciones": "التسجيلات",
+    "institutoMisCursos": "دوراتي"
   }
 }

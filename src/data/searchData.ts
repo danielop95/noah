@@ -29,6 +29,41 @@ const data: SearchData[] = [
     url: '/dashboard/admin/usuarios',
     icon: 'ri-group-line',
     section: 'Administracion'
+  },
+  {
+    id: 'instituto',
+    name: 'Instituto Life',
+    url: '/dashboard/instituto',
+    icon: 'solar-square-academic-cap-linear',
+    section: 'Instituto'
+  },
+  {
+    id: 'instituto-cursos',
+    name: 'Cursos del instituto',
+    url: '/dashboard/instituto/cursos',
+    icon: 'solar-notebook-linear',
+    section: 'Instituto'
+  },
+  {
+    id: 'instituto-cohortes',
+    name: 'Cohortes',
+    url: '/dashboard/instituto/cohortes',
+    icon: 'solar-users-group-two-rounded-linear',
+    section: 'Instituto'
+  },
+  {
+    id: 'instituto-inscripciones',
+    name: 'Inscripciones',
+    url: '/dashboard/instituto/inscripciones',
+    icon: 'solar-clipboard-list-linear',
+    section: 'Instituto'
+  },
+  {
+    id: 'instituto-mis-cursos',
+    name: 'Mis cursos (Instituto)',
+    url: '/dashboard/instituto/mis-cursos',
+    icon: 'solar-book-2-linear',
+    section: 'Instituto'
   }
 ]
 

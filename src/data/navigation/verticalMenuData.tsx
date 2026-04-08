@@ -70,6 +70,39 @@ const verticalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>>)
         maxHierarchy: 2
       }
     ]
+  },
+  {
+    isSection: true,
+    label: dictionary['navigation'].institutoLife,
+    children: [
+      {
+        label: dictionary['navigation'].institutoDashboard,
+        icon: 'solar-chart-2-linear',
+        href: '/dashboard/instituto'
+      },
+      {
+        label: dictionary['navigation'].institutoCursos,
+        icon: 'solar-notebook-linear',
+        href: '/dashboard/instituto/cursos',
+        maxHierarchy: 2
+      },
+      {
+        label: dictionary['navigation'].institutoCohortes,
+        icon: 'solar-users-group-two-rounded-linear',
+        href: '/dashboard/instituto/cohortes'
+      },
+      {
+        label: dictionary['navigation'].institutoInscripciones,
+        icon: 'solar-clipboard-list-linear',
+        href: '/dashboard/instituto/inscripciones',
+        maxHierarchy: 2
+      },
+      {
+        label: dictionary['navigation'].institutoMisCursos,
+        icon: 'solar-book-2-linear',
+        href: '/dashboard/instituto/mis-cursos'
+      }
+    ]
   }
 ]
 

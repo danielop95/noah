@@ -112,6 +112,12 @@
     "reportes": "Rapports",
     "pendientes": "Pendientes",
     "configuracion": "Parametres",
-    "roles": "Roles et Permissions"
+    "roles": "Roles et Permissions",
+    "institutoLife": "Institut Vie",
+    "institutoDashboard": "Tableau de bord",
+    "institutoCursos": "Cours",
+    "institutoCohortes": "Cohortes",
+    "institutoInscripciones": "Inscriptions",
+    "institutoMisCursos": "Mes cours"
   }
 }
