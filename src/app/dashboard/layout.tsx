@@ -29,11 +29,13 @@ import { getDictionaryFromCookie, getLocaleFromCookie } from '@/utils/getDiction
 import { getMode, getSystemMode } from '@core/utils/serverHelpers'
 
 const DashboardLayout = async ({ children }: ChildrenType) => {
-  const session = await getServerSession(authOptions)
-  const locale = await getLocaleFromCookie()
-  const dictionary = await getDictionaryFromCookie()
-  const mode = await getMode()
-  const systemMode = await getSystemMode()
+  const [session, locale, dictionary, mode, systemMode] = await Promise.all([
+    getServerSession(authOptions),
+    getLocaleFromCookie(),
+    getDictionaryFromCookie(),
+    getMode(),
+    getSystemMode()
+  ])
   const userHierarchy = session?.user?.roleHierarchy ?? 999
 
   return (
@@ -57,7 +59,7 @@ const DashboardLayout = async ({ children }: ChildrenType) => {
       />
       <ScrollToTop className='mui-fixed'>
         <Button variant='contained' className='is-10 bs-10 rounded-full p-0 min-is-0 flex items-center justify-center'>
-          <i className='ri-arrow-up-line' />
+          <i className='solar-arrow-up-linear' />
         </Button>
       </ScrollToTop>
     </AuthGuard>
