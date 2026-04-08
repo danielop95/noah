@@ -42,10 +42,10 @@
   --color-linkedin: #007bb6;
   --color-github: #272727;
   --color-googlePlus: #db4437;
-  --color-noahNavy: #001845;
-  --color-noahBlue: #0466c8;
-  --color-noahSky: #3381d1;
-  --color-noahGold: #ffd700;
+  --color-noahPrimary: #1a1a1c;
+  --color-noahSecondary: #78716C;
+  --color-noahStroke: #dfe4eb;
+  --color-noahBg: #f4f5f8;
 
   --shadow-xs: var(--mui-customShadows-xs);
   --shadow-sm: var(--mui-customShadows-sm);
@@ -204,4 +204,46 @@ code {
   color: var(--mui-palette-info-main);
   background-color: rgb(var(--mui-palette-info-mainChannel) / 0.08);
   border: 0;
+}
+
+/* ===== PRINT STYLES: Reportes Pendientes ===== */
+@media print {
+  /* Ocultar todo el layout de la aplicación */
+  nav,
+  header,
+  aside,
+  [data-no-print],
+  .layout-nav-vertical,
+  .layout-wrapper {
+    display: none !important;
+  }
+
+  /* Mostrar solo el área de impresión */
+  [data-print-area] {
+    display: block !important;
+  }
+
+  /* Ajustes de página */
+  @page {
+    margin: 1cm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Cards sin sombra en impresión */
+  .MuiCard-root {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+    margin-bottom: 12px;
+  }
+
+  /* Ocultar botones de acción en impresión */
+  button[data-no-print],
+  .print-hide {
+    display: none !important;
+  }
 }
