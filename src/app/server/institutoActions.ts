@@ -599,6 +599,17 @@ export async function requestEnrollment(cohortId: string): Promise<void> {
 
   const userId = authSession.user.id
 
+  // Verificar que el usuario no tenga ningún enrollment activo en ningún otro curso
+  const activeEnrollment = await prisma.iLEnrollment.findFirst({
+    where: {
+      userId,
+      status: { in: ['pending', 'approved', 'active'] }
+    }
+  })
+  if (activeEnrollment) {
+    throw new Error('Ya tienes una inscripción activa o pendiente en otro curso. Completa o retira tu inscripción actual antes de inscribirte a otro.')
+  }
+
   // Verificar que no tenga ya un enrollment activo en esta cohorte
   const existing = await prisma.iLEnrollment.findUnique({
     where: { userId_cohortId: { userId, cohortId } }
@@ -1083,10 +1094,15 @@ export async function computeEnrollmentResult(enrollmentId: string): Promise<{
     finalGrade = Math.round(total * 100) / 100
     passed = finalGrade >= passingGrade
   } else if (evaluationType === 'attendance_threshold') {
-    // Verificar asistencia por nivel/pilar
+    // Verificar asistencia por nivel/pilar.
+    // Cada cohorte corresponde a UN solo nivel (pilar). Cuando el estudiante termina
+    // el Pilar 1, se inscribe en una nueva cohorte para el Pilar 2. Por tanto,
+    // filtrar sesiones por cohortId ya equivale a filtrar por nivel/pilar —
+    // no existe bug de conteo global; el límite maxAbsencesPerLevel aplica
+    // correctamente sobre la cohorte (pilar) que se está evaluando.
     const maxAbsencesPerLevel = (config.maxAbsencesPerLevel as number) ?? 2
 
-    // Obtener todas las sesiones de la cohorte
+    // Obtener todas las sesiones completadas de esta cohorte (= este pilar)
     const sessions = await prisma.iLSession.findMany({
       where: { cohortId: enrollment.cohortId, status: 'completed' }
     })
