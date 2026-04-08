@@ -107,114 +107,104 @@ const PendingReportsView = ({ groups, activeVacation, reportGroups, isAdmin }: P
   }
 
   const handleExportPDF = async () => {
-    const { default: jsPDF } = await import('jspdf')
-    await import('jspdf-autotable')
+    try {
+      const { default: jsPDF } = await import('jspdf')
 
-    const doc = new jsPDF({ orientation: 'landscape' })
+      await import('jspdf-autotable')
 
-    // Título
-    doc.setFontSize(16)
-    doc.setFont('helvetica', 'bold')
-    doc.text('Reportes Pendientes — Casa del Rey', 14, 18)
+      const doc = new jsPDF({ orientation: 'landscape' })
+      const today = new Date()
 
-    // Fecha de generación
-    doc.setFontSize(9)
-    doc.setFont('helvetica', 'normal')
-    doc.setTextColor(120, 120, 120)
-    const today = new Date()
-    const fechaGeneracion = today.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
+      // Título
+      doc.setFontSize(14)
+      doc.text('Reportes Pendientes — Casa del Rey', 14, 18)
 
-    doc.text(`Generado el ${fechaGeneracion}`, 14, 25)
+      // Fecha de generación
+      doc.setFontSize(9)
+      doc.setTextColor(120)
+      doc.text(
+        `Generado: ${today.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' })}`,
+        14,
+        25
+      )
 
-    // Resumen
-    doc.setTextColor(0, 0, 0)
-    doc.setFontSize(10)
-    doc.text(
-      `${filteredGroups.length} grupo${filteredGroups.length !== 1 ? 's' : ''} pendiente${filteredGroups.length !== 1 ? 's' : ''} · ${totalMissingWeeks} semana${totalMissingWeeks !== 1 ? 's' : ''} sin reportar`,
-      14,
-      32
-    )
+      // Resumen
+      doc.setTextColor(0)
+      doc.setFontSize(10)
+      doc.text(
+        `${filteredGroups.length} grupo${filteredGroups.length !== 1 ? 's' : ''} pendiente${filteredGroups.length !== 1 ? 's' : ''} · ${totalMissingWeeks} semana${totalMissingWeeks !== 1 ? 's' : ''} sin reportar`,
+        14,
+        32
+      )
 
-    // Si hay filtros activos, indicarlo
-    if (hasActiveFilters) {
-      doc.setFontSize(8)
-      doc.setTextColor(100, 100, 200)
-      const filtrosTexto = [
-        searchQuery ? `Búsqueda: "${searchQuery}"` : null,
-        selectedNetwork ? `Red: ${networks.find(n => n.id === selectedNetwork)?.name ?? selectedNetwork}` : null
-      ]
-        .filter(Boolean)
-        .join(' · ')
+      // Filtros activos
+      let startY = 38
 
-      doc.text(`Filtros activos: ${filtrosTexto}`, 14, 38)
-    }
+      if (hasActiveFilters) {
+        doc.setFontSize(8)
+        doc.setTextColor(80, 80, 180)
+        const filtrosTexto = [
+          searchQuery ? `Busqueda: "${searchQuery}"` : null,
+          selectedNetwork ? `Red: ${networks.find(n => n.id === selectedNetwork)?.name ?? selectedNetwork}` : null
+        ]
+          .filter(Boolean)
+          .join(' · ')
 
-    // Preparar datos de la tabla
-    const headers = ['Grupo', 'Red', 'Día / Hora', 'Último Reporte', 'Estado', 'Semanas Pendientes']
-
-    const rows = filteredGroups.map(group => {
-      const dia = DAYS_LABELS[group.meetingDay] || group.meetingDay
-      const hora = group.meetingTime ? ` ${group.meetingTime}` : ''
-      const ultimoReporte = group.lastReportDate ? formatDateWithDay(group.lastReportDate) : 'Sin reportes'
-      const estado = group.totalMissingWeeks > 2 ? 'Atrasado' : 'Pendiente'
-      const semanas = group.missingWeeks
-        .map(w => `${formatDateShort(w.weekStart)} - ${formatDateShort(w.weekEnd)}`)
-        .join('\n')
-
-      return [group.name, group.networkName, `${dia}${hora}`, ultimoReporte, estado, semanas]
-    })
-
-    // Generar tabla
-    ;(doc as any).autoTable({
-      head: [headers],
-      body: rows,
-      startY: hasActiveFilters ? 43 : 38,
-      styles: {
-        fontSize: 8,
-        cellPadding: 3,
-        valign: 'top',
-        lineColor: [220, 220, 220],
-        lineWidth: 0.3
-      },
-      headStyles: {
-        fillColor: [26, 26, 26],
-        textColor: 255,
-        fontStyle: 'bold',
-        fontSize: 8
-      },
-      alternateRowStyles: {
-        fillColor: [248, 248, 248]
-      },
-      columnStyles: {
-        0: { cellWidth: 45 },  // Grupo
-        1: { cellWidth: 35 },  // Red
-        2: { cellWidth: 28 },  // Día / Hora
-        3: { cellWidth: 38 },  // Último Reporte
-        4: { cellWidth: 22, halign: 'center' },  // Estado
-        5: { cellWidth: 'auto' }  // Semanas Pendientes
-      },
-      didDrawCell: (data: any) => {
-        // Colorear celda "Estado"
-        if (data.section === 'body' && data.column.index === 4) {
-          const estado = data.cell.text?.[0]
-
-          if (estado === 'Atrasado') {
-            data.doc.setFillColor(254, 226, 226)
-            data.doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height, 'F')
-            data.doc.setTextColor(185, 28, 28)
-            data.doc.setFontSize(8)
-            data.doc.text('Atrasado', data.cell.x + data.cell.width / 2, data.cell.y + data.cell.height / 2 + 1, { align: 'center' })
-          }
-        }
+        doc.text(`Filtros: ${filtrosTexto}`, 14, 38)
+        startY = 44
+        doc.setTextColor(0)
       }
-    })
 
-    // Nombre del archivo con fecha
-    const yyyy = today.getFullYear()
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const dd = String(today.getDate()).padStart(2, '0')
+      // Filas de la tabla
+      const rows = filteredGroups.map(group => {
+        const dia = DAYS_LABELS[group.meetingDay] || group.meetingDay
+        const hora = group.meetingTime ? ` ${group.meetingTime}` : ''
+        const ultimoReporte = group.lastReportDate ? formatDateWithDay(group.lastReportDate) : 'Sin reportes'
+        const estado = group.totalMissingWeeks > 2 ? 'Atrasado' : 'Pendiente'
+        const semanas = group.missingWeeks
+          .map(w => `${formatDateShort(w.weekStart)} - ${formatDateShort(w.weekEnd)}`)
+          .join('\n')
 
-    doc.save(`reportes-pendientes-${yyyy}-${mm}-${dd}.pdf`)
+        return [group.name, group.networkName, `${dia}${hora}`, ultimoReporte, estado, semanas]
+      })
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(doc as any).autoTable({
+        head: [['Grupo', 'Red', 'Dia / Hora', 'Ultimo Reporte', 'Estado', 'Semanas Pendientes']],
+        body: rows,
+        startY,
+        styles: { fontSize: 8, cellPadding: 2, valign: 'top' },
+        headStyles: { fillColor: [26, 26, 26], textColor: 255, fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [245, 245, 245] },
+        columnStyles: {
+          0: { cellWidth: 45 },
+          1: { cellWidth: 35 },
+          2: { cellWidth: 30 },
+          3: { cellWidth: 38 },
+          4: { cellWidth: 22, halign: 'center' as const },
+          5: { cellWidth: 'auto' as const }
+        },
+        didParseCell: (data: any) => {
+          if (data.section === 'body' && data.column.index === 4) {
+            if (data.cell.raw === 'Atrasado') {
+              data.cell.styles.fillColor = [254, 226, 226]
+              data.cell.styles.textColor = [185, 28, 28]
+              data.cell.styles.fontStyle = 'bold'
+            }
+          }
+        },
+        margin: { left: 14, right: 14 }
+      })
+
+      // Guardar con fecha
+      const yyyy = today.getFullYear()
+      const mm = String(today.getMonth() + 1).padStart(2, '0')
+      const dd = String(today.getDate()).padStart(2, '0')
+
+      doc.save(`reportes-pendientes-${yyyy}-${mm}-${dd}.pdf`)
+    } catch (err) {
+      console.error('Error exportando PDF:', err)
+    }
   }
 
   const handleClearFilters = () => {
