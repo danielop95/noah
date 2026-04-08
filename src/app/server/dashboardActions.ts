@@ -301,12 +301,14 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   let reportingProgress = { expected: 0, reported: 0, unreportedGroups: [] as Array<{ id: string; name: string; meetingDay: string; networkName: string }> }
 
   if (!activeVacation) {
-    // Calculate expected reports for current week
     const todayDate = new Date()
 
     todayDate.setHours(0, 0, 0, 0)
 
     const todayDay = todayDate.getDay()
+
+    // Calcular (group, expectedDate) en memoria — sin queries
+    const groupDates: Array<{ group: typeof allGroups[0]; expectedDate: Date }> = []
 
     for (const group of allGroups) {
       if (!group.meetingDay) continue
@@ -315,7 +317,6 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
       if (dayNum === -1) continue
 
-      // Calculate expected date for this week
       const monday = new Date(todayDate)
 
       monday.setDate(todayDate.getDate() - ((todayDay + 6) % 7))
@@ -325,25 +326,51 @@ export async function getDashboardStats(): Promise<DashboardStats> {
 
       expectedDate.setDate(monday.getDate() + offset)
 
-      // Only check if expected date is in the past or today
       if (expectedDate > todayDate) continue
 
-      const report = await prisma.groupReport.findUnique({
-        where: { groupId_meetingDate: { groupId: group.id, meetingDate: expectedDate } }
+      groupDates.push({ group, expectedDate })
+    }
+
+    if (groupDates.length > 0) {
+      // Una sola query para todos los grupos
+      const groupIds = groupDates.map(gd => gd.group.id)
+      const dates = groupDates.map(gd => gd.expectedDate)
+      const minDate = new Date(Math.min(...dates.map(d => d.getTime())))
+      const maxDate = new Date(Math.max(...dates.map(d => d.getTime())))
+
+      const existingReports = await prisma.groupReport.findMany({
+        where: {
+          groupId: { in: groupIds },
+          meetingDate: { gte: minDate, lte: maxDate }
+        },
+        select: { groupId: true, meetingDate: true }
       })
 
-      if (report) {
-        reportingProgress.reported++
-      } else {
-        reportingProgress.unreportedGroups.push({
-          id: group.id,
-          name: group.name,
-          meetingDay: group.meetingDay,
-          networkName: group.network.name
-        })
-      }
+      // Set de lookup: "groupId_YYYY-M-D" (sin padding, coincide con getFullYear/getMonth/getDate)
+      const reportedSet = new Set(
+        existingReports.map(r => {
+          const d = new Date(r.meetingDate)
 
-      reportingProgress.expected++
+          return `${r.groupId}_${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`
+        })
+      )
+
+      for (const { group, expectedDate } of groupDates) {
+        const key = `${group.id}_${expectedDate.getFullYear()}-${expectedDate.getMonth()}-${expectedDate.getDate()}`
+
+        if (reportedSet.has(key)) {
+          reportingProgress.reported++
+        } else {
+          reportingProgress.unreportedGroups.push({
+            id: group.id,
+            name: group.name,
+            meetingDay: group.meetingDay!,
+            networkName: group.network.name
+          })
+        }
+
+        reportingProgress.expected++
+      }
     }
   }
 
