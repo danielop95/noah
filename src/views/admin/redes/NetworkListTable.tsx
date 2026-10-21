@@ -112,7 +112,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
               sx={{ width: 40, height: 40, bgcolor: 'primary.main' }}
               variant='rounded'
             >
-              <i className='ri-bubble-chart-line' />
+              <i className='solar-share-circle-linear' />
             </Avatar>
             <div>
               <Typography className='font-medium' color='text.primary'>
@@ -190,7 +190,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
                 size='small'
                 onClick={() => router.push(`/dashboard/admin/redes/${row.original.id}`)}
               >
-                <i className='ri-eye-line text-textSecondary' />
+                <i className='solar-eye-linear text-textSecondary' />
               </IconButton>
             </Tooltip>
             <Tooltip title='Editar'>
@@ -201,7 +201,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
                   setDrawerOpen(true)
                 }}
               >
-                <i className='ri-edit-line text-textSecondary' />
+                <i className='solar-pen-new-square-linear text-textSecondary' />
               </IconButton>
             </Tooltip>
             <Tooltip title='Eliminar'>
@@ -212,7 +212,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
                   setDeleteDialogOpen(true)
                 }}
               >
-                <i className='ri-delete-bin-line text-error' />
+                <i className='solar-trash-bin-trash-linear text-error' />
               </IconButton>
             </Tooltip>
           </div>
@@ -290,7 +290,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
             className='min-is-[200px]'
             slotProps={{
               input: {
-                startAdornment: <i className='ri-search-line text-textSecondary mie-2' />
+                startAdornment: <i className='solar-magnifer-linear text-textSecondary mie-2' />
               }
             }}
           />
@@ -309,7 +309,7 @@ const NetworkListTable = ({ networks: initialNetworks, users, onRefresh }: Netwo
         </div>
         <div className='flex gap-2'>
           <ExportButton data={filteredNetworks} columns={networkExportColumns} fileName='redes' title='Redes' />
-          <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleOpenCreate}>
+          <Button variant='contained' startIcon={<i className='solar-add-circle-linear' />} onClick={handleOpenCreate}>
             Nueva Red
           </Button>
         </div>

@@ -156,7 +156,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               size='small'
               variant='tonal'
               color={networkRole === 'leader' ? 'warning' : 'info'}
-              icon={networkRole === 'leader' ? <i className='ri-star-line text-xs' /> : undefined}
+              icon={networkRole === 'leader' ? <i className='solar-star-linear text-xs' /> : undefined}
             />
           )
         }
@@ -178,7 +178,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               size='small'
               variant='tonal'
               color={groupRole === 'leader' ? 'success' : 'info'}
-              icon={groupRole === 'leader' ? <i className='ri-star-line text-xs' /> : undefined}
+              icon={groupRole === 'leader' ? <i className='solar-star-linear text-xs' /> : undefined}
             />
           )
         }
@@ -209,7 +209,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
               size='small'
               onClick={() => router.push(`/dashboard/admin/usuarios/${row.original.id}`)}
             >
-              <i className='ri-eye-line text-textSecondary' />
+              <i className='solar-eye-linear text-textSecondary' />
             </IconButton>
             <IconButton
               size='small'
@@ -218,7 +218,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
                 setEditDrawerOpen(true)
               }}
             >
-              <i className='ri-edit-line text-textSecondary' />
+              <i className='solar-pen-new-square-linear text-textSecondary' />
             </IconButton>
           </div>
         )
@@ -275,7 +275,7 @@ const UserListTable = ({ users: initialUsers }: { users: UserRow[] }) => {
           className='min-is-[200px]'
           slotProps={{
             input: {
-              startAdornment: <i className='ri-search-line text-textSecondary mie-2' />
+              startAdornment: <i className='solar-magnifer-linear text-textSecondary mie-2' />
             }
           }}
         />

@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from 'react'
 
-import Drawer from '@mui/material/Drawer'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -25,6 +29,8 @@ type ReportDrawerProps = {
   report: ReportWithDetails | null
   groups: GroupOptionForReports[]
   onRefresh: () => void
+  initialGroupId?: string
+  initialDate?: string
 }
 
 const DAYS_OF_WEEK = [
@@ -45,12 +51,14 @@ const formatDateForInput = (date: Date | string | null): string => {
   return d.toISOString().split('T')[0]
 }
 
-const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawerProps) => {
+const ReportDrawer = ({ open, onClose, report, groups, onRefresh, initialGroupId, initialDate }: ReportDrawerProps) => {
   const isEditing = !!report
 
   // Form state
   const [groupId, setGroupId] = useState<string>('')
   const [meetingDate, setMeetingDate] = useState<string>('')
+  const [noMeeting, setNoMeeting] = useState<boolean>(false)
+  const [noMeetingReason, setNoMeetingReason] = useState<string>('')
   const [totalAttendees, setTotalAttendees] = useState<number>(1)
   const [leadersCount, setLeadersCount] = useState<number>(1)
   const [visitorsCount, setVisitorsCount] = useState<number>(0)
@@ -109,7 +117,9 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
         // Edit mode
         setGroupId(report.groupId)
         setMeetingDate(formatDateForInput(report.meetingDate))
-        setTotalAttendees(report.totalAttendees)
+        setNoMeeting(report.noMeeting || false)
+        setNoMeetingReason(report.noMeetingReason || '')
+        setTotalAttendees(report.totalAttendees || 1)
         setLeadersCount(report.leadersCount)
         setVisitorsCount(report.visitorsCount)
         setReportOffering(report.reportOffering)
@@ -117,8 +127,10 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
         setNotes(report.notes || '')
       } else {
         // Create mode - reset all
-        setGroupId(groups.length === 1 ? groups[0].id : '')
-        setMeetingDate(new Date().toISOString().split('T')[0])
+        setGroupId(initialGroupId || (groups.length === 1 ? groups[0].id : ''))
+        setMeetingDate(initialDate || new Date().toISOString().split('T')[0])
+        setNoMeeting(false)
+        setNoMeetingReason('')
         setTotalAttendees(1)
         setLeadersCount(1)
         setVisitorsCount(0)
@@ -129,7 +141,7 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
 
       setError(null)
     }
-  }, [report, open, groups])
+  }, [report, open, groups, initialGroupId, initialDate])
 
   const handleClose = () => {
     if (!saving) {
@@ -157,28 +169,36 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
       return
     }
 
-    if (totalAttendees < 1) {
-      setError('El total de asistentes debe ser al menos 1')
+    if (noMeeting) {
+      if (!noMeetingReason.trim()) {
+        setError('Debe indicar el motivo por el que no se realizó el grupo')
 
-      return
-    }
+        return
+      }
+    } else {
+      if (totalAttendees < 1) {
+        setError('El total de asistentes debe ser al menos 1')
 
-    if (leadersCount > totalAttendees) {
-      setError('El número de líderes no puede ser mayor al total de asistentes')
+        return
+      }
 
-      return
-    }
+      if (leadersCount > totalAttendees) {
+        setError('El número de líderes no puede ser mayor al total de asistentes')
 
-    if (visitorsCount > totalAttendees) {
-      setError('El número de visitas no puede ser mayor al total de asistentes')
+        return
+      }
 
-      return
-    }
+      if (visitorsCount > totalAttendees) {
+        setError('El número de visitas no puede ser mayor al total de asistentes')
 
-    if (reportOffering && offeringAmount <= 0) {
-      setError('Si reporta ofrenda, debe indicar un monto válido')
+        return
+      }
 
-      return
+      if (reportOffering && offeringAmount <= 0) {
+        setError('Si reporta ofrenda, debe indicar un monto válido')
+
+        return
+      }
     }
 
     setSaving(true)
@@ -188,23 +208,27 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
       if (isEditing) {
         await updateReport(report.id, {
           meetingDate,
-          totalAttendees,
-          leadersCount,
-          visitorsCount,
-          reportOffering,
-          offeringAmount: reportOffering ? offeringAmount : null,
-          notes: notes || null
+          noMeeting,
+          noMeetingReason: noMeeting ? noMeetingReason : null,
+          totalAttendees: noMeeting ? 0 : totalAttendees,
+          leadersCount: noMeeting ? 0 : leadersCount,
+          visitorsCount: noMeeting ? 0 : visitorsCount,
+          reportOffering: noMeeting ? false : reportOffering,
+          offeringAmount: noMeeting ? null : (reportOffering ? offeringAmount : null),
+          notes: noMeeting ? null : (notes || null)
         })
       } else {
         await createReport({
           groupId,
           meetingDate,
-          totalAttendees,
-          leadersCount,
-          visitorsCount,
-          reportOffering,
-          offeringAmount: reportOffering ? offeringAmount : undefined,
-          notes: notes || undefined
+          noMeeting,
+          noMeetingReason: noMeeting ? noMeetingReason : undefined,
+          totalAttendees: noMeeting ? 0 : totalAttendees,
+          leadersCount: noMeeting ? 0 : leadersCount,
+          visitorsCount: noMeeting ? 0 : visitorsCount,
+          reportOffering: noMeeting ? false : reportOffering,
+          offeringAmount: noMeeting ? undefined : (reportOffering ? offeringAmount : undefined),
+          notes: noMeeting ? undefined : (notes || undefined)
         })
       }
 
@@ -220,202 +244,239 @@ const ReportDrawer = ({ open, onClose, report, groups, onRefresh }: ReportDrawer
   const selectedGroup = groups.find(g => g.id === groupId)
 
   return (
-    <Drawer
-      anchor='right'
+    <Dialog
       open={open}
       onClose={handleClose}
+      maxWidth='sm'
+      fullWidth
+      TransitionComponent={Fade}
+      transitionDuration={300}
       PaperProps={{
-        sx: { width: { xs: '100%', sm: 480 } }
+        sx: { borderRadius: '16px', maxHeight: '90vh' }
       }}
     >
-      <Box className='flex flex-col h-full'>
-        {/* Header */}
-        <Box className='flex items-center justify-between p-4 border-b border-divider'>
-          <Typography variant='h6'>{isEditing ? 'Editar Reporte' : 'Nuevo Reporte'}</Typography>
-          <IconButton onClick={handleClose} disabled={saving}>
-            <i className='ri-close-line' />
-          </IconButton>
-        </Box>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {isEditing ? 'Editar Reporte' : 'Nuevo Reporte'}
+        <IconButton onClick={handleClose} disabled={saving}>
+          <i className='solar-close-square-linear' />
+        </IconButton>
+      </DialogTitle>
 
-        {/* Content */}
-        <Box className='flex-1 overflow-auto p-4'>
-          {error && (
-            <Alert severity='error' className='mb-4' onClose={() => setError(null)}>
-              {error}
+      <DialogContent dividers>
+        {error && (
+          <Alert severity='error' className='mb-4' onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
+
+        {/* Grupo */}
+        <TextField
+          select
+          fullWidth
+          label='Grupo'
+          value={groupId}
+          onChange={e => setGroupId(e.target.value)}
+          disabled={isEditing || saving}
+          className='mb-4'
+          required
+        >
+          {groups.map(group => (
+            <MenuItem key={group.id} value={group.id}>
+              <Box className='flex items-center gap-2'>
+                <Avatar src={group.imageUrl || undefined} sx={{ width: 24, height: 24 }}>
+                  {group.name[0]}
+                </Avatar>
+                <span>{group.name}</span>
+                <Typography variant='caption' color='text.secondary'>
+                  ({group.network.name})
+                </Typography>
+              </Box>
+            </MenuItem>
+          ))}
+        </TextField>
+
+        {/* Fecha */}
+        <TextField
+          fullWidth
+          type='date'
+          label='Fecha de la Reunión'
+          value={meetingDate}
+          onChange={e => setMeetingDate(e.target.value)}
+          disabled={saving}
+          className='mb-4'
+          required
+          error={!!duplicateWarning}
+          helperText={duplicateWarning || (checkingDuplicate ? 'Verificando disponibilidad...' : undefined)}
+          slotProps={{ inputLabel: { shrink: true } }}
+        />
+
+        <Divider className='my-4' />
+
+        {/* No se realizó grupo */}
+        <FormControlLabel
+          control={
+            <Switch
+              checked={noMeeting}
+              onChange={e => setNoMeeting(e.target.checked)}
+              disabled={saving}
+              color='warning'
+            />
+          }
+          label={
+            <Typography variant='subtitle2' color={noMeeting ? 'warning.main' : 'text.primary'}>
+              No se realizó grupo
+            </Typography>
+          }
+          className='mb-3'
+        />
+
+        {noMeeting ? (
+          <>
+            <Alert severity='info' className='mb-4'>
+              Se registrará que el grupo no se reunió en esta fecha
             </Alert>
-          )}
 
-          {/* Grupo */}
-          <TextField
-            select
-            fullWidth
-            label='Grupo'
-            value={groupId}
-            onChange={e => setGroupId(e.target.value)}
-            disabled={isEditing || saving}
-            className='mb-4'
-            required
-          >
-            {groups.map(group => (
-              <MenuItem key={group.id} value={group.id}>
-                <Box className='flex items-center gap-2'>
-                  <Avatar src={group.imageUrl || undefined} sx={{ width: 24, height: 24 }}>
-                    {group.name[0]}
-                  </Avatar>
-                  <span>{group.name}</span>
-                  <Typography variant='caption' color='text.secondary'>
-                    ({group.network.name})
-                  </Typography>
-                </Box>
-              </MenuItem>
-            ))}
-          </TextField>
-
-          {/* Fecha */}
-          <TextField
-            fullWidth
-            type='date'
-            label='Fecha de la Reunión'
-            value={meetingDate}
-            onChange={e => setMeetingDate(e.target.value)}
-            disabled={saving}
-            className='mb-4'
-            required
-            error={!!duplicateWarning}
-            helperText={duplicateWarning || (checkingDuplicate ? 'Verificando disponibilidad...' : undefined)}
-            slotProps={{ inputLabel: { shrink: true } }}
-          />
-
-          <Divider className='my-4' />
-
-          {/* Asistencia */}
-          <Typography variant='subtitle2' className='mb-3'>
-            Asistencia
-          </Typography>
-
-          <TextField
-            fullWidth
-            type='number'
-            label='Total Asistentes'
-            value={totalAttendees}
-            onChange={e => setTotalAttendees(Math.max(1, parseInt(e.target.value) || 1))}
-            disabled={saving}
-            className='mb-4'
-            required
-            slotProps={{
-              htmlInput: { min: 1 },
-              input: {
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <i className='ri-group-line' />
-                  </InputAdornment>
-                )
-              }
-            }}
-            helperText='Incluye a todos los asistentes (líderes y miembros)'
-          />
-
-          <Box className='flex gap-4 mb-4'>
             <TextField
               fullWidth
-              type='number'
-              label='Líderes'
-              value={leadersCount}
-              onChange={e => setLeadersCount(Math.max(0, parseInt(e.target.value) || 0))}
+              multiline
+              rows={3}
+              label='Motivo'
+              value={noMeetingReason}
+              onChange={e => setNoMeetingReason(e.target.value)}
               disabled={saving}
-              slotProps={{
-                htmlInput: { min: 0, max: totalAttendees },
-                input: {
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <i className='ri-star-line' />
-                    </InputAdornment>
-                  )
-                }
-              }}
-              helperText='Del total, ¿cuántos eran líderes?'
+              required
+              placeholder='Ej: Semana Santa, enfermedad del líder, lluvia...'
+              error={!noMeetingReason.trim() && !!error}
             />
+          </>
+        ) : (
+          <>
+            {/* Asistencia */}
+            <Typography variant='subtitle2' className='mb-3'>
+              Asistencia
+            </Typography>
 
             <TextField
               fullWidth
               type='number'
-              label='Visitas'
-              value={visitorsCount}
-              onChange={e => setVisitorsCount(Math.max(0, parseInt(e.target.value) || 0))}
-              disabled={saving}
-              slotProps={{
-                htmlInput: { min: 0, max: totalAttendees },
-                input: {
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <i className='ri-user-add-line' />
-                    </InputAdornment>
-                  )
-                }
-              }}
-              helperText='¿Cuántos eran invitados nuevos?'
-            />
-          </Box>
-
-          <Divider className='my-4' />
-
-          {/* Ofrenda */}
-          <Typography variant='subtitle2' className='mb-3'>
-            Ofrenda / Diezmo
-          </Typography>
-
-          <FormControlLabel
-            control={
-              <Switch checked={reportOffering} onChange={e => setReportOffering(e.target.checked)} disabled={saving} />
-            }
-            label='¿Reportar ofrenda?'
-            className='mb-3'
-          />
-
-          {reportOffering && (
-            <TextField
-              fullWidth
-              type='number'
-              label='Monto de Ofrenda'
-              value={offeringAmount}
-              onChange={e => setOfferingAmount(Math.max(0, parseFloat(e.target.value) || 0))}
+              label='Total Asistentes'
+              value={totalAttendees}
+              onChange={e => setTotalAttendees(Math.max(1, parseInt(e.target.value) || 1))}
               disabled={saving}
               className='mb-4'
+              required
               slotProps={{
-                htmlInput: { min: 0, step: 1000 },
+                htmlInput: { min: 1 },
                 input: {
-                  startAdornment: <InputAdornment position='start'>$</InputAdornment>
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <i className='solar-users-group-rounded-linear' />
+                    </InputAdornment>
+                  )
                 }
               }}
+              helperText='Incluye a todos los asistentes (líderes y miembros)'
             />
-          )}
 
-          <Divider className='my-4' />
+            <Box className='flex gap-4 mb-4'>
+              <TextField
+                fullWidth
+                type='number'
+                label='Líderes'
+                value={leadersCount}
+                onChange={e => setLeadersCount(Math.max(0, parseInt(e.target.value) || 0))}
+                disabled={saving}
+                slotProps={{
+                  htmlInput: { min: 0, max: totalAttendees },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <i className='solar-star-linear' />
+                      </InputAdornment>
+                    )
+                  }
+                }}
+                helperText='Del total, ¿cuántos eran líderes?'
+              />
 
-          {/* Notas */}
-          <TextField
-            fullWidth
-            multiline
-            rows={3}
-            label='Notas (opcional)'
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-            disabled={saving}
-            placeholder='Observaciones, testimonios, peticiones de oración...'
-          />
-        </Box>
+              <TextField
+                fullWidth
+                type='number'
+                label='Visitas'
+                value={visitorsCount}
+                onChange={e => setVisitorsCount(Math.max(0, parseInt(e.target.value) || 0))}
+                disabled={saving}
+                slotProps={{
+                  htmlInput: { min: 0, max: totalAttendees },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <i className='solar-user-plus-linear' />
+                      </InputAdornment>
+                    )
+                  }
+                }}
+                helperText='¿Cuántos eran invitados nuevos?'
+              />
+            </Box>
 
-        {/* Footer */}
-        <Box className='flex justify-end gap-3 p-4 border-t border-divider'>
-          <Button variant='outlined' onClick={handleClose} disabled={saving}>
-            Cancelar
-          </Button>
-          <Button variant='contained' onClick={handleSubmit} disabled={saving || !!duplicateWarning}>
-            {saving ? 'Guardando...' : isEditing ? 'Actualizar' : 'Guardar'}
-          </Button>
-        </Box>
-      </Box>
-    </Drawer>
+            <Divider className='my-4' />
+
+            {/* Ofrenda */}
+            <Typography variant='subtitle2' className='mb-3'>
+              Ofrenda / Diezmo
+            </Typography>
+
+            <FormControlLabel
+              control={
+                <Switch checked={reportOffering} onChange={e => setReportOffering(e.target.checked)} disabled={saving} />
+              }
+              label='¿Reportar ofrenda?'
+              className='mb-3'
+            />
+
+            {reportOffering && (
+              <TextField
+                fullWidth
+                type='number'
+                label='Monto de Ofrenda'
+                value={offeringAmount}
+                onChange={e => setOfferingAmount(Math.max(0, parseFloat(e.target.value) || 0))}
+                disabled={saving}
+                className='mb-4'
+                slotProps={{
+                  htmlInput: { min: 0, step: 1000 },
+                  input: {
+                    startAdornment: <InputAdornment position='start'>$</InputAdornment>
+                  }
+                }}
+              />
+            )}
+
+            <Divider className='my-4' />
+
+            {/* Notas */}
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label='Notas (opcional)'
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
+              disabled={saving}
+              placeholder='Observaciones, testimonios, peticiones de oración...'
+            />
+          </>
+        )}
+      </DialogContent>
+
+      <DialogActions sx={{ px: 3, py: 2 }}>
+        <Button variant='outlined' onClick={handleClose} disabled={saving}>Cancelar</Button>
+        <Button variant='contained' onClick={handleSubmit} disabled={saving || !!duplicateWarning}>
+          {saving ? 'Guardando...' : isEditing ? 'Actualizar' : 'Guardar'}
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

@@ -228,3 +228,174 @@ export async function updateOrganizationSettings(
 
   return organization
 }
+
+// ============================================
+// VACATION PERIODS
+// ============================================
+
+export type VacationPeriodData = {
+  id: string
+  name: string | null
+  startDate: Date
+  endDate: Date
+  createdAt: Date
+}
+
+export async function getVacationPeriods(): Promise<VacationPeriodData[]> {
+  const session = await requirePermission('configuracion', 'ver')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) {
+    throw new Error('El administrador no pertenece a ninguna organización')
+  }
+
+  return prisma.vacationPeriod.findMany({
+    where: { organizationId },
+    select: {
+      id: true,
+      name: true,
+      startDate: true,
+      endDate: true,
+      createdAt: true
+    },
+    orderBy: { startDate: 'desc' }
+  })
+}
+
+export async function createVacationPeriod(data: {
+  name?: string
+  startDate: string
+  endDate: string
+}): Promise<VacationPeriodData> {
+  const session = await requirePermission('configuracion', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) {
+    throw new Error('El administrador no pertenece a ninguna organización')
+  }
+
+  const startDate = new Date(data.startDate)
+  const endDate = new Date(data.endDate)
+
+  startDate.setHours(0, 0, 0, 0)
+  endDate.setHours(0, 0, 0, 0)
+
+  if (startDate > endDate) {
+    throw new Error('La fecha de inicio debe ser anterior o igual a la fecha de fin')
+  }
+
+  // Check for overlapping periods
+  const overlap = await prisma.vacationPeriod.findFirst({
+    where: {
+      organizationId,
+      OR: [
+        { startDate: { lte: endDate }, endDate: { gte: startDate } }
+      ]
+    }
+  })
+
+  if (overlap) {
+    throw new Error('Este periodo se superpone con otro periodo de vacaciones existente')
+  }
+
+  return prisma.vacationPeriod.create({
+    data: {
+      name: data.name?.trim() || null,
+      startDate,
+      endDate,
+      organizationId
+    },
+    select: {
+      id: true,
+      name: true,
+      startDate: true,
+      endDate: true,
+      createdAt: true
+    }
+  })
+}
+
+export async function updateVacationPeriod(
+  id: string,
+  data: {
+    name?: string | null
+    startDate?: string
+    endDate?: string
+  }
+): Promise<VacationPeriodData> {
+  const session = await requirePermission('configuracion', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) {
+    throw new Error('El administrador no pertenece a ninguna organización')
+  }
+
+  const existing = await prisma.vacationPeriod.findUnique({ where: { id } })
+
+  if (!existing || existing.organizationId !== organizationId) {
+    throw new Error('Periodo de vacaciones no encontrado')
+  }
+
+  const startDate = data.startDate ? new Date(data.startDate) : existing.startDate
+  const endDate = data.endDate ? new Date(data.endDate) : existing.endDate
+
+  if (data.startDate) startDate.setHours(0, 0, 0, 0)
+  if (data.endDate) endDate.setHours(0, 0, 0, 0)
+
+  if (startDate > endDate) {
+    throw new Error('La fecha de inicio debe ser anterior o igual a la fecha de fin')
+  }
+
+  // Check for overlapping periods (excluding self)
+  const overlap = await prisma.vacationPeriod.findFirst({
+    where: {
+      organizationId,
+      NOT: { id },
+      OR: [
+        { startDate: { lte: endDate }, endDate: { gte: startDate } }
+      ]
+    }
+  })
+
+  if (overlap) {
+    throw new Error('Este periodo se superpone con otro periodo de vacaciones existente')
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateData: any = {}
+
+  if (data.name !== undefined) updateData.name = data.name?.trim() || null
+  if (data.startDate) updateData.startDate = startDate
+  if (data.endDate) updateData.endDate = endDate
+
+  return prisma.vacationPeriod.update({
+    where: { id },
+    data: updateData,
+    select: {
+      id: true,
+      name: true,
+      startDate: true,
+      endDate: true,
+      createdAt: true
+    }
+  })
+}
+
+export async function deleteVacationPeriod(id: string) {
+  const session = await requirePermission('configuracion', 'editar')
+  const organizationId = await getAdminOrganizationId(session.user.id)
+
+  if (!organizationId) {
+    throw new Error('El administrador no pertenece a ninguna organización')
+  }
+
+  const existing = await prisma.vacationPeriod.findUnique({ where: { id } })
+
+  if (!existing || existing.organizationId !== organizationId) {
+    throw new Error('Periodo de vacaciones no encontrado')
+  }
+
+  await prisma.vacationPeriod.delete({ where: { id } })
+
+  return { success: true }
+}

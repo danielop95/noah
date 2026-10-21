@@ -119,7 +119,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
     return (
       <Box className='flex flex-col items-center justify-center py-12'>
         <CustomAvatar skin='light' color='primary' size={64} sx={{ mb: 2 }}>
-          <i className='ri-team-line text-3xl' />
+          <i className='solar-widget-2-linear text-3xl' />
         </CustomAvatar>
         <Typography variant='h6' className='mbe-1'>
           Sin grupos asignados
@@ -129,7 +129,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
         </Typography>
         <Button
           variant='contained'
-          startIcon={<i className='ri-add-line' />}
+          startIcon={<i className='solar-add-circle-linear' />}
           onClick={() => router.push('/dashboard/admin/grupos')}
         >
           Crear Grupo
@@ -148,7 +148,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
         <Button
           size='small'
           variant='outlined'
-          startIcon={<i className='ri-add-line' />}
+          startIcon={<i className='solar-add-circle-linear' />}
           onClick={() => router.push('/dashboard/admin/grupos')}
         >
           Crear Grupo
@@ -170,7 +170,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                     variant='rounded'
                     sx={{ width: 48, height: 48, bgcolor: 'success.main' }}
                   >
-                    <i className='ri-team-line text-xl' />
+                    <i className='solar-widget-2-linear text-xl' />
                   </Avatar>
                   <Box className='flex-1 min-w-0'>
                     <Box className='flex items-center justify-between'>
@@ -181,7 +181,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                         size='small'
                         onClick={(e) => handleMenuOpen(e, group)}
                       >
-                        <i className='ri-more-2-line text-sm' />
+                        <i className='solar-menu-dots-linear text-sm' />
                       </IconButton>
                     </Box>
                     <Box className='flex gap-1 mbs-1'>
@@ -208,7 +208,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                 <Box className='flex flex-wrap gap-3 mbs-3'>
                   {getDayLabel(group.meetingDay) && (
                     <Box className='flex items-center gap-1'>
-                      <i className='ri-calendar-line text-textSecondary text-sm' />
+                      <i className='solar-calendar-linear text-textSecondary text-sm' />
                       <Typography variant='caption' color='text.secondary'>
                         {getDayLabel(group.meetingDay)}
                       </Typography>
@@ -216,7 +216,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                   )}
                   {group.meetingTime && (
                     <Box className='flex items-center gap-1'>
-                      <i className='ri-time-line text-textSecondary text-sm' />
+                      <i className='solar-clock-circle-linear text-textSecondary text-sm' />
                       <Typography variant='caption' color='text.secondary'>
                         {group.meetingTime}
                       </Typography>
@@ -224,7 +224,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                   )}
                   {group.city && (
                     <Box className='flex items-center gap-1'>
-                      <i className='ri-map-pin-line text-textSecondary text-sm' />
+                      <i className='solar-map-point-linear text-textSecondary text-sm' />
                       <Typography variant='caption' color='text.secondary'>
                         {group.city}
                       </Typography>
@@ -267,7 +267,7 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
                     )}
                   </Box>
                   <Chip
-                    icon={<i className='ri-file-list-3-line text-xs' />}
+                    icon={<i className='solar-clipboard-text-linear text-xs' />}
                     label={`${group._count.reports}`}
                     size='small'
                     variant='tonal'
@@ -291,19 +291,19 @@ const NetworkGroupsTab = ({ groups, networkId }: Props) => {
       >
         <MenuItem onClick={handleViewGroup}>
           <ListItemIcon>
-            <i className='ri-eye-line' />
+            <i className='solar-eye-linear' />
           </ListItemIcon>
           <ListItemText>Ver grupo</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleEditGroup}>
           <ListItemIcon>
-            <i className='ri-edit-line' />
+            <i className='solar-pen-new-square-linear' />
           </ListItemIcon>
           <ListItemText>Editar</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleRemoveFromNetwork} sx={{ color: 'error.main' }}>
           <ListItemIcon sx={{ color: 'error.main' }}>
-            <i className='ri-close-circle-line' />
+            <i className='solar-close-circle-linear' />
           </ListItemIcon>
           <ListItemText>Quitar de la red</ListItemText>
         </MenuItem>

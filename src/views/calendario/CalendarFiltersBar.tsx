@@ -106,13 +106,13 @@ const CalendarFiltersBar = (props: Props) => {
               }
             }}
           >
-            <i className='ri-add-line' />
+            <i className='solar-add-circle-linear' />
           </IconButton>
         ) : (
           <Button
             variant='contained'
             onClick={handleAddEvent}
-            startIcon={<i className='ri-add-line' />}
+            startIcon={<i className='solar-add-circle-linear' />}
             sx={{
               borderRadius: '10px',
               px: 3,

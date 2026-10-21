@@ -21,12 +21,12 @@ const noResultData: NoResultData[] = [
   {
     label: 'Dashboard',
     href: '/dashboard',
-    icon: 'ri-home-smile-line'
+    icon: 'solar-home-smile-linear'
   },
   {
     label: 'Mi Cuenta',
     href: '/dashboard/account-settings',
-    icon: 'ri-user-3-line'
+    icon: 'solar-user-linear'
   }
 ]
 
@@ -37,7 +37,7 @@ const NoResult = ({ searchValue, setOpen }: { searchValue: string; setOpen: (val
   return (
     <div className='flex items-center justify-center grow flex-wrap plb-14 pli-16 overflow-y-auto overflow-x-hidden bs-full'>
       <div className='flex flex-col items-center'>
-        <i className='ri-file-forbid-line text-[64px] mbe-2.5' />
+        <i className='solar-file-remove-linear text-[64px] mbe-2.5' />
         <p className='text-lg font-medium leading-[1.55556] mbe-11'>{`No result for "${searchValue}"`}</p>
         <p className='text-[15px] leading-[1.4667] mbe-4 text-textDisabled'>Try searching for</p>
         <ul className='flex flex-col gap-4'>

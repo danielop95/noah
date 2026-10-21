@@ -78,8 +78,8 @@ const UserRightTabs = ({ user }: { user: UserData }) => {
     <Card>
       <TabContext value={activeTab}>
         <TabList onChange={(_, value) => setActiveTab(value)} className='border-be'>
-          <Tab label='Información Personal' value='info' icon={<i className='ri-user-line' />} iconPosition='start' />
-          <Tab label='Ubicación' value='location' icon={<i className='ri-map-pin-line' />} iconPosition='start' />
+          <Tab label='Información Personal' value='info' icon={<i className='solar-user-linear' />} iconPosition='start' />
+          <Tab label='Ubicación' value='location' icon={<i className='solar-map-point-linear' />} iconPosition='start' />
         </TabList>
         <TabPanel value='info'>
           <CardContent>

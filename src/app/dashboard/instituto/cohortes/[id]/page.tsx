@@ -6,8 +6,7 @@ import { getCohortById, getEnrollmentsByCohort, getAttendanceByCohort } from '@/
 
 type Props = { params: Promise<{ id: string }> }
 
-const CohortDetailPage = async ({ params }: Props) => {
-  const { id } = await params
+async function PageContent({ id }: { id: string }) {
   const [cohort, enrollments, attendanceData] = await Promise.all([
     getCohortById(id),
     getEnrollmentsByCohort(id),
@@ -16,11 +15,15 @@ const CohortDetailPage = async ({ params }: Props) => {
 
   if (!cohort) notFound()
 
+  return <CohortDetailView cohort={cohort} enrollments={enrollments} attendanceData={attendanceData} />
+}
+
+export default async function CohortDetailPage({ params }: Props) {
+  const { id } = await params
+
   return (
     <PermissionGuard permission='instituto.ver'>
-      <CohortDetailView cohort={cohort} enrollments={enrollments} attendanceData={attendanceData} />
+      <PageContent id={id} />
     </PermissionGuard>
   )
 }
-
-export default CohortDetailPage

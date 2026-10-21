@@ -16,6 +16,8 @@ export type ReportWithDetails = {
   reportOffering: boolean
   offeringAmount: number | null
   notes: string | null
+  noMeeting: boolean
+  noMeetingReason: string | null
   createdAt: Date
   updatedAt: Date
   groupId: string
@@ -37,11 +39,49 @@ export type ReportWithDetails = {
 
 export type ReportStats = {
   totalReports: number
+  cancelledReports: number
   totalAttendees: number
   totalLeaders: number
   totalVisitors: number
   totalOffering: number
   averageAttendees: number
+}
+
+export type UnreportedGroup = {
+  id: string
+  name: string
+  meetingDay: string
+  networkName: string
+  expectedDate: Date
+  leaderNames: string[]
+}
+
+export type VacationPeriodInfo = {
+  id: string
+  name: string | null
+  startDate: Date
+  endDate: Date
+} | null
+
+export type DetailedUnreportedGroup = {
+  id: string
+  name: string
+  description: string | null
+  imageUrl: string | null
+  meetingDay: string
+  meetingTime: string | null
+  modality: string
+  networkId: string
+  networkName: string
+  leaderNames: string[]
+  leaderIds: string[]
+  missingWeeks: Array<{
+    weekStart: Date
+    weekEnd: Date
+    expectedDate: Date
+  }>
+  lastReportDate: Date | null
+  totalMissingWeeks: number
 }
 
 export type GroupOptionForReports = {
@@ -232,7 +272,7 @@ export async function getReportStats(filters?: {
       where.groupId = currentUser.groupId
     } else {
       return {
-        totalReports: 0, totalAttendees: 0, totalLeaders: 0,
+        totalReports: 0, cancelledReports: 0, totalAttendees: 0, totalLeaders: 0,
         totalVisitors: 0, totalOffering: 0, averageAttendees: 0
       }
     }
@@ -258,8 +298,13 @@ export async function getReportStats(filters?: {
     }
   }
 
+  // Count all reports (including cancelled)
+  const totalCount = await prisma.groupReport.count({ where })
+  const cancelledCount = await prisma.groupReport.count({ where: { ...where, noMeeting: true } })
+
+  // Aggregate only meetings that were held
   const aggregate = await prisma.groupReport.aggregate({
-    where,
+    where: { ...where, noMeeting: false },
     _count: { id: true },
     _sum: {
       totalAttendees: true,
@@ -273,7 +318,8 @@ export async function getReportStats(filters?: {
   })
 
   return {
-    totalReports: aggregate._count.id,
+    totalReports: totalCount,
+    cancelledReports: cancelledCount,
     totalAttendees: aggregate._sum.totalAttendees || 0,
     totalLeaders: aggregate._sum.leadersCount || 0,
     totalVisitors: aggregate._sum.visitorsCount || 0,
@@ -384,6 +430,8 @@ export async function createReport(data: {
   reportOffering: boolean
   offeringAmount?: number
   notes?: string
+  noMeeting?: boolean
+  noMeetingReason?: string
 }) {
   const user = await getSessionUser()
   const organizationId = await getUserOrganizationId(user.id)
@@ -409,21 +457,27 @@ export async function createReport(data: {
     throw new Error('Grupo no encontrado o no autorizado')
   }
 
-  // Validate data
-  if (data.totalAttendees < 1) {
-    throw new Error('El total de asistentes debe ser al menos 1')
-  }
+  // Validate based on whether meeting was held or not
+  if (data.noMeeting) {
+    if (!data.noMeetingReason?.trim()) {
+      throw new Error('Debe indicar el motivo por el que no se realizó el grupo')
+    }
+  } else {
+    if (data.totalAttendees < 1) {
+      throw new Error('El total de asistentes debe ser al menos 1')
+    }
 
-  if (data.leadersCount < 0 || data.leadersCount > data.totalAttendees) {
-    throw new Error('El número de líderes no puede ser mayor al total de asistentes')
-  }
+    if (data.leadersCount < 0 || data.leadersCount > data.totalAttendees) {
+      throw new Error('El número de líderes no puede ser mayor al total de asistentes')
+    }
 
-  if (data.visitorsCount < 0 || data.visitorsCount > data.totalAttendees) {
-    throw new Error('El número de visitas no puede ser mayor al total de asistentes')
-  }
+    if (data.visitorsCount < 0 || data.visitorsCount > data.totalAttendees) {
+      throw new Error('El número de visitas no puede ser mayor al total de asistentes')
+    }
 
-  if (data.reportOffering && (data.offeringAmount === undefined || data.offeringAmount < 0)) {
-    throw new Error('Si reporta ofrenda, debe indicar un monto válido')
+    if (data.reportOffering && (data.offeringAmount === undefined || data.offeringAmount < 0)) {
+      throw new Error('Si reporta ofrenda, debe indicar un monto válido')
+    }
   }
 
   // Parse date (only date, no time)
@@ -446,12 +500,14 @@ export async function createReport(data: {
       reporterId: user.id,
       organizationId,
       meetingDate,
-      totalAttendees: data.totalAttendees,
-      leadersCount: data.leadersCount,
-      visitorsCount: data.visitorsCount,
-      reportOffering: data.reportOffering,
-      offeringAmount: data.reportOffering ? data.offeringAmount : null,
-      notes: data.notes || null
+      noMeeting: data.noMeeting || false,
+      noMeetingReason: data.noMeeting ? data.noMeetingReason?.trim() || null : null,
+      totalAttendees: data.noMeeting ? 0 : data.totalAttendees,
+      leadersCount: data.noMeeting ? 0 : data.leadersCount,
+      visitorsCount: data.noMeeting ? 0 : data.visitorsCount,
+      reportOffering: data.noMeeting ? false : data.reportOffering,
+      offeringAmount: data.noMeeting ? null : (data.reportOffering ? data.offeringAmount : null),
+      notes: data.noMeeting ? null : (data.notes || null)
     },
     include: {
       group: {
@@ -493,6 +549,8 @@ export async function updateReport(
     reportOffering?: boolean
     offeringAmount?: number | null
     notes?: string | null
+    noMeeting?: boolean
+    noMeetingReason?: string | null
   }
 ) {
   const user = await getSessionUser()
@@ -552,46 +610,76 @@ export async function updateReport(
     updateData.meetingDate = newDate
   }
 
-  const totalAttendees = data.totalAttendees ?? report.totalAttendees
+  // Handle noMeeting toggle
+  if (data.noMeeting !== undefined) {
+    updateData.noMeeting = data.noMeeting
 
-  if (data.totalAttendees !== undefined) {
-    if (data.totalAttendees < 1) {
-      throw new Error('El total de asistentes debe ser al menos 1')
-    }
+    if (data.noMeeting) {
+      if (!data.noMeetingReason?.trim()) {
+        throw new Error('Debe indicar el motivo por el que no se realizó el grupo')
+      }
 
-    updateData.totalAttendees = data.totalAttendees
-  }
-
-  if (data.leadersCount !== undefined) {
-    if (data.leadersCount < 0 || data.leadersCount > totalAttendees) {
-      throw new Error('El número de líderes no puede ser mayor al total de asistentes')
-    }
-
-    updateData.leadersCount = data.leadersCount
-  }
-
-  if (data.visitorsCount !== undefined) {
-    if (data.visitorsCount < 0 || data.visitorsCount > totalAttendees) {
-      throw new Error('El número de visitas no puede ser mayor al total de asistentes')
-    }
-
-    updateData.visitorsCount = data.visitorsCount
-  }
-
-  if (data.reportOffering !== undefined) {
-    updateData.reportOffering = data.reportOffering
-
-    if (!data.reportOffering) {
+      updateData.noMeetingReason = data.noMeetingReason.trim()
+      updateData.totalAttendees = 0
+      updateData.leadersCount = 0
+      updateData.visitorsCount = 0
+      updateData.reportOffering = false
       updateData.offeringAmount = null
+      updateData.notes = null
+
+      // Skip attendance validations when noMeeting
+    } else {
+      updateData.noMeetingReason = null
     }
   }
 
-  if (data.offeringAmount !== undefined) {
-    updateData.offeringAmount = data.offeringAmount
+  if (data.noMeetingReason !== undefined && data.noMeeting === undefined) {
+    updateData.noMeetingReason = data.noMeetingReason
   }
 
-  if (data.notes !== undefined) {
-    updateData.notes = data.notes
+  // Only validate attendance fields if not switching to noMeeting
+  if (!data.noMeeting) {
+    const totalAttendees = data.totalAttendees ?? report.totalAttendees
+
+    if (data.totalAttendees !== undefined) {
+      if (data.totalAttendees < 1) {
+        throw new Error('El total de asistentes debe ser al menos 1')
+      }
+
+      updateData.totalAttendees = data.totalAttendees
+    }
+
+    if (data.leadersCount !== undefined) {
+      if (data.leadersCount < 0 || data.leadersCount > totalAttendees) {
+        throw new Error('El número de líderes no puede ser mayor al total de asistentes')
+      }
+
+      updateData.leadersCount = data.leadersCount
+    }
+
+    if (data.visitorsCount !== undefined) {
+      if (data.visitorsCount < 0 || data.visitorsCount > totalAttendees) {
+        throw new Error('El número de visitas no puede ser mayor al total de asistentes')
+      }
+
+      updateData.visitorsCount = data.visitorsCount
+    }
+
+    if (data.reportOffering !== undefined) {
+      updateData.reportOffering = data.reportOffering
+
+      if (!data.reportOffering) {
+        updateData.offeringAmount = null
+      }
+    }
+
+    if (data.offeringAmount !== undefined) {
+      updateData.offeringAmount = data.offeringAmount
+    }
+
+    if (data.notes !== undefined) {
+      updateData.notes = data.notes
+    }
   }
 
   const updated = await prisma.groupReport.update({
@@ -701,4 +789,288 @@ export async function checkReportExists(
     : reporter.name || 'otro líder'
 
   return { exists: true, reporterName }
+}
+
+// ============================================
+// WEEKLY TRACKING & VACATION
+// ============================================
+
+const DAY_ORDER: Record<string, number> = {
+  domingo: 0,
+  lunes: 1,
+  martes: 2,
+  miercoles: 3,
+  jueves: 4,
+  viernes: 5,
+  sabado: 6
+}
+
+/**
+ * Get the expected meeting date for a group within a given week
+ * Week is defined as Monday-Sunday (ISO 8601)
+ */
+function getExpectedDateForWeek(meetingDay: string, referenceDate: Date): Date {
+  const dayNum = DAY_ORDER[meetingDay.toLowerCase()]
+
+  if (dayNum === undefined) return referenceDate
+
+  // Get Monday of the reference week
+  const refDay = referenceDate.getDay()
+  const monday = new Date(referenceDate)
+
+  monday.setDate(referenceDate.getDate() - ((refDay + 6) % 7))
+  monday.setHours(0, 0, 0, 0)
+
+  // Calculate offset from Monday (domingo=6, lunes=0, martes=1, etc.)
+  const offset = dayNum === 0 ? 6 : dayNum - 1
+
+  const expectedDate = new Date(monday)
+
+  expectedDate.setDate(monday.getDate() + offset)
+
+  return expectedDate
+}
+
+/**
+ * Check if a date falls within any vacation period for an organization
+ */
+export async function getActiveVacationPeriod(
+  organizationId: string,
+  date?: Date
+): Promise<VacationPeriodInfo> {
+  const checkDate = date || new Date()
+
+  checkDate.setHours(0, 0, 0, 0)
+
+  const vacation = await prisma.vacationPeriod.findFirst({
+    where: {
+      organizationId,
+      startDate: { lte: checkDate },
+      endDate: { gte: checkDate }
+    },
+    select: {
+      id: true,
+      name: true,
+      startDate: true,
+      endDate: true
+    }
+  })
+
+  return vacation || null
+}
+
+/**
+ * Get groups that haven't reported for a given week
+ * Used for alerts and dashboard
+ */
+export async function getUnreportedGroups(weekDate?: string): Promise<{
+  unreportedGroups: UnreportedGroup[]
+  totalExpected: number
+  totalReported: number
+}> {
+  const user = await getSessionUser()
+  const organizationId = await getUserOrganizationId(user.id)
+
+  if (!organizationId) {
+    throw new Error('El usuario no pertenece a ninguna organización')
+  }
+
+  const referenceDate = weekDate ? new Date(weekDate) : new Date()
+
+  referenceDate.setHours(0, 0, 0, 0)
+
+  // Check if we're in a vacation period
+  const vacation = await getActiveVacationPeriod(organizationId, new Date(referenceDate))
+
+  if (vacation) {
+    return { unreportedGroups: [], totalExpected: 0, totalReported: 0 }
+  }
+
+  // Get all active groups with meetingDay set
+  const groups = await prisma.group.findMany({
+    where: {
+      organizationId,
+      isActive: true,
+      meetingDay: { not: null }
+    },
+    select: {
+      id: true,
+      name: true,
+      meetingDay: true,
+      network: { select: { name: true } },
+      members: {
+        where: { groupRole: 'leader', isActive: true },
+        select: { firstName: true, lastName: true, name: true }
+      }
+    }
+  })
+
+  // For non-admin users, only check their own group
+  const isAdmin = (user.roleHierarchy ?? 999) <= 2
+  const filteredGroups = isAdmin
+    ? groups
+    : groups.filter(g => {
+        const currentUser = g.members.find(m =>
+          m.firstName === user.name?.split(' ')[0] || m.name === user.name
+        )
+
+        return !!currentUser
+      })
+
+  const unreportedGroups: UnreportedGroup[] = []
+  let totalReported = 0
+
+  for (const group of filteredGroups) {
+    if (!group.meetingDay) continue
+
+    const expectedDate = getExpectedDateForWeek(group.meetingDay, referenceDate)
+
+    // Only check if expected date is in the past or today
+    if (expectedDate > new Date()) continue
+
+    // Check if this expected date falls in a vacation period
+    const vacationForDate = await getActiveVacationPeriod(organizationId, new Date(expectedDate))
+
+    if (vacationForDate) continue
+
+    // Check if report exists for this group on expected date
+    const report = await prisma.groupReport.findUnique({
+      where: { groupId_meetingDate: { groupId: group.id, meetingDate: expectedDate } }
+    })
+
+    if (report) {
+      totalReported++
+    } else {
+      unreportedGroups.push({
+        id: group.id,
+        name: group.name,
+        meetingDay: group.meetingDay,
+        networkName: group.network.name,
+        expectedDate,
+        leaderNames: group.members.map(m =>
+          m.firstName ? `${m.firstName} ${m.lastName || ''}`.trim() : m.name || 'Líder'
+        )
+      })
+    }
+  }
+
+  return {
+    unreportedGroups,
+    totalExpected: totalReported + unreportedGroups.length,
+    totalReported
+  }
+}
+
+/**
+ * Get detailed unreported groups with missing weeks (last 4 weeks)
+ */
+export async function getDetailedUnreportedGroups(): Promise<DetailedUnreportedGroup[]> {
+  const user = await getSessionUser()
+  const organizationId = await getUserOrganizationId(user.id)
+
+  if (!organizationId) {
+    throw new Error('El usuario no pertenece a ninguna organización')
+  }
+
+  const today = new Date()
+
+  today.setHours(0, 0, 0, 0)
+
+  const groups = await prisma.group.findMany({
+    where: {
+      organizationId,
+      isActive: true,
+      meetingDay: { not: null }
+    },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      imageUrl: true,
+      meetingDay: true,
+      meetingTime: true,
+      modality: true,
+      network: { select: { id: true, name: true } },
+      members: {
+        where: { groupRole: 'leader', isActive: true },
+        select: { id: true, firstName: true, lastName: true, name: true }
+      }
+    }
+  })
+
+  const isAdmin = (user.roleHierarchy ?? 999) <= 2
+
+  const filteredGroups = isAdmin
+    ? groups
+    : groups.filter(g => g.members.some(m => m.id === user.id))
+
+  const result: DetailedUnreportedGroup[] = []
+
+  for (const group of filteredGroups) {
+    if (!group.meetingDay) continue
+
+    const missingWeeks: DetailedUnreportedGroup['missingWeeks'] = []
+
+    for (let weeksAgo = 0; weeksAgo < 4; weeksAgo++) {
+      const referenceDate = new Date(today)
+
+      referenceDate.setDate(today.getDate() - weeksAgo * 7)
+
+      const expectedDate = getExpectedDateForWeek(group.meetingDay, referenceDate)
+
+      if (expectedDate > today) continue
+
+      const vacationForDate = await getActiveVacationPeriod(organizationId, new Date(expectedDate))
+
+      if (vacationForDate) continue
+
+      const report = await prisma.groupReport.findUnique({
+        where: { groupId_meetingDate: { groupId: group.id, meetingDate: expectedDate } }
+      })
+
+      if (!report) {
+        const dayOfWeek = expectedDate.getDay()
+        const weekStart = new Date(expectedDate)
+
+        weekStart.setDate(expectedDate.getDate() - ((dayOfWeek + 6) % 7))
+
+        const weekEnd = new Date(weekStart)
+
+        weekEnd.setDate(weekStart.getDate() + 6)
+
+        missingWeeks.push({ weekStart, weekEnd, expectedDate })
+      }
+    }
+
+    if (missingWeeks.length === 0) continue
+
+    const lastReport = await prisma.groupReport.findFirst({
+      where: { groupId: group.id },
+      orderBy: { meetingDate: 'desc' },
+      select: { meetingDate: true }
+    })
+
+    result.push({
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      imageUrl: group.imageUrl,
+      meetingDay: group.meetingDay,
+      meetingTime: group.meetingTime,
+      modality: group.modality || 'presencial',
+      networkId: group.network.id,
+      networkName: group.network.name,
+      leaderNames: group.members.map(m =>
+        m.firstName ? `${m.firstName} ${m.lastName || ''}`.trim() : m.name || 'Líder'
+      ),
+      leaderIds: group.members.map(m => m.id),
+      missingWeeks,
+      lastReportDate: lastReport?.meetingDate || null,
+      totalMissingWeeks: missingWeeks.length
+    })
+  }
+
+  result.sort((a, b) => b.totalMissingWeeks - a.totalMissingWeeks)
+
+  return result
 }

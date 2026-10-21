@@ -61,7 +61,7 @@ const GroupDetailView = ({ group }: Props) => {
       <div className='flex items-center justify-between flex-wrap gap-4'>
         <div className='flex items-center gap-4'>
           <IconButton onClick={() => router.push('/dashboard/admin/grupos')}>
-            <i className='ri-arrow-left-line' />
+            <i className='solar-arrow-left-linear' />
           </IconButton>
           <div>
             <Typography variant='h5'>{group.name}</Typography>
@@ -73,7 +73,7 @@ const GroupDetailView = ({ group }: Props) => {
         </div>
         <Button
           variant='contained'
-          startIcon={<i className='ri-edit-line' />}
+          startIcon={<i className='solar-pen-new-square-linear' />}
           onClick={() => router.push('/dashboard/admin/grupos')}
         >
           Editar Grupo
@@ -100,19 +100,19 @@ const GroupDetailView = ({ group }: Props) => {
                 <Tab
                   label={`Líderes (${group.leaders.length})`}
                   value='leaders'
-                  icon={<i className='ri-star-line' />}
+                  icon={<i className='solar-star-linear' />}
                   iconPosition='start'
                 />
                 <Tab
                   label={`Miembros (${group.networkMembers.length})`}
                   value='members'
-                  icon={<i className='ri-group-line' />}
+                  icon={<i className='solar-users-group-rounded-linear' />}
                   iconPosition='start'
                 />
                 <Tab
                   label={`Reportes (${group.stats.totalReports})`}
                   value='reports'
-                  icon={<i className='ri-file-list-3-line' />}
+                  icon={<i className='solar-clipboard-text-linear' />}
                   iconPosition='start'
                 />
               </TabList>

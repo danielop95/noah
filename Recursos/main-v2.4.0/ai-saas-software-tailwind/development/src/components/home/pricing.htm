@@ -1,0 +1,1276 @@
+<!-- ============================ Pricing Section ============================ -->
+<section
+  class="price-scope {=$class} overflow-x-hidden py-13 md:py-24 lg:py-28 xl:py-36 2xl:py-44"
+  aria-labelledby="pricing-heading"
+>
+  <div class="main-container">
+    <div class="space-y-8 md:space-y-20">
+      <!-- content  -->
+      <div class="text-center">
+        <h2
+          class="font-manrope text-manrope-heading-4 md:text-manrope-heading-3 lg:text-manrope-heading-2 text-background-13/90 font-medium max-md:leading-[1.2]"
+          data-opai-animate
+          data-delay="0.1"
+        >
+          Simple pricing for
+
+          <span class="font-instrument-serif text-background-13/30 italic"
+            >Any <br class="hidden md:block" />
+            stage of growth</span
+          >
+        </h2>
+      </div>
+
+      <!-- pricing   -->
+      <div
+        class="bg-background-8 rounded-[20px] px-6 pt-12 pb-6 md:px-12 md:pt-16 md:pb-12 lg:space-y-18 lg:px-14 lg:pt-28 lg:pb-[70px] xl:px-[70px]"
+        data-opai-animate
+        data-delay="0.1"
+      >
+        <!-- cards and toggle btn  -->
+        <div
+          class="mr-0 ml-auto flex max-w-[780px] flex-col items-center justify-end gap-y-8 lg:gap-y-[72px]"
+        >
+          <!-- toggle btn  -->
+          <div
+            class="tab-slider-wrapper mx-auto max-h-[42px] w-full max-w-[251px]"
+            data-active-tab-bg-color="var(--color-background-13)"
+            data-active-tab-text-color="var(--color-background-7)"
+            data-animation-duration="0.4"
+            data-animation-ease="power3.out"
+          >
+            <form class="pricing-form" aria-label="Billing period selection">
+              <fieldset
+                class="relative inline-flex gap-x-0 rounded-full bg-white p-1 backdrop-blur-[20px]"
+              >
+                <legend class="sr-only">Choose billing period</legend>
+                <input
+                  type="radio"
+                  name="pricing-toggle"
+                  id="monthly"
+                  value="monthly"
+                  class="peer/monthly sr-only"
+                  aria-describedby="monthly-description"
+                />
+
+                <input
+                  type="radio"
+                  name="pricing-toggle"
+                  id="yearly"
+                  value="yearly"
+                  checked
+                  class="peer/yearly sr-only"
+                  aria-describedby="yearly-description"
+                />
+
+                <label
+                  for="monthly"
+                  class="font-inter-tight text-tagline-2 text-background-13 flex h-9 cursor-pointer items-center justify-center rounded-full bg-white px-5 py-[5px] font-normal"
+                  id="monthly-description"
+                >
+                  <span class="relative z-20">Monthly</span>
+                </label>
+
+                <label
+                  for="yearly"
+                  class="font-inter-tight text-tagline-2 text-background-13 flex h-9 w-full max-w-[146px] cursor-pointer items-center justify-between gap-x-2 rounded-full px-5 py-[5px] font-normal transition-colors duration-10 ease-in-out"
+                  id="yearly-description"
+                >
+                  <span class="relative z-20">Yearly</span>
+
+                  <span
+                    class="bg-background-7 text-tagline-4 font-inter-tight text-background-5 relative z-20 shrink-0 rounded-full px-[9px] py-[5px] font-normal"
+                    aria-label="Save 25% with yearly billing"
+                    >Save 25%</span
+                  >
+                </label>
+
+                <!-- active tab  -->
+                <div class="active-tab absolute top-0 left-0 z-10 rounded-full"></div>
+              </fieldset>
+            </form>
+          </div>
+          <!-- pricing cards  -->
+          <div
+            class="flex flex-col items-center justify-center gap-y-2 max-lg:w-full md:gap-y-6 lg:flex-row"
+            aria-label="Pricing plans"
+          >
+            <!-- card one  -->
+            <div
+              data-opai-animate
+              data-delay="0.1"
+              class="pricing-card te flex h-[338px] min-w-full flex-col items-start justify-between rounded-lg bg-white px-6 pt-8 pb-6 lg:min-w-[260px]"
+              aria-labelledby="basic-plan"
+            >
+              <h3
+                id="basic-plan"
+                class="text-background-13/60 font-inter-tight text-tagline-2 font-normal"
+              >
+                Basic
+              </h3>
+              <div class="space-y-3">
+                <!-- monthly price  -->
+                <div class="monthly" aria-live="polite">
+                  <h4
+                    class="text-background-13 font-instrument-serif text-is-heading-2 font-normal"
+                  >
+                    <span class="sr-only">Price: </span>$19
+                  </h4>
+                  <p class="text-background-13/60 font-inter-tight text-tagline-2 font-normal">
+                    Per month
+                  </p>
+                </div>
+                <!-- yearly price  -->
+                <div class="yearly hidden" aria-live="polite">
+                  <h4
+                    class="text-background-13 font-instrument-serif text-is-heading-2 font-normal"
+                  >
+                    <span class="sr-only">Price: </span>$119
+                  </h4>
+                  <p class="text-background-13/60 font-inter-tight text-tagline-2 font-normal">
+                    Per year
+                  </p>
+                </div>
+              </div>
+              <div class="block w-full">
+                <Component
+                  src="src/components/shared/button-secondary.htm"
+                  button-text="Get Started"
+                  anchor-link="./contact-us.html"
+                />
+              </div>
+            </div>
+            <!-- pricing table small screen  -->
+            <table
+              data-opai-animate
+              data-delay="0.1"
+              class="mb-8 block w-full max-sm:overflow-x-scroll sm:px-4.5 lg:hidden"
+            >
+              <thead class="sr-only">
+                <tr>
+                  <th>
+                    <ul>
+                      <li>Smart Discount Suggestions</li>
+                    </ul>
+                  </th>
+                </tr>
+              </thead>
+
+              <!-- row one  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b md:w-[617px] lg:w-auto"
+                data-opai-animate
+                data-delay="0.1"
+              >
+                <td class="w-full">
+                  <ul class="min-w-[200px]">
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Smart Discount Suggestions
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      AI-Driven Revenue Forecasting
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Competitive Price Tracking
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Customer Behavior Analysis
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Intelligent Pricing Strategies
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Basic plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Basic plan limit: 10"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Pro plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Pro plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Enterprise plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Enterprise plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+            <!-- card two  -->
+            <div
+              data-opai-animate
+              data-delay="0.2"
+              class="pricing-card bg-background-4 relative flex h-[368px] min-w-full flex-col items-start justify-between overflow-hidden rounded-lg px-6 pt-8 pb-6 lg:min-w-[260px]"
+              aria-labelledby="business"
+              aria-describedby="business-desc"
+            >
+              <figure class="absolute top-0 left-0 -z-1 size-full">
+                <img
+                  src="./images/gradient/opai-2.png"
+                  alt="business"
+                  class="size-full object-cover"
+                />
+              </figure>
+
+              <h3 id="business" class="font-inter-tight text-tagline-2 font-normal text-white/90">
+                Business
+              </h3>
+              <div class="space-y-3">
+                <div class="monthly" aria-live="polite">
+                  <h4 class="font-instrument-serif text-is-heading-2 font-normal text-white/90">
+                    <span class="sr-only">Price: </span>$29
+                  </h4>
+                  <p class="font-inter-tight text-tagline-2 font-normal text-white/60">Per month</p>
+                </div>
+                <div class="yearly hidden" aria-live="polite">
+                  <h4 class="font-instrument-serif text-is-heading-2 font-normal text-white/90">
+                    <span class="sr-only">Price: </span>$299
+                  </h4>
+                  <p class="font-inter-tight text-tagline-2 font-normal text-white/60">Per year</p>
+                </div>
+              </div>
+              <div class="block w-full">
+                <Component
+                  src="src/components/shared/button-secondary.htm"
+                  button-text="Get Started"
+                  anchor-link="./contact-us.html"
+                />
+              </div>
+            </div>
+            <!-- pricing table small screen  -->
+            <table
+              data-opai-animate
+              data-delay="0.1"
+              class="mb-8 block w-full max-sm:overflow-x-scroll sm:px-4.5 lg:hidden"
+            >
+              <thead class="sr-only">
+                <tr>
+                  <th>
+                    <ul>
+                      <li>AI Pricing Insights</li>
+                    </ul>
+                  </th>
+                </tr>
+              </thead>
+
+              <!-- row two  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b md:w-[617px] lg:w-auto"
+                data-opai-animate
+                data-delay="0.2"
+              >
+                <td class="w-full">
+                  <ul class="min-w-[200px]">
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      AI Pricing Insights
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Dynamic Cost Adjustments
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Predictive Pricing Models
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Automated Price Optimization
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Real-time Market Analysis
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Basic plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Basic plan limit: 10"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Pro plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Pro plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Enterprise plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Enterprise plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+            <!-- card three  -->
+            <div
+              data-opai-animate
+              data-delay="0.3"
+              class="pricing-card te flex h-[338px] min-w-full flex-col items-start justify-between rounded-lg bg-white px-6 pt-8 pb-6 lg:min-w-[260px]"
+              aria-labelledby="enterprise-plan"
+            >
+              <h3
+                id="enterprise-plan"
+                class="text-background-13/60 font-inter-tight text-tagline-2 font-normal"
+              >
+                Enterprise
+              </h3>
+              <div class="space-y-3">
+                <!-- monthly price  -->
+                <div class="monthly" aria-live="polite">
+                  <h4
+                    class="text-background-13 font-instrument-serif text-is-heading-2 font-normal"
+                  >
+                    <span class="sr-only">Price: </span>$49
+                  </h4>
+                  <p class="text-background-13/60 font-inter-tight text-tagline-2 font-normal">
+                    Per month
+                  </p>
+                </div>
+                <!-- yearly price  -->
+                <div class="yearly hidden" aria-live="polite">
+                  <h4
+                    class="text-background-13 font-instrument-serif text-is-heading-2 font-normal"
+                  >
+                    <span class="sr-only">Price: </span>$499
+                  </h4>
+                  <p class="text-background-13/60 font-inter-tight text-tagline-2 font-normal">
+                    Per year
+                  </p>
+                </div>
+              </div>
+              <div class="block w-full">
+                <Component
+                  src="src/components/shared/button-secondary.htm"
+                  button-text="Get Started"
+                  anchor-link="./contact-us.html"
+                />
+              </div>
+            </div>
+
+            <!-- pricing table small screen  -->
+            <table
+              data-opai-animate
+              data-delay="0.1"
+              class="block w-full max-sm:overflow-x-scroll sm:px-4.5 lg:hidden"
+            >
+              <thead class="sr-only">
+                <tr>
+                  <th>
+                    <ul>
+                      <li>Automated Profit Maximization</li>
+                    </ul>
+                  </th>
+                </tr>
+              </thead>
+
+              <!-- row three  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b md:w-[617px] lg:w-auto"
+                data-opai-animate
+                data-delay="0.3"
+              >
+                <td class="w-full">
+                  <ul class="min-w-[200px]">
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Automated Profit Maximization
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      AI-Powered Cost Analysis
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Dynamic Pricing Alerts
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      Custom Pricing Solutions
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 py-[9px] text-left font-normal text-black"
+                    >
+                      AI-Enhanced Price Testing
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Basic plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Basic plan limit: 10"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Pro plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Pro plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="w-full" aria-label="Enterprise plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Enterprise plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-2 items-center justify-center px-1.5 py-[2.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-2 w-[12px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!-- includes desktop screen table  -->
+        <div class="hidden space-y-5 lg:block" aria-labelledby="features-heading">
+          <h3 id="features-heading" class="sr-only">Feature comparison table</h3>
+          <table class="w-full">
+            <thead class="sr-only">
+              <tr>
+                <th>
+                  <ul>
+                    <li>Smart Discount Suggestions</li>
+                  </ul>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- row one  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b py-5"
+                data-opai-animate
+                data-delay="0.1"
+              >
+                <td class="h-[280px] w-[370px]">
+                  <ul class="w-[260px]">
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 text-left font-normal text-black xl:pr-6"
+                    >
+                      Smart Discount Suggestions
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 text-left font-normal text-black xl:pr-6"
+                    >
+                      AI-Driven Revenue Forecasting
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 text-left font-normal text-black xl:pr-6"
+                    >
+                      Competitive Price Tracking
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 text-left font-normal text-black xl:pr-6"
+                    >
+                      Customer Behavior Analysis
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 text-left font-normal text-black xl:pr-6"
+                    >
+                      Intelligent Pricing Strategies
+                    </li>
+                  </ul>
+                </td>
+                <td
+                  class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r"
+                  aria-label="Basic plan features"
+                >
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Basic plan limit: 10"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td
+                  class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r"
+                  aria-label="Pro plan features"
+                >
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Pro plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="h-[280px] w-full max-w-[260px]" aria-label="Enterprise plan features">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                      aria-label="Enterprise plan limit: 25"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span
+                        class="flex size-6 items-center justify-center px-1.5 py-[3.5px]"
+                        aria-label="Included"
+                      >
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+
+              <!-- row two  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b py-5 md:w-[617px] lg:w-auto"
+                data-opai-animate
+                data-delay="0.2"
+              >
+                <td class="h-[280px] w-full max-w-[370px]">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      AI Pricing Insights
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Dynamic Cost Adjustments
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Predictive Pricing Models
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Automated Price Optimization
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Real-time Market Analysis
+                    </li>
+                  </ul>
+                </td>
+                <td class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="h-[280px] w-full max-w-[260px]">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <!-- row three  -->
+              <tr
+                class="border-stroke-1/11 flex items-start justify-center border-b py-5"
+                data-opai-animate
+                data-delay="0.3"
+              >
+                <td class="h-[280px] w-full max-w-[370px]">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Automated Profit Maximization
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      AI-Powered Cost Analysis
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Dynamic Pricing Alerts
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      Custom Pricing Solutions
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 py-4 pr-6 text-left font-normal text-black"
+                    >
+                      AI-Enhanced Price Testing
+                    </li>
+                  </ul>
+                </td>
+                <td class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      10
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="border-stroke-1/11 h-[280px] w-full max-w-[260px] border-r">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+                <td class="h-[280px] w-full max-w-[260px]">
+                  <ul>
+                    <li
+                      class="font-inter-tight text-tagline-3 sm:text-tagline-2 flex items-center justify-center py-2 font-normal text-black"
+                    >
+                      25
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                    <li class="flex items-center justify-center px-6 py-4 text-white/90">
+                      <span class="flex size-6 items-center justify-center px-1.5 py-[3.5px]">
+                        <Component
+                          src="src/components/shared/check-icon.htm"
+                          class="h-3 w-[17px] shrink-0 stroke-black"
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

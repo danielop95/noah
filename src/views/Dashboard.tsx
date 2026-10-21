@@ -14,6 +14,7 @@ import Chip from '@mui/material/Chip'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
 import Skeleton from '@mui/material/Skeleton'
+import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import TimelineDot from '@mui/lab/TimelineDot'
@@ -68,7 +69,7 @@ const WelcomeCard = ({ userName, stats }: { userName: string; stats: DashboardSt
           <Box className='flex flex-wrap gap-4 mbe-4'>
             <Box className='flex items-center gap-2'>
               <CustomAvatar skin='light' color='primary' size={40}>
-                <i className='ri-group-line text-xl' />
+                <i className='solar-users-group-rounded-linear text-xl' />
               </CustomAvatar>
               <Box>
                 <Typography variant='h5' fontWeight={600}>
@@ -81,7 +82,7 @@ const WelcomeCard = ({ userName, stats }: { userName: string; stats: DashboardSt
             </Box>
             <Box className='flex items-center gap-2'>
               <CustomAvatar skin='light' color='info' size={40}>
-                <i className='ri-bubble-chart-line text-xl' />
+                <i className='solar-share-circle-linear text-xl' />
               </CustomAvatar>
               <Box>
                 <Typography variant='h5' fontWeight={600}>
@@ -94,7 +95,7 @@ const WelcomeCard = ({ userName, stats }: { userName: string; stats: DashboardSt
             </Box>
             <Box className='flex items-center gap-2'>
               <CustomAvatar skin='light' color='success' size={40}>
-                <i className='ri-team-line text-xl' />
+                <i className='solar-widget-2-linear text-xl' />
               </CustomAvatar>
               <Box>
                 <Typography variant='h5' fontWeight={600}>
@@ -150,7 +151,7 @@ const StatCard = ({
             color={trend === 'up' ? 'success' : 'error'}
             label={
               <Box className='flex items-center gap-1'>
-                <i className={`ri-arrow-${trend}-s-line text-sm`} />
+                <i className={`solar-arrow-${trend}-linear text-sm`} />
                 {trendValue}
               </Box>
             }
@@ -232,7 +233,7 @@ const UpcomingMeetingsCard = ({ groups }: { groups: DashboardStats['upcomingGrou
       {groups.length === 0 ? (
         <Box className='text-center py-6'>
           <CustomAvatar skin='light' color='secondary' size={56} sx={{ mx: 'auto', mb: 2 }}>
-            <i className='ri-calendar-line text-[28px]' />
+            <i className='solar-calendar-linear text-[28px]' />
           </CustomAvatar>
           <Typography variant='body2' color='text.secondary'>
             No hay reuniones programadas
@@ -246,14 +247,14 @@ const UpcomingMeetingsCard = ({ groups }: { groups: DashboardStats['upcomingGrou
               sx={{ width: 42, height: 42, bgcolor: 'primary.main' }}
               variant='rounded'
             >
-              <i className='ri-team-line' />
+              <i className='solar-widget-2-linear' />
             </Avatar>
             <Box className='flex-1 min-w-0'>
               <Typography variant='body2' fontWeight={500} noWrap>
                 {group.name}
               </Typography>
               <Box className='flex items-center gap-1'>
-                <i className='ri-time-line text-sm text-textSecondary' />
+                <i className='solar-clock-circle-linear text-sm text-textSecondary' />
                 <Typography variant='caption' color='text.secondary'>
                   {DAYS_LABELS[group.meetingDay || ''] || group.meetingDay} {group.meetingTime || ''}
                 </Typography>
@@ -263,7 +264,7 @@ const UpcomingMeetingsCard = ({ groups }: { groups: DashboardStats['upcomingGrou
               size='small'
               variant='tonal'
               color={group.modality === 'virtual' ? 'info' : 'success'}
-              icon={<i className={group.modality === 'virtual' ? 'ri-video-line' : 'ri-map-pin-line'} />}
+              icon={<i className={group.modality === 'virtual' ? 'solar-video-frame-linear' : 'solar-map-point-linear'} />}
               label={group.modality === 'virtual' ? 'Virtual' : 'Presencial'}
             />
           </Box>
@@ -275,11 +276,11 @@ const UpcomingMeetingsCard = ({ groups }: { groups: DashboardStats['upcomingGrou
 
 // Categorías de eventos con colores e iconos
 const EVENT_CATEGORIES: Record<string, { color: 'primary' | 'success' | 'warning' | 'error' | 'info' | 'secondary'; icon: string; label: string }> = {
-  culto: { color: 'primary', icon: 'ri-church-line', label: 'Culto' },
-  evento: { color: 'info', icon: 'ri-calendar-event-line', label: 'Evento' },
-  reunion: { color: 'warning', icon: 'ri-team-line', label: 'Reunion' },
-  actividad: { color: 'success', icon: 'ri-run-line', label: 'Actividad' },
-  capacitacion: { color: 'secondary', icon: 'ri-book-open-line', label: 'Capacitacion' }
+  culto: { color: 'primary', icon: 'solar-buildings-linear', label: 'Culto' },
+  evento: { color: 'info', icon: 'solar-calendar-linear', label: 'Evento' },
+  reunion: { color: 'warning', icon: 'solar-widget-2-linear', label: 'Reunion' },
+  actividad: { color: 'success', icon: 'solar-running-2-linear', label: 'Actividad' },
+  capacitacion: { color: 'secondary', icon: 'solar-book-linear', label: 'Capacitacion' }
 }
 
 // Tarjeta de próximos eventos del calendario
@@ -324,7 +325,7 @@ const UpcomingEventsCard = ({ events }: { events: DashboardStats['upcomingEvents
         subheader='Del calendario'
         action={
           <IconButton href='/dashboard/calendario' component='a' size='small'>
-            <i className='ri-arrow-right-line' />
+            <i className='solar-arrow-right-linear' />
           </IconButton>
         }
       />
@@ -332,7 +333,7 @@ const UpcomingEventsCard = ({ events }: { events: DashboardStats['upcomingEvents
         {events.length === 0 ? (
           <Box className='text-center py-6'>
             <CustomAvatar skin='light' color='secondary' size={56} sx={{ mx: 'auto', mb: 2 }}>
-              <i className='ri-calendar-line text-[28px]' />
+              <i className='solar-calendar-linear text-[28px]' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No hay eventos programados
@@ -361,14 +362,14 @@ const UpcomingEventsCard = ({ events }: { events: DashboardStats['upcomingEvents
                     )}
                   </Box>
                   <Box className='flex items-center gap-1'>
-                    <i className='ri-time-line text-sm text-textSecondary' />
+                    <i className='solar-clock-circle-linear text-sm text-textSecondary' />
                     <Typography variant='caption' color='text.secondary'>
                       {formatEventDate(eventDate, event.allDay)}
                     </Typography>
                   </Box>
                   {event.location && (
                     <Box className='flex items-center gap-1'>
-                      <i className='ri-map-pin-line text-sm text-textSecondary' />
+                      <i className='solar-map-point-linear text-sm text-textSecondary' />
                       <Typography variant='caption' color='text.secondary' noWrap>
                         {event.location}
                       </Typography>
@@ -401,7 +402,7 @@ const TopNetworksCard = ({ networks }: { networks: DashboardStats['topNetworks']
         {networks.length === 0 ? (
           <Box className='text-center py-6'>
             <CustomAvatar skin='light' color='secondary' size={56} sx={{ mx: 'auto', mb: 2 }}>
-              <i className='ri-bubble-chart-line text-[28px]' />
+              <i className='solar-share-circle-linear text-[28px]' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No hay redes registradas
@@ -470,7 +471,7 @@ const RecentMembersCard = ({ users }: { users: DashboardStats['recentUsers'] }) 
       {users.length === 0 ? (
         <Box className='text-center py-6'>
           <CustomAvatar skin='light' color='secondary' size={56} sx={{ mx: 'auto', mb: 2 }}>
-            <i className='ri-user-line text-[28px]' />
+            <i className='solar-user-linear text-[28px]' />
           </CustomAvatar>
           <Typography variant='body2' color='text.secondary'>
             No hay miembros registrados
@@ -518,9 +519,9 @@ const RecentMembersCard = ({ users }: { users: DashboardStats['recentUsers'] }) 
 // Resumen de distribución
 const DistributionCard = ({ stats }: { stats: DashboardStats }) => {
   const items = [
-    { label: 'En Redes', value: stats.usersWithNetwork, total: stats.totalUsers, color: 'success' as const, icon: 'ri-check-line' },
-    { label: 'Sin Red', value: stats.usersWithoutNetwork, total: stats.totalUsers, color: 'warning' as const, icon: 'ri-user-unfollow-line' },
-    { label: 'Inactivos', value: stats.inactiveUsers, total: stats.totalUsers, color: 'error' as const, icon: 'ri-user-forbid-line' }
+    { label: 'En Redes', value: stats.usersWithNetwork, total: stats.totalUsers, color: 'success' as const, icon: 'solar-check-circle-linear' },
+    { label: 'Sin Red', value: stats.usersWithoutNetwork, total: stats.totalUsers, color: 'warning' as const, icon: 'solar-user-block-linear' },
+    { label: 'Inactivos', value: stats.inactiveUsers, total: stats.totalUsers, color: 'error' as const, icon: 'solar-user-block-linear' }
   ]
 
   return (
@@ -561,6 +562,137 @@ const DistributionCard = ({ stats }: { stats: DashboardStats }) => {
             {stats.totalUsers}
           </Typography>
         </Box>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Tarjeta de estado de reportes semanales
+const WeeklyReportingCard = ({ stats }: { stats: DashboardStats }) => {
+  const { reportingProgress, isVacationPeriod, vacationPeriodName } = stats
+  const { expected, reported, unreportedGroups } = reportingProgress
+  const allReported = expected > 0 && reported === expected
+
+  if (isVacationPeriod) {
+    return (
+      <Card className='h-full'>
+        <CardHeader
+          title='Reportes Semanales'
+          titleTypographyProps={{ variant: 'h6' }}
+          subheader='Estado de reportes de grupos'
+        />
+        <CardContent>
+          <Box className='flex flex-col items-center gap-3 py-4'>
+            <CustomAvatar skin='light' color='info' size={56}>
+              <i className='solar-calendar-mark-linear text-[28px]' />
+            </CustomAvatar>
+            <Typography variant='body2' color='text.secondary' textAlign='center'>
+              Periodo de vacaciones{vacationPeriodName ? `: ${vacationPeriodName}` : ''}
+            </Typography>
+            <Typography variant='caption' color='text.disabled' textAlign='center'>
+              No se requieren reportes durante este periodo
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (expected === 0) {
+    return (
+      <Card className='h-full'>
+        <CardHeader
+          title='Reportes Semanales'
+          titleTypographyProps={{ variant: 'h6' }}
+          subheader='Estado de reportes de grupos'
+        />
+        <CardContent>
+          <Box className='flex flex-col items-center gap-3 py-4'>
+            <CustomAvatar skin='light' color='secondary' size={56}>
+              <i className='solar-chart-square-linear text-[28px]' />
+            </CustomAvatar>
+            <Typography variant='body2' color='text.secondary' textAlign='center'>
+              No hay reportes esperados esta semana
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const percentage = Math.round((reported / expected) * 100)
+
+  return (
+    <Card className='h-full'>
+      <CardHeader
+        title='Reportes Semanales'
+        titleTypographyProps={{ variant: 'h6' }}
+        subheader='Estado de reportes de grupos'
+        action={
+          <Chip
+            size='small'
+            variant='tonal'
+            color={allReported ? 'success' : 'warning'}
+            label={`${reported}/${expected}`}
+          />
+        }
+      />
+      <CardContent>
+        <Box className='mbe-4'>
+          <Box className='flex justify-between mbe-2'>
+            <Typography variant='body2' color='text.secondary'>
+              Progreso semanal
+            </Typography>
+            <Typography variant='body2' fontWeight={600} color={allReported ? 'success.main' : 'warning.main'}>
+              {percentage}%
+            </Typography>
+          </Box>
+          <LinearProgress
+            variant='determinate'
+            value={percentage}
+            color={allReported ? 'success' : 'warning'}
+            sx={{ height: 8, borderRadius: 4 }}
+          />
+        </Box>
+
+        {allReported ? (
+          <Box className='flex items-center gap-2 p-3 rounded-lg' sx={{ bgcolor: 'success.lighter' }}>
+            <i className='solar-check-read-linear text-xl' style={{ color: 'var(--mui-palette-success-main)' }} />
+            <Typography variant='body2' color='success.main' fontWeight={500}>
+              Todos los grupos han reportado esta semana
+            </Typography>
+          </Box>
+        ) : (
+          <Box className='flex flex-col gap-2'>
+            <Typography variant='caption' color='text.secondary' fontWeight={500}>
+              Grupos pendientes:
+            </Typography>
+            {unreportedGroups.slice(0, 5).map(group => (
+              <Box key={group.id} className='flex items-center gap-2'>
+                <i className='solar-danger-triangle-linear text-base' style={{ color: 'var(--mui-palette-warning-main)' }} />
+                <Typography variant='body2' noWrap className='flex-1'>
+                  {group.name}
+                </Typography>
+                <Typography variant='caption' color='text.disabled'>
+                  {DAYS_LABELS[group.meetingDay] || group.meetingDay}
+                </Typography>
+              </Box>
+            ))}
+            {unreportedGroups.length > 5 && (
+              <Typography variant='caption' color='text.disabled'>
+                y {unreportedGroups.length - 5} más...
+              </Typography>
+            )}
+            <Button
+              size='small'
+              href='/dashboard/reportes/pendientes'
+              sx={{ mt: 1, textTransform: 'none', p: 0, minWidth: 'auto' }}
+              color='warning'
+            >
+              Ver reportes pendientes →
+            </Button>
+          </Box>
+        )}
       </CardContent>
     </Card>
   )
@@ -646,7 +778,7 @@ const Dashboard = () => {
       <Card>
         <CardContent sx={{ textAlign: 'center', py: 8 }}>
           <CustomAvatar skin='light' color='error' size={64} sx={{ mx: 'auto', mb: 2 }}>
-            <i className='ri-error-warning-line text-[32px]' />
+            <i className='solar-danger-triangle-linear text-[32px]' />
           </CustomAvatar>
           <Typography variant='h6' color='error.main' className='mbe-2'>
             Error al cargar el dashboard
@@ -680,7 +812,7 @@ const Dashboard = () => {
           title='Miembros en Redes'
           value={stats.usersWithNetwork}
           total={stats.totalUsers}
-          icon='ri-user-star-line'
+          icon='solar-medal-star-linear'
           color='primary'
         />
       </Grid>
@@ -691,7 +823,7 @@ const Dashboard = () => {
           title='Miembros Activos'
           value={stats.activeUsers}
           subtitle={`de ${stats.totalUsers} totales`}
-          icon='ri-user-heart-line'
+          icon='solar-user-heart-linear'
           color='success'
         />
       </Grid>
@@ -700,7 +832,7 @@ const Dashboard = () => {
         <StatCard
           title='Nuevos Este Mes'
           value={stats.newUsersThisMonth}
-          icon='ri-user-add-line'
+          icon='solar-user-plus-linear'
           color='info'
           trend={usersTrend >= 0 ? 'up' : 'down'}
           trendValue={`${Math.abs(Math.round(usersTrend))}%`}
@@ -712,7 +844,7 @@ const Dashboard = () => {
           title='Redes Activas'
           value={stats.activeNetworks}
           subtitle={`de ${stats.totalNetworks} totales`}
-          icon='ri-bubble-chart-line'
+          icon='solar-share-circle-linear'
           color='warning'
         />
       </Grid>
@@ -722,18 +854,22 @@ const Dashboard = () => {
           title='Grupos Activos'
           value={stats.activeGroups}
           subtitle={`de ${stats.totalGroups} totales`}
-          icon='ri-team-line'
+          icon='solar-widget-2-linear'
           color='primary'
         />
       </Grid>
 
-      {/* Sección de Eventos y Reuniones */}
-      <Grid size={{ xs: 12, md: 6 }}>
+      {/* Sección de Eventos, Reuniones y Reportes */}
+      <Grid size={{ xs: 12, md: 4 }}>
         <UpcomingEventsCard events={stats.upcomingEvents} />
       </Grid>
 
-      <Grid size={{ xs: 12, md: 6 }}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <UpcomingMeetingsCard groups={stats.upcomingGroups} />
+      </Grid>
+
+      <Grid size={{ xs: 12, md: 4 }}>
+        <WeeklyReportingCard stats={stats} />
       </Grid>
 
       {/* Sección inferior */}

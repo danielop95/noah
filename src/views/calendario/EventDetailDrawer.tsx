@@ -75,7 +75,7 @@ const EventDetailDrawer = (props: Props) => {
       <Box className='flex justify-between items-center sidebar-header pli-5 plb-4 border-be'>
         <Typography variant='h5'>Detalles del Evento</Typography>
         <IconButton size='small' onClick={handleDrawerToggle}>
-          <i className='ri-close-line text-2xl' />
+          <i className='solar-close-square-linear text-2xl' />
         </IconButton>
       </Box>
       <ScrollWrapper
@@ -104,7 +104,7 @@ const EventDetailDrawer = (props: Props) => {
           <div className='flex flex-col gap-4 mbe-4'>
             <div className='flex items-center gap-3'>
               <div className='flex items-center justify-center p-2 rounded bg-actionHover'>
-                <i className='ri-calendar-line text-xl text-primary' />
+                <i className='solar-calendar-linear text-xl text-primary' />
               </div>
               <div>
                 <Typography variant='body2' color='text.secondary'>
@@ -119,7 +119,7 @@ const EventDetailDrawer = (props: Props) => {
             {!selectedEvent.allDay && (
               <div className='flex items-center gap-3'>
                 <div className='flex items-center justify-center p-2 rounded bg-actionHover'>
-                  <i className='ri-time-line text-xl text-info' />
+                  <i className='solar-clock-circle-linear text-xl text-info' />
                 </div>
                 <div>
                   <Typography variant='body2' color='text.secondary'>
@@ -135,7 +135,7 @@ const EventDetailDrawer = (props: Props) => {
             {selectedEvent.allDay && (
               <div className='flex items-center gap-3'>
                 <div className='flex items-center justify-center p-2 rounded bg-actionHover'>
-                  <i className='ri-time-line text-xl text-info' />
+                  <i className='solar-clock-circle-linear text-xl text-info' />
                 </div>
                 <div>
                   <Typography variant='body2' color='text.secondary'>
@@ -151,7 +151,7 @@ const EventDetailDrawer = (props: Props) => {
             {selectedEvent.location && (
               <div className='flex items-center gap-3'>
                 <div className='flex items-center justify-center p-2 rounded bg-actionHover'>
-                  <i className='ri-map-pin-line text-xl text-success' />
+                  <i className='solar-map-point-linear text-xl text-success' />
                 </div>
                 <div>
                   <Typography variant='body2' color='text.secondary'>
@@ -191,7 +191,7 @@ const EventDetailDrawer = (props: Props) => {
                 rel='noopener noreferrer'
                 className='flex items-center gap-2 text-primary no-underline hover:underline'
               >
-                <i className='ri-external-link-line' />
+                <i className='solar-link-linear' />
                 <Typography variant='body2' color='primary'>
                   {selectedEvent.url}
                 </Typography>

@@ -96,6 +96,15 @@ model User {
   ilCohortsTeaching    ILCohort[]     @relation("ILCohortTeacher")
   ilAttendanceMarked   ILAttendance[] @relation("ILAttendanceMarker")
   ilGradesGiven        ILGrade[]      @relation("ILGradeGrader")
+
+  // Solicitudes Interáreas
+  areaMemberships          AreaMembership[]
+  solicitudesCreadas       Solicitud[]           @relation("SolicitudCreator")
+  solicitudesCanceladas    Solicitud[]           @relation("SolicitudCanceler")
+  solicitudAreasRevisadas  SolicitudArea[]       @relation("SolicitudAreaReviewer")
+  informesCreados          InformeEvento[]       @relation("InformeCreator")
+  comentariosSolicitud     SolicitudComentario[] @relation("SolicitudComentarioAutor")
+  solicitudEventos         SolicitudEvento[]     @relation("SolicitudEventoActor")
 }
 
 model Organization {
@@ -113,10 +122,15 @@ model Organization {
   groups          Group[]
   groupReports    GroupReport[]
   calendarEvents  CalendarEvent[]
+  vacationPeriods VacationPeriod[]
 
   // Instituto Life
   ilCourses  ILCourse[]
   ilCohorts  ILCohort[]
+
+  // Solicitudes Interáreas
+  areas        Area[]
+  solicitudes  Solicitud[]
 }
 
 // ===================
@@ -254,6 +268,10 @@ model GroupReport {
   // Notas (opcional)
   notes           String?
 
+  // Grupo no realizado
+  noMeeting       Boolean  @default(false)
+  noMeetingReason String?
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -268,6 +286,22 @@ model GroupReport {
   organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
   @@unique([groupId, meetingDate])  // Un reporte por grupo por fecha
+}
+
+// ===================
+// Módulo de Vacaciones
+// ===================
+
+model VacationPeriod {
+  id             String   @id @default(cuid())
+  name           String?  // e.g., "Vacaciones Diciembre 2026"
+  startDate      DateTime @db.Date
+  endDate        DateTime @db.Date
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 }
 
 // ===================
@@ -470,4 +504,228 @@ model ILUserTag {
   updatedAt    DateTime @updatedAt
 
   @@unique([userId, tag])
+}
+
+// ===================
+// Módulo Solicitudes Interáreas
+// ===================
+
+enum TipoEvento {
+  SERVICIO
+  EVENTO_ESPECIAL
+  REUNION_INTERNA
+  OTRO
+}
+
+enum EstadoSolicitudArea {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+enum CumplimientoProgramacion {
+  SI
+  PARCIAL
+  NO
+}
+
+enum AreaMembershipRole {
+  LIDER
+  MIEMBRO
+}
+
+model Area {
+  id             String   @id @default(cuid())
+  name           String
+  slug           String
+  description    String?
+  icon           String?
+  color          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  memberships        AreaMembership[]
+  solicitudAreas     SolicitudArea[]
+  solicitudesOrigen  Solicitud[]      @relation("AreaSolicitante")
+
+  @@unique([organizationId, slug])
+}
+
+model AreaMembership {
+  id        String             @id @default(cuid())
+  areaId    String
+  area      Area               @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      AreaMembershipRole @default(MIEMBRO)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  @@unique([areaId, userId])
+  @@index([userId, role])
+  @@index([areaId, role])
+}
+
+model Solicitud {
+  id                String   @id @default(cuid())
+
+  // Solicitante
+  createdById       String
+  createdBy         User     @relation("SolicitudCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  areaSolicitanteId String
+  areaSolicitante   Area     @relation("AreaSolicitante", fields: [areaSolicitanteId], references: [id], onDelete: Restrict)
+  cargoRol          String?
+  telefonoContacto  String?
+  emailContacto     String?
+
+  // Evento
+  nombreEvento      String
+  tipoEvento        TipoEvento
+  tipoEventoOtro    String?
+  fechaEvento       DateTime @db.Date
+  horaInicio        String   // "HH:mm"
+  horaFin           String   // "HH:mm"
+  lugar             String
+
+  // Actividad
+  descripcionActividad   String  @db.Text
+  materialesDisponibles  String? @db.Text
+
+  // Enfoque
+  propositoEvento     String  @db.Text
+  objetivoEspecifico  String  @db.Text
+  dirigidoA           String
+  resultadoEsperado   String  @db.Text
+
+  // Plazos / difusión
+  fechaLimite          DateTime  @db.Date
+  requiereDifusion     Boolean   @default(false)
+  inicioComunicacion   DateTime? @db.Date
+
+  // Flags
+  confirmacion15Dias Boolean @default(false)
+  urgente            Boolean @default(false)
+
+  // Cancelación (soft)
+  cancelada       Boolean   @default(false)
+  canceladaById   String?
+  canceladaBy     User?     @relation("SolicitudCanceler", fields: [canceladaById], references: [id])
+  canceladaMotivo String?
+  canceladaAt     DateTime?
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  areas       SolicitudArea[]
+  comentarios SolicitudComentario[]
+  eventos     SolicitudEvento[]
+  informe     InformeEvento?
+
+  @@index([organizationId, createdAt])
+  @@index([createdById, cancelada])
+  @@index([areaSolicitanteId])
+  @@index([fechaEvento])
+}
+
+model SolicitudArea {
+  id                String              @id @default(cuid())
+  solicitudId       String
+  solicitud         Solicitud           @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+  areaId            String
+  area              Area                @relation(fields: [areaId], references: [id], onDelete: Restrict)
+  detalleEspecifico String              @db.Text
+  estado            EstadoSolicitudArea @default(PENDIENTE)
+  revisadoById      String?
+  revisadoBy        User?               @relation("SolicitudAreaReviewer", fields: [revisadoById], references: [id])
+  revisadoAt        DateTime?
+  motivoRechazo     String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+
+  eventos SolicitudEvento[]
+
+  @@unique([solicitudId, areaId])
+  @@index([areaId, estado])
+  @@index([solicitudId])
+}
+
+model InformeEvento {
+  id          String    @id @default(cuid())
+  solicitudId String    @unique
+  solicitud   Solicitud @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+
+  createdById String
+  createdBy   User      @relation("InformeCreator", fields: [createdById], references: [id], onDelete: Restrict)
+
+  // Desarrollo
+  desarrolloTexto       String                   @db.Text
+  cumplimiento          CumplimientoProgramacion
+  cambiosUltimoMomento  String?                  @db.Text
+
+  // Resultados
+  objetivoCumplido      String @db.Text
+  resultadosDestacados  String @db.Text
+
+  // Evaluación 1-5
+  evalOrganizacion   Int
+  evalComunicacion   Int
+  evalTrabajoEquipo  Int
+  evalTiempos        Int
+  evalEjecucion      Int
+
+  // Aprendizajes
+  saliBien String @db.Text
+  noSalio  String @db.Text
+  mejoras  String @db.Text
+
+  // Materiales (URLs)
+  linkFotos          String?
+  linkVideos         String?
+  linkPiezas         String?
+  linkPresentaciones String?
+  otrosLinks         String? @db.Text
+
+  // Cierre
+  recomendaciones        String? @db.Text
+  comentariosAdicionales String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SolicitudComentario {
+  id          String    @id @default(cuid())
+  solicitudId String
+  solicitud   Solicitud @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+  autorId     String
+  autor       User      @relation("SolicitudComentarioAutor", fields: [autorId], references: [id], onDelete: Restrict)
+  texto       String    @db.Text
+  createdAt   DateTime  @default(now())
+
+  @@index([solicitudId, createdAt])
+}
+
+model SolicitudEvento {
+  id              String         @id @default(cuid())
+  solicitudId     String
+  solicitud       Solicitud      @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+  solicitudAreaId String?
+  solicitudArea   SolicitudArea? @relation(fields: [solicitudAreaId], references: [id], onDelete: SetNull)
+  tipo            String         // 'CREADA' | 'EDITADA' | 'CANCELADA' | 'APROBADA_AREA' | 'RECHAZADA_AREA' | 'COMENTARIO' | 'INFORME_CREADO' | 'INFORME_EDITADO'
+  fromEstado      String?
+  toEstado        String?
+  actorId         String
+  actor           User           @relation("SolicitudEventoActor", fields: [actorId], references: [id], onDelete: Restrict)
+  motivo          String?
+  metadata        Json?
+  createdAt       DateTime       @default(now())
+
+  @@index([solicitudId, createdAt])
 }

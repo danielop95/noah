@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-force-theme="light" class="light">
+  <head>
+    <Component src="src/components/shared/head-links.htm" />
+    <title>Services - AI Resume Builder || Nexsas</title>
+  </head>
+  <body class="bg-background-1 dark:bg-background-6">
+    <Component src="src/components/pages/ai-resume-builder/top-nav.htm" />
+    <Component src="src/components/pages/ai-resume-builder/header.htm" />
+    <main>
+      <Component
+        src="src/components/pages/ai-resume-builder/services-cards.htm"
+        page-link="./ai-resume-builder-service-details.html"
+      />
+      <Component
+        src="src/components/pages/ai-resume-builder/services-card-v2.htm"
+        page-link="./ai-resume-builder-pricing.html"
+      />
+      <Component
+        src="src/components/pages/ai-resume-builder/service-feature.htm"
+        class="lg:pt-[200px] lg:pb-[100px]"
+        page-link="./ai-resume-builder-features.html"
+        badge-class="badge-green"
+      />
+      <Component
+        src="src/components/pages/ai-resume-builder/cta-v2.htm"
+        class="dark:bg-background-6 bg-white"
+        badge-text="Get started"
+        cta-heading="Build a complete resume using the"
+        span-text="assistance"
+        description="Start your free trial today and see your ideas come to life easily and creatively."
+        cta-btn-text="Get started"
+      />
+    </main>
+    <Component src="src/components/pages/ai-resume-builder/footer.htm" />
+  </body>
+</html>

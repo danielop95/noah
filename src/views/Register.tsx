@@ -320,7 +320,7 @@ const StepAccount = ({ form }: { form: UseFormReturn<Step4Data> }) => {
                       onClick={() => setIsPasswordShown(s => !s)}
                       onMouseDown={e => e.preventDefault()}
                     >
-                      <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                      <i className={isPasswordShown ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                     </IconButton>
                   </InputAdornment>
                 )
@@ -350,7 +350,7 @@ const StepAccount = ({ form }: { form: UseFormReturn<Step4Data> }) => {
                       onClick={() => setIsConfirmShown(s => !s)}
                       onMouseDown={e => e.preventDefault()}
                     >
-                      <i className={isConfirmShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                      <i className={isConfirmShown ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                     </IconButton>
                   </InputAdornment>
                 )

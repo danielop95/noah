@@ -73,13 +73,13 @@ const ProfileTimeline = ({ reports }: Props) => {
       <Card>
         <CardHeader
           title='Actividad Reciente'
-          avatar={<i className='ri-time-line text-textSecondary' />}
+          avatar={<i className='solar-clock-circle-linear text-textSecondary' />}
           titleTypographyProps={{ variant: 'h5' }}
         />
         <CardContent>
           <div className='flex flex-col items-center justify-center py-8'>
             <CustomAvatar skin='light' color='secondary' size={56} sx={{ mb: 2 }}>
-              <i className='ri-file-list-3-line text-2xl' />
+              <i className='solar-clipboard-text-linear text-2xl' />
             </CustomAvatar>
             <Typography variant='body1' color='text.secondary'>
               Sin reportes recientes
@@ -95,7 +95,7 @@ const ProfileTimeline = ({ reports }: Props) => {
       <CardHeader
         title='Actividad Reciente'
         subheader={`Ultimos ${reports.length} reportes de grupo`}
-        avatar={<i className='ri-time-line text-textSecondary' />}
+        avatar={<i className='solar-clock-circle-linear text-textSecondary' />}
         titleTypographyProps={{ variant: 'h5' }}
       />
       <CardContent>
@@ -124,21 +124,21 @@ const ProfileTimeline = ({ reports }: Props) => {
                   </Typography>
                   <div className='flex flex-wrap gap-2'>
                     <Chip
-                      icon={<i className='ri-group-line' />}
+                      icon={<i className='solar-users-group-rounded-linear' />}
                       label={`${report.totalAttendees} asistentes`}
                       size='small'
                       variant='tonal'
                       color='primary'
                     />
                     <Chip
-                      icon={<i className='ri-star-line' />}
+                      icon={<i className='solar-star-linear' />}
                       label={`${report.leadersCount} lideres`}
                       size='small'
                       variant='tonal'
                       color='warning'
                     />
                     <Chip
-                      icon={<i className='ri-user-add-line' />}
+                      icon={<i className='solar-user-plus-linear' />}
                       label={`${report.visitorsCount} visitas`}
                       size='small'
                       variant='tonal'
@@ -146,7 +146,7 @@ const ProfileTimeline = ({ reports }: Props) => {
                     />
                     {report.reportOffering && report.offeringAmount != null && (
                       <Chip
-                        icon={<i className='ri-money-dollar-circle-line' />}
+                        icon={<i className='solar-money-bag-linear' />}
                         label={new Intl.NumberFormat('es-CO', {
                           style: 'currency',
                           currency: 'COP',

@@ -3,7 +3,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 
 import { useDropzone } from 'react-dropzone'
-import Drawer from '@mui/material/Drawer'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import Fade from '@mui/material/Fade'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
@@ -268,313 +272,321 @@ const GroupDrawer = ({ open, onClose, group, networks, onRefresh }: GroupDrawerP
   }
 
   return (
-    <Drawer anchor='right' open={open} onClose={onClose} PaperProps={{ sx: { width: { xs: '100%', sm: 480 } } }}>
-      <Box className='flex flex-col h-full'>
-        <Box className='flex justify-between items-center p-4 border-b'>
-          <Typography variant='h6'>{isEditing ? 'Editar Grupo' : 'Nuevo Grupo'}</Typography>
-          <IconButton onClick={onClose}>
-            <i className='ri-close-line' />
-          </IconButton>
-        </Box>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth='sm'
+      fullWidth
+      TransitionComponent={Fade}
+      transitionDuration={300}
+      PaperProps={{
+        sx: { borderRadius: '16px', maxHeight: '90vh' }
+      }}
+    >
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {isEditing ? 'Editar Grupo' : 'Nuevo Grupo'}
+        <IconButton onClick={onClose}>
+          <i className='solar-close-square-linear' />
+        </IconButton>
+      </DialogTitle>
 
-        <Box className='flex-1 overflow-y-auto p-4'>
-          <Box className='flex flex-col gap-4'>
-            {error && (
-              <Alert severity='error' onClose={() => setError(null)}>
-                {error}
-              </Alert>
-            )}
+      <DialogContent dividers>
+        <Box className='flex flex-col gap-4'>
+          {error && (
+            <Alert severity='error' onClose={() => setError(null)}>
+              {error}
+            </Alert>
+          )}
 
-            {/* Información básica */}
-            <TextField
-              label='Nombre del Grupo'
-              value={name}
-              onChange={e => setName(e.target.value)}
-              fullWidth
-              required
-              error={!name.trim() && !!error}
-            />
+          {/* Información básica */}
+          <TextField
+            label='Nombre del Grupo'
+            value={name}
+            onChange={e => setName(e.target.value)}
+            fullWidth
+            required
+            error={!name.trim() && !!error}
+          />
 
-            <TextField
-              label='Descripcion'
-              value={description}
-              onChange={e => setDescription(e.target.value)}
-              fullWidth
-              multiline
-              rows={2}
-              placeholder='Describe el proposito de este grupo...'
-            />
+          <TextField
+            label='Descripcion'
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            fullWidth
+            multiline
+            rows={2}
+            placeholder='Describe el proposito de este grupo...'
+          />
 
-            {/* Imagen */}
-            <Box>
-              <Typography variant='subtitle2' className='font-semibold mb-2'>
-                Imagen del Grupo
-              </Typography>
-              <Box
-                {...getRootProps()}
-                sx={{
-                  border: '2px dashed',
-                  borderColor: isDragActive ? 'primary.main' : 'divider',
-                  borderRadius: 2,
-                  p: 2,
-                  cursor: uploading || saving ? 'default' : 'pointer',
-                  transition: 'all 0.2s',
-                  bgcolor: isDragActive ? 'action.hover' : 'background.paper',
-                  '&:hover': {
-                    borderColor: uploading || saving ? 'divider' : 'primary.main'
-                  }
-                }}
-              >
-                <input {...getInputProps()} />
-                {uploading ? (
-                  <Box className='flex justify-center items-center py-4'>
-                    <CircularProgress size={32} />
+          {/* Imagen */}
+          <Box>
+            <Typography variant='subtitle2' className='font-semibold mb-2'>
+              Imagen del Grupo
+            </Typography>
+            <Box
+              {...getRootProps()}
+              sx={{
+                border: '2px dashed',
+                borderColor: isDragActive ? 'primary.main' : 'divider',
+                borderRadius: 2,
+                p: 2,
+                cursor: uploading || saving ? 'default' : 'pointer',
+                transition: 'all 0.2s',
+                bgcolor: isDragActive ? 'action.hover' : 'background.paper',
+                '&:hover': {
+                  borderColor: uploading || saving ? 'divider' : 'primary.main'
+                }
+              }}
+            >
+              <input {...getInputProps()} />
+              {uploading ? (
+                <Box className='flex justify-center items-center py-4'>
+                  <CircularProgress size={32} />
+                </Box>
+              ) : imageUrl ? (
+                <Box className='flex items-center gap-3'>
+                  <Avatar src={imageUrl} variant='rounded' sx={{ width: 64, height: 64 }}>
+                    <i className='solar-image-linear' />
+                  </Avatar>
+                  <Box className='flex-1'>
+                    <Typography variant='body2'>Imagen cargada</Typography>
+                    <Typography variant='caption' className='text-textSecondary'>
+                      Arrastra otra imagen para reemplazar
+                    </Typography>
                   </Box>
-                ) : imageUrl ? (
-                  <Box className='flex items-center gap-3'>
-                    <Avatar src={imageUrl} variant='rounded' sx={{ width: 64, height: 64 }}>
-                      <i className='ri-image-line' />
+                  <IconButton
+                    size='small'
+                    onClick={e => {
+                      e.stopPropagation()
+                      setImageUrl(null)
+                    }}
+                    color='error'
+                  >
+                    <i className='solar-trash-bin-trash-linear' />
+                  </IconButton>
+                </Box>
+              ) : (
+                <Box className='text-center py-2'>
+                  <i className='solar-gallery-add-linear text-3xl text-textSecondary' />
+                  <Typography variant='body2' className='text-textPrimary mt-1'>
+                    {isDragActive ? 'Suelta la imagen aqui' : 'Arrastra una imagen o haz clic'}
+                  </Typography>
+                  <Typography variant='caption' className='text-textSecondary'>
+                    PNG, JPG, SVG o WebP - Max 2MB
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
+
+          <Divider className='my-2' />
+
+          {/* Red */}
+          <Typography variant='subtitle2' className='font-semibold'>
+            Red
+          </Typography>
+          <FormControl fullWidth required error={!networkId && !!error}>
+            <InputLabel>Seleccionar Red</InputLabel>
+            <Select
+              value={networkId}
+              onChange={e => handleNetworkChange(e.target.value)}
+              label='Seleccionar Red'
+              renderValue={selected => {
+                const network = networks.find(n => n.id === selected)
+
+                if (!network) return ''
+
+                return (
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Avatar src={network.imageUrl || undefined} sx={{ width: 24, height: 24 }}>
+                      <i className='solar-share-circle-linear text-sm' />
                     </Avatar>
-                    <Box className='flex-1'>
-                      <Typography variant='body2'>Imagen cargada</Typography>
-                      <Typography variant='caption' className='text-textSecondary'>
-                        Arrastra otra imagen para reemplazar
+                    {network.name} ({network.users.length} miembros)
+                  </Box>
+                )
+              }}
+            >
+              {networks.map(network => (
+                <MenuItem key={network.id} value={network.id} sx={{ py: 1.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Avatar src={network.imageUrl || undefined} sx={{ width: 32, height: 32 }}>
+                      <i className='solar-share-circle-linear' />
+                    </Avatar>
+                    <Box>
+                      <Typography variant='body2'>{network.name}</Typography>
+                      <Typography variant='caption' color='text.secondary'>
+                        {network.users.length} miembros
                       </Typography>
                     </Box>
-                    <IconButton
-                      size='small'
-                      onClick={e => {
-                        e.stopPropagation()
-                        setImageUrl(null)
-                      }}
-                      color='error'
-                    >
-                      <i className='ri-delete-bin-line' />
-                    </IconButton>
                   </Box>
-                ) : (
-                  <Box className='text-center py-2'>
-                    <i className='ri-image-add-line text-3xl text-textSecondary' />
-                    <Typography variant='body2' className='text-textPrimary mt-1'>
-                      {isDragActive ? 'Suelta la imagen aqui' : 'Arrastra una imagen o haz clic'}
-                    </Typography>
-                    <Typography variant='caption' className='text-textSecondary'>
-                      PNG, JPG, SVG o WebP - Max 2MB
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
-            </Box>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-            <Divider className='my-2' />
-
-            {/* Red */}
-            <Typography variant='subtitle2' className='font-semibold'>
-              Red
-            </Typography>
-            <FormControl fullWidth required error={!networkId && !!error}>
-              <InputLabel>Seleccionar Red</InputLabel>
-              <Select
-                value={networkId}
-                onChange={e => handleNetworkChange(e.target.value)}
-                label='Seleccionar Red'
-                renderValue={selected => {
-                  const network = networks.find(n => n.id === selected)
-
-                  if (!network) return ''
-
-                  return (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <Avatar src={network.imageUrl || undefined} sx={{ width: 24, height: 24 }}>
-                        <i className='ri-bubble-chart-line text-sm' />
-                      </Avatar>
-                      {network.name} ({network.users.length} miembros)
-                    </Box>
-                  )
-                }}
+          {/* Líderes */}
+          <Typography variant='subtitle2' className='font-semibold'>
+            Lideres
+          </Typography>
+          <Autocomplete
+            multiple
+            options={availableUsers}
+            value={selectedLeaders}
+            onChange={(_, newValue) => setLeaderIds(newValue.map(u => u.id))}
+            getOptionLabel={getDisplayName}
+            disabled={!networkId}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label='Seleccionar Lideres'
+                placeholder={networkId ? 'Buscar miembros...' : 'Primero selecciona una red'}
+                error={leaderIds.length === 0 && !!error}
+                helperText={leaderIds.length === 0 ? 'Selecciona al menos un lider' : undefined}
+              />
+            )}
+            renderOption={(props, option) => (
+              <Box
+                component='li'
+                {...props}
+                key={option.id}
+                sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 2 }}
               >
-                {networks.map(network => (
-                  <MenuItem key={network.id} value={network.id} sx={{ py: 1.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                      <Avatar src={network.imageUrl || undefined} sx={{ width: 32, height: 32 }}>
-                        <i className='ri-bubble-chart-line' />
-                      </Avatar>
-                      <Box>
-                        <Typography variant='body2'>{network.name}</Typography>
-                        <Typography variant='caption' color='text.secondary'>
-                          {network.users.length} miembros
-                        </Typography>
-                      </Box>
-                    </Box>
+                <Avatar src={option.image || undefined} sx={{ width: 36, height: 36, flexShrink: 0 }}>
+                  {getInitials(option)}
+                </Avatar>
+                <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Typography variant='body2' noWrap>{getDisplayName(option)}</Typography>
+                  {option.email && (
+                    <Typography variant='caption' color='text.secondary' noWrap sx={{ display: 'block' }}>
+                      {option.email}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            )}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip
+                  {...getTagProps({ index })}
+                  key={option.id}
+                  avatar={<Avatar src={option.image || undefined}>{getInitials(option)}</Avatar>}
+                  label={getDisplayName(option)}
+                  size='small'
+                />
+              ))
+            }
+          />
+          <Typography variant='caption' className='text-textSecondary'>
+            Solo puedes seleccionar miembros de la red elegida.
+          </Typography>
+
+          <Divider className='my-2' />
+
+          {/* Modalidad */}
+          <Typography variant='subtitle2' className='font-semibold'>
+            Modalidad
+          </Typography>
+          <ToggleButtonGroup
+            value={modality}
+            exclusive
+            onChange={(_, value) => value && setModality(value)}
+            fullWidth
+            size='small'
+          >
+            <ToggleButton value='presencial'>
+              <i className='solar-map-point-linear mr-2' />
+              Presencial
+            </ToggleButton>
+            <ToggleButton value='virtual'>
+              <i className='solar-video-frame-linear mr-2' />
+              Virtual
+            </ToggleButton>
+          </ToggleButtonGroup>
+
+          {/* Ubicación (solo presencial) */}
+          {modality === 'presencial' && (
+            <>
+              <Typography variant='subtitle2' className='font-semibold'>
+                Ubicacion
+              </Typography>
+              <TextField
+                label='Municipio / Ciudad'
+                value={city}
+                onChange={e => setCity(e.target.value)}
+                fullWidth
+                required
+                error={modality === 'presencial' && !city.trim() && !!error}
+              />
+              <TextField
+                label='Direccion'
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                fullWidth
+                placeholder='Calle, numero, etc.'
+              />
+              <TextField
+                label='Barrio'
+                value={neighborhood}
+                onChange={e => setNeighborhood(e.target.value)}
+                fullWidth
+              />
+            </>
+          )}
+
+          <Divider className='my-2' />
+
+          {/* Horario */}
+          <Typography variant='subtitle2' className='font-semibold'>
+            Horario de Reunion
+          </Typography>
+          <Box className='flex gap-3'>
+            <FormControl fullWidth>
+              <InputLabel>Dia</InputLabel>
+              <Select
+                value={meetingDay}
+                onChange={e => setMeetingDay(e.target.value)}
+                label='Dia'
+              >
+                <MenuItem value=''>Sin definir</MenuItem>
+                {DAYS_OF_WEEK.map(day => (
+                  <MenuItem key={day.value} value={day.value}>
+                    {day.label}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-
-            {/* Líderes */}
-            <Typography variant='subtitle2' className='font-semibold'>
-              Lideres
-            </Typography>
-            <Autocomplete
-              multiple
-              options={availableUsers}
-              value={selectedLeaders}
-              onChange={(_, newValue) => setLeaderIds(newValue.map(u => u.id))}
-              getOptionLabel={getDisplayName}
-              disabled={!networkId}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label='Seleccionar Lideres'
-                  placeholder={networkId ? 'Buscar miembros...' : 'Primero selecciona una red'}
-                  error={leaderIds.length === 0 && !!error}
-                  helperText={leaderIds.length === 0 ? 'Selecciona al menos un lider' : undefined}
-                />
-              )}
-              renderOption={(props, option) => (
-                <Box
-                  component='li'
-                  {...props}
-                  key={option.id}
-                  sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 2 }}
-                >
-                  <Avatar src={option.image || undefined} sx={{ width: 36, height: 36, flexShrink: 0 }}>
-                    {getInitials(option)}
-                  </Avatar>
-                  <Box sx={{ minWidth: 0, flex: 1 }}>
-                    <Typography variant='body2' noWrap>{getDisplayName(option)}</Typography>
-                    {option.email && (
-                      <Typography variant='caption' color='text.secondary' noWrap sx={{ display: 'block' }}>
-                        {option.email}
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-              )}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    {...getTagProps({ index })}
-                    key={option.id}
-                    avatar={<Avatar src={option.image || undefined}>{getInitials(option)}</Avatar>}
-                    label={getDisplayName(option)}
-                    size='small'
-                  />
-                ))
-              }
-            />
-            <Typography variant='caption' className='text-textSecondary'>
-              Solo puedes seleccionar miembros de la red elegida.
-            </Typography>
-
-            <Divider className='my-2' />
-
-            {/* Modalidad */}
-            <Typography variant='subtitle2' className='font-semibold'>
-              Modalidad
-            </Typography>
-            <ToggleButtonGroup
-              value={modality}
-              exclusive
-              onChange={(_, value) => value && setModality(value)}
+            <TextField
+              label='Hora'
+              type='time'
+              value={meetingTime}
+              onChange={e => setMeetingTime(e.target.value)}
               fullWidth
-              size='small'
-            >
-              <ToggleButton value='presencial'>
-                <i className='ri-map-pin-line mr-2' />
-                Presencial
-              </ToggleButton>
-              <ToggleButton value='virtual'>
-                <i className='ri-video-line mr-2' />
-                Virtual
-              </ToggleButton>
-            </ToggleButtonGroup>
-
-            {/* Ubicación (solo presencial) */}
-            {modality === 'presencial' && (
-              <>
-                <Typography variant='subtitle2' className='font-semibold'>
-                  Ubicacion
-                </Typography>
-                <TextField
-                  label='Municipio / Ciudad'
-                  value={city}
-                  onChange={e => setCity(e.target.value)}
-                  fullWidth
-                  required
-                  error={modality === 'presencial' && !city.trim() && !!error}
-                />
-                <TextField
-                  label='Direccion'
-                  value={address}
-                  onChange={e => setAddress(e.target.value)}
-                  fullWidth
-                  placeholder='Calle, numero, etc.'
-                />
-                <TextField
-                  label='Barrio'
-                  value={neighborhood}
-                  onChange={e => setNeighborhood(e.target.value)}
-                  fullWidth
-                />
-              </>
-            )}
-
-            <Divider className='my-2' />
-
-            {/* Horario */}
-            <Typography variant='subtitle2' className='font-semibold'>
-              Horario de Reunion
-            </Typography>
-            <Box className='flex gap-3'>
-              <FormControl fullWidth>
-                <InputLabel>Dia</InputLabel>
-                <Select
-                  value={meetingDay}
-                  onChange={e => setMeetingDay(e.target.value)}
-                  label='Dia'
-                >
-                  <MenuItem value=''>Sin definir</MenuItem>
-                  {DAYS_OF_WEEK.map(day => (
-                    <MenuItem key={day.value} value={day.value}>
-                      {day.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                label='Hora'
-                type='time'
-                value={meetingTime}
-                onChange={e => setMeetingTime(e.target.value)}
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-              />
-            </Box>
-
-            {/* Estado (solo edición) */}
-            {isEditing && (
-              <>
-                <Divider className='my-2' />
-                <FormControlLabel
-                  control={<Switch checked={isActive} onChange={e => setIsActive(e.target.checked)} />}
-                  label={isActive ? 'Grupo Activo' : 'Grupo Inactivo'}
-                />
-              </>
-            )}
+              InputLabelProps={{ shrink: true }}
+            />
           </Box>
-        </Box>
 
-        <Box className='flex gap-3 p-4 border-t'>
-          <Button variant='contained' onClick={handleSubmit} disabled={saving} fullWidth>
-            {saving ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Crear Grupo'}
-          </Button>
-          <Button variant='outlined' onClick={onClose} disabled={saving}>
-            Cancelar
-          </Button>
+          {/* Estado (solo edición) */}
+          {isEditing && (
+            <>
+              <Divider className='my-2' />
+              <FormControlLabel
+                control={<Switch checked={isActive} onChange={e => setIsActive(e.target.checked)} />}
+                label={isActive ? 'Grupo Activo' : 'Grupo Inactivo'}
+              />
+            </>
+          )}
         </Box>
-      </Box>
-    </Drawer>
+      </DialogContent>
+
+      <DialogActions sx={{ px: 3, py: 2 }}>
+        <Button variant='outlined' onClick={onClose} disabled={saving}>
+          Cancelar
+        </Button>
+        <Button variant='contained' onClick={handleSubmit} disabled={saving} fullWidth>
+          {saving ? 'Guardando...' : isEditing ? 'Guardar Cambios' : 'Crear Grupo'}
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

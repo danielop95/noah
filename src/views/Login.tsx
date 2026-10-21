@@ -175,7 +175,7 @@ const Login = ({ mode }: { mode: Mode }) => {
                               onMouseDown={e => e.preventDefault()}
                               aria-label='toggle password visibility'
                             >
-                              <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                              <i className={isPasswordShown ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                             </IconButton>
                           </InputAdornment>
                         )

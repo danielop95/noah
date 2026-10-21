@@ -1,0 +1,406 @@
+<!-- =========================
+Mobile Menu
+===========================-->
+
+<aside
+  class="sidebar scroll-bar fixed top-0 right-0 z-[9999] h-screen w-full translate-x-full border-stroke-3/18 bg-background-6 border-l transition-all duration-300 sm:w-1/2 xl:hidden"
+>
+  <div class="space-y-4 p-5 sm:p-8 lg:p-9">
+    <div class="flex items-center justify-between">
+      <a href="/">
+        <span class="sr-only">Home</span>
+        <figure class="max-w-[44px]">
+          <img src="./images/logo/logo-white-small.svg" alt="Nexsas" class="block w-full" />
+        </figure>
+      </a>
+      <button
+        class="nav-hamburger-close bg-white/10 hover:bg-white/20 relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full transition-colors duration-200"
+      >
+        <span class="sr-only">Close Menu</span>
+        <span class="bg-white/90 absolute block h-0.5 w-4 rotate-45"></span>
+        <span class="bg-white/90 absolute block h-0.5 w-4 -rotate-45"></span>
+      </button>
+    </div>
+    <div class="scroll-bar mt-6 h-[85vh] w-full overflow-x-hidden overflow-y-auto pb-10">
+      <ul class="space-y-2">
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="company"
+          >
+            <span class="font-sora text-tagline-2 block font-normal text-white/90">Company</span>
+
+            <span class="menu-arrow rotate-90 transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-white/90"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu block" data-submenu="company">
+            <li>
+              <a
+                href="./about.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-1.5 text-left font-normal transition-colors duration-200"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="./services.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Our Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Product Features</a
+              >
+            </li>
+            <li>
+              <a
+                href="./blog.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Blog &amp; News</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="collaborate"
+          >
+            <span class="font-sora text-tagline-2 relative block font-normal text-white/90"
+              >Collaborate</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-white/90"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="collaborate">
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Affiliate</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Referral</a
+              >
+            </li>
+            <li>
+              <a
+                href="./login.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="./signup.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Create Account</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Download</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Integration</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="resources"
+          >
+            <span class="font-sora text-tagline-2 relative block font-normal text-white/90"
+              >Resources</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-white/90"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="resources">
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Documentation</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Tutorials</a
+              >
+            </li>
+            <li>
+              <a
+                href="./faq.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >FAQ</a
+              >
+            </li>
+            <li>
+              <a
+                href="./projects.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Case Studies</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Whitepapers</a
+              >
+            </li>
+            <li>
+              <a
+                href="./blog.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Blog</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Support</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Use Cases</a
+              >
+            </li>
+            <li>
+              <a
+                href="./projects.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Success Stories</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Analytics</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Glossary</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Security</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >GDPR Compliance</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Terms &amp; Conditions</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Refund Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Affiliate Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Legal</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Press Coverage</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="people-culture"
+          >
+            <span class="font-sora text-tagline-2 relative block font-normal text-white/90"
+              >People & Culture</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-white/90"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="people-culture">
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Process</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Team</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Career</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Testimonial</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Customer</a
+              >
+            </li>
+            <li>
+              <a
+                href="./contact.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Contact</a
+              >
+            </li>
+            <li>
+              <a
+                href="./pricing.html"
+                class="text-tagline-3 text-white/80 hover:text-white/90 ml-4 block py-2.5 text-left font-normal transition-colors duration-200"
+                >Pricing</a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

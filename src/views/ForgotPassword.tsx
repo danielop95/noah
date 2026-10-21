@@ -93,7 +93,7 @@ const ForgotPasswordV2 = ({ mode }: { mode: Mode }) => {
             </Button>
             <Typography className='flex justify-center items-center' color='primary.main'>
               <Link href='/login' className='flex items-center'>
-                <i className='ri-arrow-left-s-line' />
+                <i className='solar-alt-arrow-left-linear' />
                 <span>Back to Login</span>
               </Link>
             </Typography>

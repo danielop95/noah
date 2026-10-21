@@ -20,11 +20,11 @@ type Props = {
 }
 
 const statItems = [
-  { key: 'reportsCount', label: 'Reportes', icon: 'ri-file-list-3-line', color: 'primary' as const },
-  { key: 'groupsLeading', label: 'Grupos', icon: 'ri-team-line', color: 'success' as const },
-  { key: 'totalAttendees', label: 'Asistentes', icon: 'ri-user-follow-line', color: 'info' as const },
-  { key: 'totalVisitors', label: 'Visitas', icon: 'ri-user-add-line', color: 'warning' as const },
-  { key: 'avgAttendees', label: 'Promedio', icon: 'ri-line-chart-line', color: 'error' as const }
+  { key: 'reportsCount', label: 'Reportes', icon: 'solar-clipboard-text-linear', color: 'primary' as const },
+  { key: 'groupsLeading', label: 'Grupos', icon: 'solar-widget-2-linear', color: 'success' as const },
+  { key: 'totalAttendees', label: 'Asistentes', icon: 'solar-user-check-linear', color: 'info' as const },
+  { key: 'totalVisitors', label: 'Visitas', icon: 'solar-user-plus-linear', color: 'warning' as const },
+  { key: 'avgAttendees', label: 'Promedio', icon: 'solar-graph-up-linear', color: 'error' as const }
 ]
 
 const ProfileStats = ({ stats }: Props) => {

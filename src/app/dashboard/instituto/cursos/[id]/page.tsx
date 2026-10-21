@@ -6,17 +6,20 @@ import { getCourseById } from '@/app/server/institutoActions'
 
 type Props = { params: Promise<{ id: string }> }
 
-const CourseDetailPage = async ({ params }: Props) => {
-  const { id } = await params
+async function PageContent({ id }: { id: string }) {
   const course = await getCourseById(id)
 
   if (!course) notFound()
 
+  return <CourseDetailView course={course} />
+}
+
+export default async function CourseDetailPage({ params }: Props) {
+  const { id } = await params
+
   return (
     <PermissionGuard permission='instituto.ver'>
-      <CourseDetailView course={course} />
+      <PageContent id={id} />
     </PermissionGuard>
   )
 }
-
-export default CourseDetailPage

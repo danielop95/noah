@@ -1,0 +1,77 @@
+<div
+  data-ns-animate
+  data-delay="0.1"
+  data-tab-items-container
+  role="tablist"
+  aria-label="Financial services tabs"
+  class="md:bg-background-3 relative grid w-full items-center justify-center gap-3 p-1 max-sm:!grid-cols-12 md:flex-nowrap md:gap-1 md:rounded-full"
+  style="grid-template-columns: repeat(15, 1fr)"
+>
+  <button
+    id="tab-payments"
+    data-tab-content="payments"
+    data-selected
+    role="tab"
+    aria-controls="tab-panel-payments"
+    aria-selected="true"
+    aria-label="Payments service tab"
+    tabindex="0"
+    class="font-inter-tight text-tagline-1 text-secondary/60 bg-background-4 col-span-6 cursor-pointer rounded-2xl px-6 py-[14px] font-medium sm:col-span-3 md:rounded-[80px] md:bg-white"
+  >
+    <span class="relative z-20">Payments</span>
+  </button>
+  <button
+    id="tab-analytics"
+    data-tab-content="analytics"
+    role="tab"
+    aria-controls="tab-panel-analytics"
+    aria-selected="false"
+    aria-label="Analytics service tab"
+    tabindex="-1"
+    class="font-inter-tight text-tagline-1 text-secondary/60 bg-background-4 col-span-6 cursor-pointer rounded-2xl px-6 py-[14px] font-medium transition-colors duration-300 ease-in-out sm:col-span-3 md:rounded-[80px] md:bg-white"
+  >
+    <span class="relative z-20">Analytics</span>
+  </button>
+  <button
+    id="tab-invoices"
+    data-tab-content="invoices"
+    role="tab"
+    aria-controls="tab-panel-invoices"
+    aria-selected="false"
+    aria-label="Invoices service tab"
+    tabindex="-1"
+    class="font-inter-tight text-tagline-1 text-secondary/60 bg-background-4 col-span-6 cursor-pointer rounded-2xl px-6 py-[14px] font-medium transition-colors duration-300 ease-in-out sm:col-span-3 md:rounded-[80px] md:bg-white"
+  >
+    <span class="relative z-20"> Invoices</span>
+  </button>
+  <button
+    id="tab-security"
+    data-tab-content="security"
+    role="tab"
+    aria-controls="tab-panel-security"
+    aria-selected="false"
+    aria-label="Security service tab"
+    tabindex="-1"
+    class="font-inter-tight text-tagline-1 text-secondary/60 bg-background-4 col-span-6 cursor-pointer rounded-2xl px-6 py-[14px] font-medium transition-colors duration-300 ease-in-out sm:col-span-3 md:rounded-[80px] md:bg-white"
+  >
+    <span class="relative z-20"> Security</span>
+  </button>
+  <button
+    id="tab-automation"
+    data-tab-content="automation"
+    role="tab"
+    aria-controls="tab-panel-automation"
+    aria-selected="false"
+    aria-label="Automation service tab"
+    tabindex="-1"
+    class="font-inter-tight text-tagline-1 text-secondary/60 bg-background-4 col-span-12 cursor-pointer rounded-2xl px-6 py-[14px] font-medium transition-colors duration-300 ease-in-out sm:col-span-3 md:rounded-[80px] md:bg-white"
+  >
+    <span class="relative z-20"> Automation</span>
+  </button>
+
+  <!-- active tab indicator -->
+  <div
+    data-active-tab-indicator
+    class="bg-secondary absolute left-0 z-10 rounded-2xl transition-all duration-500 ease-out md:rounded-[80px]"
+  ></div>
+</div>

@@ -74,7 +74,7 @@ const LanguageDropdown = () => {
   return (
     <>
       <IconButton ref={anchorRef} onClick={handleToggle} className='!text-textPrimary'>
-        <i className='ri-translate-2' />
+        <i className='solar-translation-linear' />
       </IconButton>
       <Popper
         open={open}

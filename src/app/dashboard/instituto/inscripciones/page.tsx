@@ -4,14 +4,16 @@ import { getPendingEnrollments } from '@/app/server/institutoActions'
 
 export const metadata = { title: 'Inscripciones — Instituto Life' }
 
-const InscripcionesPage = async () => {
+async function PageContent() {
   const pendingEnrollments = await getPendingEnrollments()
 
+  return <InscripcionesView pendingEnrollments={pendingEnrollments} />
+}
+
+export default function InscripcionesPage() {
   return (
     <PermissionGuard permission='instituto.gestionar'>
-      <InscripcionesView pendingEnrollments={pendingEnrollments} />
+      <PageContent />
     </PermissionGuard>
   )
 }
-
-export default InscripcionesPage

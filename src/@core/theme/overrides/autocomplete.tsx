@@ -20,7 +20,7 @@ const autocomplete = (skin: Skin): Theme['components'] => ({
       ChipProps: {
         size: 'small'
       },
-      popupIcon: <i className='ri-arrow-down-s-line' />
+      popupIcon: <i className='solar-alt-arrow-down-linear' />
     },
     styleOverrides: {
       root: {

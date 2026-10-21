@@ -1,0 +1,31 @@
+<button
+  type="submit"
+  class="group {=$anchor-class} animate-rainbow-flow aria-invalid:border-destructive text-background-7 bg-background-4 font-ibm-plex-mono before:animate-rainbow-flow relative flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[6px] border-0 bg-[linear-gradient(var(--color-background-4)),linear-gradient(#121213_0%,rgba(18,18,19,0.6)_80%,rgba(18,18,19,0)),linear-gradient(90deg,var(--color-background-4),#8765ff,#fff181,#ff4c52,#734cff,#8765ff,#fff181,#ff4c52,#734cff,var(--color-background-4))] bg-[length:400%] [background-clip:padding-box,border-box,border-box] [background-origin:border-box] px-6 py-[13px] text-base leading-[1.4] font-medium whitespace-nowrap transition-all outline-none [border:calc(0.125rem)_solid_transparent] before:absolute before:bottom-[-25%] before:left-1/2 before:-z-10 before:h-2/5 before:w-4/5 before:-translate-x-1/2 before:bg-[linear-gradient(90deg,#30e3ff,#8765ff,#fff181,#ff4c52,#734cff,#30e3ff,#8765ff,#fff181,#ff4c52,#734cff,#30e3ff)] before:bg-[length:400%] before:[filter:blur(0.9rem)] before:transition-all before:duration-500 before:ease-in-out hover:before:filter-[blur(0.7rem)] focus-visible:ring-[1px] disabled:pointer-events-none disabled:opacity-100 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-2.5"
+>
+  <span> {=$button-text} </span>
+  <span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+      <path
+        d="M0.75 9.5L5.25 5L0.75 0.5"
+        class="absolute translate-x-0 stroke-white transition-all duration-300 ease-in-out group-hover:translate-x-[2px]"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+</button>
+
+<style>
+  .animate-rainbow-flow {
+    animation: rainbow-flow 15s infinite linear;
+  }
+
+  @keyframes rainbow-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 400% 50%;
+    }
+  }
+</style>

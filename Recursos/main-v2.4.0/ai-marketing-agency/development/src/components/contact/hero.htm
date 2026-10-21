@@ -1,0 +1,202 @@
+<!-- contact hero -->
+
+<section class="lp:pb-44 relative overflow-hidden pt-28 pb-20 md:pt-39 md:pb-25 lg:pb-30">
+  <div class="main-container relative z-10">
+    <div class="space-y-14 lg:space-y-[70px] xl:space-y-[120px]">
+      <div class="space-y-3 text-center">
+        <h2
+          data-opai-animate
+          data-delay="0.1"
+          data-instant
+          class="text-is-heading-4 md:text-is-heading-3 lg:text-is-heading-2 font-instrument-serif font-normal text-white/90"
+        >
+          Let’s talk, we’re here to help
+        </h2>
+        <p
+          data-opai-animate
+          data-delay="0.2"
+          data-instant
+          class="text-tagline-2 font-inter-tight font-normal text-white/60"
+        >
+          Got any questions or how Nexsas can help your business thrive? We're here for you.
+        </p>
+      </div>
+
+      <div class="flex w-full flex-col items-center justify-between gap-y-14 lg:flex-row">
+        <div class="flex flex-col justify-between gap-y-10 lg:h-[606px]">
+          <div class="space-y-4">
+            <div data-opai-animate data-delay="0.1" data-instant>
+              <Component
+                src="src/components/shared/badge.htm"
+                badge-text="Contact Us"
+                class="text-white/60"
+              />
+            </div>
+            <h3
+              data-opai-animate
+              data-delay="0.2"
+              data-instant
+              class="text-is-heading-5 md:text-is-heading-3 lg:text-is-heading-2 font-instrument-serif max-w-[400px] font-normal text-white/90"
+            >
+              Reach out — We’ll get back within 24 hours
+            </h3>
+          </div>
+          <div class="grid grid-cols-12 gap-4">
+            <!-- card one  -->
+            <div
+              data-opai-animate
+              data-delay="0.3"
+              data-instant
+              class="bg-background-6 col-span-12 flex basis-1/2 gap-x-4 rounded-lg p-6 md:col-span-6 lg:col-span-12"
+            >
+              <span class="bg-background-1 flex size-13 items-center justify-center rounded-full">
+                <Component src="src/components/shared/icon/mail.htm" class="size-7" />
+              </span>
+              <div>
+                <p class="text-tagline-2 font-inter-tight font-normal text-white">Email</p>
+                <a
+                  href="mailto:support@Nexsas.com"
+                  class="text-tagline-3 font-inter-tight font-normal text-white/60"
+                >
+                  support@Nexsas.com
+                </a>
+              </div>
+            </div>
+
+            <!-- card two  -->
+            <div
+              data-opai-animate
+              data-delay="0.4"
+              data-instant
+              class="bg-background-6 col-span-12 flex gap-x-4 rounded-lg p-6 md:col-span-6 lg:col-span-12"
+            >
+              <span class="bg-background-1 flex size-13 items-center justify-center rounded-full">
+                <Component src="src/components/shared/icon/phone.htm" class="size-7" />
+              </span>
+              <div>
+                <p class="text-tagline-2 font-inter-tight font-normal text-white">Phone</p>
+                <a
+                  class="text-tagline-3 font-inter-tight font-normal text-white/60"
+                  href="tel:+1 (202) 555-0130"
+                  target="_blank"
+                >
+                  +1 (202) 555-0130
+                </a>
+              </div>
+            </div>
+
+            <!-- card three  -->
+            <div
+              data-opai-animate
+              data-delay="0.5"
+              data-instant
+              class="bg-background-6 col-span-12 flex gap-x-4 rounded-lg p-6"
+            >
+              <span class="bg-background-1 flex size-13 items-center justify-center rounded-full">
+                <Component src="src/components/shared/icon/location.htm" class="size-7" />
+              </span>
+              <div>
+                <p class="text-tagline-2 font-inter-tight font-normal text-white">Location</p>
+                <a
+                  href="https://www.google.com/maps"
+                  target="_blank"
+                  class="text-tagline-3 font-inter-tight font-normal text-white/60"
+                >
+                  30 North Gould Street, Sheridan, WY 8280
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- form  -->
+        <form
+          data-opai-animate
+          data-delay="0.3"
+          data-instant
+          action="#"
+          class="bg-background-5 w-full max-w-[500px] rounded-xl p-6 xl:max-w-[595px]"
+        >
+          <!-- name  -->
+          <fieldset class="mb-6 space-y-2">
+            <label
+              for="name"
+              class="text-inter-tight text-tagline-2 inline-block font-normal text-white/90"
+              >Your name</label
+            >
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter your name"
+              class="border-stroke-3/25 focus-within:border-stroke-3/70 w-full rounded-md border px-4.5 py-3 text-white/90 placeholder:text-white/60 focus-within:outline-none"
+              required
+              aria-label="Your name"
+            />
+          </fieldset>
+
+          <!-- email  -->
+          <fieldset class="mb-6 space-y-2">
+            <label
+              for="email"
+              class="text-inter-tight text-tagline-2 inline-block font-normal text-white/90"
+              >Your email</label
+            >
+            <input
+              type="text"
+              id="subject"
+              placeholder="Enter your email"
+              class="border-stroke-3/25 focus-within:border-stroke-3/70 w-full rounded-md border px-4.5 py-3 text-white/90 placeholder:text-white/60 focus-within:outline-none"
+              required
+              aria-label="Your email"
+            />
+          </fieldset>
+
+          <!-- your message -->
+          <fieldset class="mb-4 space-y-2">
+            <label
+              for="message"
+              class="text-inter-tight text-tagline-2 inline-block font-normal text-white/90"
+              >Your message</label
+            >
+            <textarea
+              id="message"
+              placeholder="Enter your message"
+              class="border-stroke-3/25 focus-within:border-stroke-3/70 h-45.5 w-full rounded-md border px-4.5 py-3 text-white/90 placeholder:text-white/60 focus-within:outline-none"
+            ></textarea>
+          </fieldset>
+
+          <!-- remember me  and forget password  -->
+          <fieldset class="flex items-center justify-between gap-x-5">
+            <label class="flex cursor-pointer items-center gap-1.5">
+              <input
+                type="checkbox"
+                name="terms"
+                required=""
+                class="peer sr-only"
+                aria-label="I accept with the Terms of uses and privacy policy"
+              />
+              <span
+                class="border-stroke-3/40 peer-checked:border-primary-500 peer-checked:border-stroke-1/60 relative size-5 cursor-pointer rounded-[2px] border after:absolute after:top-1/2 after:left-1/2 after:size-3 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-[2px] after:bg-white/60 after:opacity-0 peer-checked:after:opacity-100"
+              ></span>
+              <span
+                class="text-tagline-3 font-medium text-white/60 select-none peer-checked:text-white/90"
+              >
+                I accept with the Terms of uses and privacy policy
+              </span>
+            </label>
+          </fieldset>
+
+          <!-- submit request button  -->
+
+          <Component
+            src="src/components/shared/button/submit-primary.htm"
+            button-text="Submit request"
+            class="mt-9"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <Component src="src/components/shared/gradient/upper-gradient.htm" />
+</section>

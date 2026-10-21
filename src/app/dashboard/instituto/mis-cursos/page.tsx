@@ -7,16 +7,16 @@ import { getEnrollmentsByUser, getAllCourses } from '@/app/server/institutoActio
 
 export const metadata = { title: 'Mis Cursos — Instituto Life' }
 
-const MisCursosPage = async () => {
-  const session = await getServerSession(authOptions)
-  if (!session?.user) redirect('/login')
+async function PageContent({ userId }: { userId: string }) {
+  const [myEnrollments, courses] = await Promise.all([getEnrollmentsByUser(userId), getAllCourses()])
 
-  const [myEnrollments, courses] = await Promise.all([
-    getEnrollmentsByUser(session.user.id),
-    getAllCourses()
-  ])
-
-  return <MisCursosView myEnrollments={myEnrollments} courses={courses} userId={session.user.id} />
+  return <MisCursosView myEnrollments={myEnrollments} courses={courses} userId={userId} />
 }
 
-export default MisCursosPage
+export default async function MisCursosPage() {
+  const session = await getServerSession(authOptions)
+
+  if (!session?.user) redirect('/login')
+
+  return <PageContent userId={session.user.id} />
+}

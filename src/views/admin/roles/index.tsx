@@ -70,7 +70,7 @@ const RolesView = ({ roles: initialRoles, permissions }: Props) => {
     <div className='flex flex-col gap-6'>
       <div className='flex items-center justify-between'>
         <Typography variant='h4'>Roles y Permisos</Typography>
-        <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleCreate}>
+        <Button variant='contained' startIcon={<i className='solar-add-circle-linear' />} onClick={handleCreate}>
           Crear Rol
         </Button>
       </div>
@@ -129,7 +129,7 @@ const RolesView = ({ roles: initialRoles, permissions }: Props) => {
                     </TableCell>
                     <TableCell align='right'>
                       <IconButton size='small' onClick={() => handleEdit(role.id)}>
-                        <i className='ri-edit-line text-textSecondary' />
+                        <i className='solar-pen-new-square-linear text-textSecondary' />
                       </IconButton>
                       {!role.isSystem && (
                         <IconButton
@@ -137,7 +137,7 @@ const RolesView = ({ roles: initialRoles, permissions }: Props) => {
                           onClick={() => handleDelete(role.id)}
                           disabled={deleting === role.id}
                         >
-                          <i className='ri-delete-bin-line text-textSecondary' />
+                          <i className='solar-trash-bin-trash-linear text-textSecondary' />
                         </IconButton>
                       )}
                     </TableCell>

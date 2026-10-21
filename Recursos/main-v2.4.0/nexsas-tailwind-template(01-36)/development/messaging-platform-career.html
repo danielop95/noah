@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <Component src="src/components/shared/head-links.htm" />
+    <title>Career - Messaging Platform || Nexsas</title>
+  </head>
+  <body class="bg-background-4 dark:bg-background-9">
+    <Component src="src/components/pages/messaging-platform/header.htm" />
+    <main>
+      <Component src="src/components/pages/career-page/career.htm" />
+      <Component
+        src="src/components/pages/payment-solution/features.htm"
+        class="py-[100px] xl:py-[200px]"
+      />
+      <Component
+        src="src/components/pages/career-page/positions.htm"
+        page-link="./messaging-platform-career-details.html"
+      />
+      <Component
+        src="src/components/shared/cta/cta-v1.htm"
+        class="dark:bg-background-6 bg-white"
+        badge-class="badge-green"
+        badge-text="Get started"
+        span-class="hidden"
+        cta-heading="Build a complete website using the assistance"
+        description="Start your free trial today and see your ideas come to life easily and creatively."
+        cta-btn-text="Get started"
+        btn-class="hover:btn-secondary dark:hover:btn-accent"
+      />
+    </main>
+
+    <Component src="src/components/pages/messaging-platform/footer.htm" />
+  </body>
+</html>

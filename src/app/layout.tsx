@@ -1,5 +1,5 @@
 // Next Imports
-import { Outfit } from 'next/font/google'
+import { Inter_Tight } from 'next/font/google'
 
 // MUI Imports
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
@@ -26,10 +26,11 @@ import '@/app/globals.css'
 // Generated Icon CSS Imports
 import '@assets/iconify-icons/generated-icons.css'
 
-const outfit = Outfit({
+const interTight = Inter_Tight({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-outfit'
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-inter-tight'
 })
 
 export const metadata = {
@@ -43,8 +44,8 @@ const RootLayout = async ({ children }: ChildrenType) => {
   const systemMode = await getSystemMode()
 
   return (
-    <html id='__next' lang={locale} dir={direction} className={outfit.variable} suppressHydrationWarning>
-      <body className={`${outfit.className} flex is-full min-bs-full flex-auto flex-col`}>
+    <html id='__next' lang={locale} dir={direction} className={interTight.variable} suppressHydrationWarning>
+      <body className={`${interTight.className} flex is-full min-bs-full flex-auto flex-col`}>
         <InitColorSchemeScript attribute='data' defaultMode={systemMode} />
         <Providers direction={direction} initialLocale={locale}>
           {children}

@@ -1,0 +1,399 @@
+<!-- =========================
+Mobile Menu
+===========================-->
+
+<aside
+  class="sidebar scroll-bar fixed top-0 right-0 z-[9999] h-screen w-full translate-x-full bg-white transition-all duration-300 sm:w-1/2 md:rounded-l-3xl xl:hidden"
+>
+  <div class="space-y-4 p-5 sm:p-8 lg:p-9">
+    <div class="flex items-center justify-between">
+      <a href="/">
+        <span class="sr-only">Home</span>
+        <figure class="max-w-[44px]">
+          <img src="./images/logo/logo-small.svg" alt="Nexsas" class="block w-full" />
+        </figure>
+      </a>
+      <button
+        class="nav-hamburger-close bg-background-1/50 relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full"
+      >
+        <span class="sr-only">Close Menu</span>
+        <span class="bg-background-7 absolute block h-0.5 w-4 rotate-45"></span>
+        <span class="bg-background-7 absolute block h-0.5 w-4 -rotate-45"></span>
+      </button>
+    </div>
+    <div class="scroll-bar mt-6 h-[85vh] w-full overflow-x-hidden overflow-y-auto pb-10">
+      <ul class="space-y-2">
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="company"
+          >
+            <span class="text-background-6 text-tagline-1 block font-normal">Company</span>
+
+            <span class="menu-arrow rotate-90 transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-background-6"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu block" data-submenu="company">
+            <li>
+              <a
+                href="./about-us.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-1.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="./services.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Our Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="./features.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Product Features</a
+              >
+            </li>
+            <li>
+              <a
+                href="./blog.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Blog &amp; News</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="collaborate"
+          >
+            <span class="text-background-6 text-tagline-1 relative block font-normal"
+              >Collaborate</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-background-6"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="collaborate">
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Affiliate</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Referral</a
+              >
+            </li>
+            <li>
+              <a
+                href="./login.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="./signup.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Create Account</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Download</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Integration</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="resources"
+          >
+            <span class="text-background-6 text-tagline-1 relative block font-normal"
+              >Resources</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-background-6"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="resources">
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Documentation</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Tutorials</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >FAQ</a
+              >
+            </li>
+            <li>
+              <a
+                href="./use-case.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Case Studies</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Whitepapers</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Support</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Use Cases</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Success Stories</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Analytics</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Glossary</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Security</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >GDPR Compliance</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Terms &amp; Conditions</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Refund Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Affiliate Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Legal</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Press Coverage</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="people-culture"
+          >
+            <span class="text-background-6 text-tagline-1 relative block font-normal"
+              >People & Culture</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-background-6"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="people-culture">
+            <li>
+              <a
+                href="./process.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Process</a
+              >
+            </li>
+            <li>
+              <a
+                href="./team.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Team</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Career</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Testimonial</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Customer</a
+              >
+            </li>
+            <li>
+              <a
+                href="./contact-us.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Contact</a
+              >
+            </li>
+            <li>
+              <a
+                href="./pricing.html"
+                class="text-tagline-3 text-background-6/70 ml-4 block py-2.5 text-left font-normal transition-all duration-200 data-[clicked=true]:font-semibold"
+                >Pricing</a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

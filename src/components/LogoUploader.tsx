@@ -180,13 +180,13 @@ const LogoUploader = ({ currentLogoUrl, onUpload, onRemove, isPublic = false, di
                 }}
                 color='error'
               >
-                <i className='ri-delete-bin-line' />
+                <i className='solar-trash-bin-trash-linear' />
               </IconButton>
             )}
           </Box>
         ) : (
           <Box className='text-center py-2'>
-            <i className='ri-upload-cloud-2-line text-3xl text-textSecondary' />
+            <i className='solar-cloud-upload-linear text-3xl text-textSecondary' />
             <Typography variant='body2' className='text-textPrimary mt-1'>
               {isDragActive ? 'Suelta el archivo aqui' : 'Arrastra tu logo o haz clic para seleccionar'}
             </Typography>

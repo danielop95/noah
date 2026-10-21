@@ -111,7 +111,7 @@ const NetworkDetailView = ({ network }: Props) => {
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-4'>
           <IconButton onClick={() => router.push('/dashboard/admin/redes')}>
-            <i className='ri-arrow-left-line' />
+            <i className='solar-arrow-left-linear' />
           </IconButton>
           <div>
             <Typography variant='h5'>{network.name}</Typography>
@@ -122,7 +122,7 @@ const NetworkDetailView = ({ network }: Props) => {
         </div>
         <Button
           variant='contained'
-          startIcon={<i className='ri-edit-line' />}
+          startIcon={<i className='solar-pen-new-square-linear' />}
           onClick={() => router.push('/dashboard/admin/redes')}
         >
           Editar Red
@@ -149,19 +149,19 @@ const NetworkDetailView = ({ network }: Props) => {
                 <Tab
                   label={`Lideres (${leaders.length})`}
                   value='leaders'
-                  icon={<i className='ri-star-line' />}
+                  icon={<i className='solar-star-linear' />}
                   iconPosition='start'
                 />
                 <Tab
                   label={`Grupos (${network.groups.length})`}
                   value='groups'
-                  icon={<i className='ri-team-line' />}
+                  icon={<i className='solar-widget-2-linear' />}
                   iconPosition='start'
                 />
                 <Tab
                   label={`Miembros (${members.length})`}
                   value='members'
-                  icon={<i className='ri-group-line' />}
+                  icon={<i className='solar-users-group-rounded-linear' />}
                   iconPosition='start'
                 />
               </TabList>

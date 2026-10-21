@@ -108,13 +108,13 @@ const AccountSettings = () => {
               <Tab
                 label='Información Personal'
                 value='account'
-                icon={<i className='ri-user-3-line' />}
+                icon={<i className='solar-user-linear' />}
                 iconPosition='start'
               />
               <Tab
                 label='Seguridad'
                 value='security'
-                icon={<i className='ri-lock-line' />}
+                icon={<i className='solar-lock-keyhole-linear' />}
                 iconPosition='start'
               />
             </TabList>

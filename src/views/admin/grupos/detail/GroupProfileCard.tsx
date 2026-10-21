@@ -124,7 +124,7 @@ const GroupProfileCard = ({ group }: Props) => {
           {getDayLabel(group.meetingDay) && (
             <Box className='flex items-center gap-2'>
               <CustomAvatar skin='light' color='primary' size={32} variant='rounded'>
-                <i className='ri-calendar-line text-base' />
+                <i className='solar-calendar-linear text-base' />
               </CustomAvatar>
               <Box>
                 <Typography variant='body2' fontWeight={500}>
@@ -141,7 +141,7 @@ const GroupProfileCard = ({ group }: Props) => {
           {group.modality === 'presencial' && (group.city || group.address) && (
             <Box className='flex items-center gap-2'>
               <CustomAvatar skin='light' color='info' size={32} variant='rounded'>
-                <i className='ri-map-pin-line text-base' />
+                <i className='solar-map-point-linear text-base' />
               </CustomAvatar>
               <Box>
                 <Typography variant='body2' fontWeight={500}>
@@ -172,7 +172,7 @@ const GroupProfileCard = ({ group }: Props) => {
             variant='rounded'
             sx={{ width: 40, height: 40, bgcolor: 'primary.main' }}
           >
-            <i className='ri-bubble-chart-line' />
+            <i className='solar-share-circle-linear' />
           </Avatar>
           <Typography variant='body1' fontWeight={500}>
             {group.network.name}
@@ -196,7 +196,7 @@ const GroupProfileCard = ({ group }: Props) => {
               size={44}
               variant='rounded'
             >
-              <i className={`ri-arrow-${stats.attendeesGrowth >= 0 ? 'up' : 'down'}-line text-xl`} />
+              <i className={`solar-arrow-${stats.attendeesGrowth >= 0 ? 'up' : 'down'}-linear text-xl`} />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between'>
@@ -220,7 +220,7 @@ const GroupProfileCard = ({ group }: Props) => {
           {/* Promedio de Asistentes */}
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='primary' size={44} variant='rounded'>
-              <i className='ri-group-line text-xl' />
+              <i className='solar-users-group-rounded-linear text-xl' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between'>
@@ -245,7 +245,7 @@ const GroupProfileCard = ({ group }: Props) => {
               size={44}
               variant='rounded'
             >
-              <i className='ri-file-chart-line text-xl' />
+              <i className='solar-chart-square-linear text-xl' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between'>
@@ -274,7 +274,7 @@ const GroupProfileCard = ({ group }: Props) => {
         <Box className='flex gap-4'>
           <StatBox>
             <CustomAvatar skin='light' color='info' size={40} variant='rounded'>
-              <i className='ri-file-list-3-line text-lg' />
+              <i className='solar-clipboard-text-linear text-lg' />
             </CustomAvatar>
             <Box>
               <Typography variant='h6' fontWeight={600}>
@@ -287,7 +287,7 @@ const GroupProfileCard = ({ group }: Props) => {
           </StatBox>
           <StatBox>
             <CustomAvatar skin='light' color='success' size={40} variant='rounded'>
-              <i className='ri-user-follow-line text-lg' />
+              <i className='solar-user-check-linear text-lg' />
             </CustomAvatar>
             <Box>
               <Typography variant='h6' fontWeight={600}>

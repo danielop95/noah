@@ -113,7 +113,7 @@ const SecurityTab = () => {
                           onClick={() => setShowCurrent(s => !s)}
                           onMouseDown={e => e.preventDefault()}
                         >
-                          <i className={showCurrent ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                          <i className={showCurrent ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                         </IconButton>
                       </InputAdornment>
                     )
@@ -143,7 +143,7 @@ const SecurityTab = () => {
                           onClick={() => setShowNew(s => !s)}
                           onMouseDown={e => e.preventDefault()}
                         >
-                          <i className={showNew ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                          <i className={showNew ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                         </IconButton>
                       </InputAdornment>
                     )
@@ -173,7 +173,7 @@ const SecurityTab = () => {
                           onClick={() => setShowConfirm(s => !s)}
                           onMouseDown={e => e.preventDefault()}
                         >
-                          <i className={showConfirm ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                          <i className={showConfirm ? 'solar-eye-closed-linear' : 'solar-eye-linear'} />
                         </IconButton>
                       </InputAdornment>
                     )

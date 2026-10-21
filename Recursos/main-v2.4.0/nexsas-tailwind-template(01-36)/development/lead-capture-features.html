@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <Component src="src/components/shared/head-links.htm" />
+    <title>Features - Lead Capture || Nexsas</title>
+  </head>
+  <body class="bg-background-1 dark:bg-background-6">
+    <Component src="src/components/pages/lead-capture/header.htm" />
+    <main>
+      <Component src="src/components/pages/email-marketing-features/features.htm" />
+      <Component
+        src="src/components/pages/email-marketing-features/teams.htm"
+        page-link="./lead-capture-team-details.html"
+      />
+      <Component
+        src="src/components/pages/lead-capture/features-v4.htm"
+        class="pt-[100px]"
+        btn-class="btn-accent dark:btn-dark hover:btn-primary border-0 btn-md btn"
+      />
+      <Component
+        src="src/components/pages/email-marketing-features/features-v2.htm"
+        page-link="./lead-capture-signup.html"
+      />
+      <Component
+        src="src/components/pages/email-marketing-features/reviews.htm"
+        class="bg-background-3 space-y-[70px] pt-[100px] pb-[200px]"
+        badge-class="badge-cyan"
+      />
+      <Component
+        src="src/components/shared/cta/cta-v1.htm"
+        class="dark:bg-background-6 bg-white"
+        badge-class="hidden"
+        cta-heading="Build a complete website using the"
+        span-text="assistance"
+        description="Start your free trial today and see your ideas come to life easily and creatively."
+        btn-class="hover:btn-secondary dark:hover:btn-accent"
+        cta-btn-text="Get started"
+      />
+    </main>
+    <Component src="src/components/pages/lead-capture/footer.htm" />
+  </body>
+</html>

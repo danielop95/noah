@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+@import './variable';
+@import './common';
+@import './typography';
+@import './navigation-menu';
+@import './icon-fonts';
+@import './vendor/vanilla-infinite-marquee.min.css';
+@import './vendor/swiper.min';
+@import './header';

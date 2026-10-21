@@ -1,0 +1,431 @@
+<!-- =========================
+Mobile Menu
+===========================-->
+
+<aside
+  class="sidebar dark:bg-background-8 scroll-bar fixed top-0 right-0 z-[9999] h-screen w-full translate-x-full rounded-l-3xl bg-white transition-all duration-300 sm:w-1/2 xl:hidden"
+>
+  <div class="space-y-4 p-5 sm:p-8 lg:p-9">
+    <div class="flex items-center justify-between">
+      <a href="./personal-finance.html">
+        <span class="sr-only">Home</span>
+        <figure class="max-w-[44px]">
+          <img src="./images/shared/logo.svg" alt="Nexsas" class="block w-full dark:hidden" />
+          <img src="./images/shared/logo-dark.svg" alt="Nexsas" class="hidden w-full dark:block" />
+        </figure>
+      </a>
+      <button
+        class="nav-hamburger-close bg-background-4 dark:bg-background-9 relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full"
+      >
+        <span class="sr-only">Close Menu</span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 rotate-45"></span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 -rotate-45"></span>
+      </button>
+    </div>
+    <div class="scroll-bar mt-6 h-[85vh] w-full overflow-x-hidden overflow-y-auto pb-10">
+      <p
+        class="text-secondary dark:text-accent text-tagline-1 before:bg-stroke-4 dark:before:bg-stroke-6 relative mb-2 block font-normal before:absolute before:top-1/2 before:-right-16 before:h-px before:w-full before:-translate-y-1/2 before:content-['']"
+      >
+        Menu
+      </p>
+      <ul class="space-y-2">
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="company"
+          >
+            <span class="text-secondary/60 dark:text-accent/60 text-tagline-1 block font-normal"
+              >Company</span
+            >
+
+            <span class="menu-arrow rotate-90 transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu block" data-submenu="company">
+            <li>
+              <a
+                href="./personal-finance-about.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-team.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Our Team</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-career.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Career</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-why-choose-us.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Why Choose Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-our-manifesto.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Our Manifesto</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-customers.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Customers</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-testimonial.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Testimonials</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-case-study.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Case Studies</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-services.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-use-case.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Use Cases</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="platform"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >Platform</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="platform">
+            <li>
+              <a
+                href="./personal-finance-features.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Features & Capabilities</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-process.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Process & Workflow</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-security.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Security & Compliance</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-brandkit.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Our Brandkit</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-download.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Download App</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-pricing.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Pricing</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-integration.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >HR & Payroll</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-support.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Customer Support</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-analytics.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Analytics & Reporting</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-whitepaper.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Whitepaper & Reports</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-integration.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Explore All Integrations</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="resources"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >Resources</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="resources">
+            <li>
+              <a
+                href="./personal-finance-blog.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Blog</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-tutorial.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Tutorial</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-faq.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >FAQ</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-glossary.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Glossary</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-support.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Support</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-contact.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Contact</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-success-stories.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Success Stories</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="plans-support"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >Plans & Support</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="plans-support">
+            <li>
+              <a
+                href="./personal-finance-login.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-signup.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Create Account</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-referral-program.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Referral Program</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-affiliates.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Affiliate Program</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-affiliate-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Affiliate Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-terms-conditions.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Terms & Conditions</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-privacy-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-refund-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Refund Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-gdpr.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >GDPR</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-legal.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Legal</a
+              >
+            </li>
+            <li>
+              <a
+                href="./personal-finance-changelog.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Changelog</a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

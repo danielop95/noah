@@ -25,11 +25,11 @@ const categoryLabels: Record<CalendarCategory, string> = {
 }
 
 const categoryIcons: Record<CalendarCategory, string> = {
-  culto: 'ri-service-line',
-  evento: 'ri-star-line',
-  reunion: 'ri-team-line',
-  actividad: 'ri-run-line',
-  capacitacion: 'ri-graduation-cap-line'
+  culto: 'solar-cup-star-linear',
+  evento: 'solar-star-linear',
+  reunion: 'solar-widget-2-linear',
+  actividad: 'solar-running-2-linear',
+  capacitacion: 'solar-square-academic-cap-linear'
 }
 
 const categoryColors: Record<CalendarCategory, 'primary' | 'warning' | 'error' | 'success' | 'info'> = {
@@ -118,7 +118,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
             '&:hover': { backgroundColor: alpha('#fff', 0.2) }
           }}
         >
-          <i className='ri-close-line text-xl' />
+          <i className='solar-close-square-linear text-xl' />
         </IconButton>
 
         {/* Icono de categoría */}
@@ -179,7 +179,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                     backgroundColor: alpha(theme.palette.primary.main, 0.15)
                   }}
                 >
-                  <i className='ri-calendar-line text-xl' style={{ color: theme.palette.primary.main }} />
+                  <i className='solar-calendar-linear text-xl' style={{ color: theme.palette.primary.main }} />
                 </Avatar>
                 <Box>
                   <Typography variant='caption' color='text.secondary'>
@@ -217,7 +217,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                     backgroundColor: alpha(theme.palette.info.main, 0.15)
                   }}
                 >
-                  <i className='ri-time-line text-xl' style={{ color: theme.palette.info.main }} />
+                  <i className='solar-clock-circle-linear text-xl' style={{ color: theme.palette.info.main }} />
                 </Avatar>
                 <Box>
                   <Typography variant='caption' color='text.secondary'>
@@ -250,7 +250,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                     backgroundColor: alpha(theme.palette.success.main, 0.15)
                   }}
                 >
-                  <i className='ri-map-pin-line text-xl' style={{ color: theme.palette.success.main }} />
+                  <i className='solar-map-point-linear text-xl' style={{ color: theme.palette.success.main }} />
                 </Avatar>
                 <Box>
                   <Typography variant='caption' color='text.secondary'>
@@ -268,7 +268,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
           {event.description && (
             <Box sx={{ mb: 3 }}>
               <Typography variant='subtitle2' color='text.secondary' sx={{ mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <i className='ri-file-text-line' />
+                <i className='solar-document-text-linear' />
                 Descripción
               </Typography>
               <Typography
@@ -295,7 +295,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
                 href={event.url}
                 target='_blank'
                 rel='noopener noreferrer'
-                startIcon={<i className='ri-external-link-line' />}
+                startIcon={<i className='solar-link-linear' />}
                 sx={{
                   borderStyle: 'dashed',
                   py: 1.5
@@ -315,7 +315,7 @@ const EventDetailDialog = ({ open, event, onClose, onEdit, isAdmin = false }: Pr
               <Button
                 variant='contained'
                 fullWidth
-                startIcon={<i className='ri-edit-line' />}
+                startIcon={<i className='solar-pen-new-square-linear' />}
                 onClick={onEdit}
               >
                 Editar

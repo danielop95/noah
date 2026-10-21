@@ -191,7 +191,7 @@ const ColorPicker = ({ label, value, onChange, previewName = 'Tu Iglesia' }: Col
               transition: 'color 0.2s ease'
             }}
           >
-            <i className='ri-palette-line text-xl' />
+            <i className='solar-palette-round-linear text-xl' />
           </Box>
         </Box>
       </Tooltip>

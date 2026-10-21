@@ -132,17 +132,20 @@ const ReportListTable = ({
     })
   }, [reports, groupFilter, networkFilter, startDate, endDate])
 
-  // Calculate filtered stats
+  // Calculate filtered stats (exclude noMeeting from attendance/offering)
   const filteredStats: ReportStats = useMemo(() => {
-    const totalAttendees = filteredReports.reduce((sum, r) => sum + r.totalAttendees, 0)
+    const heldReports = filteredReports.filter(r => !r.noMeeting)
+    const cancelledReports = filteredReports.filter(r => r.noMeeting).length
+    const totalAttendees = heldReports.reduce((sum, r) => sum + r.totalAttendees, 0)
 
     return {
       totalReports: filteredReports.length,
+      cancelledReports,
       totalAttendees,
-      totalLeaders: filteredReports.reduce((sum, r) => sum + r.leadersCount, 0),
-      totalVisitors: filteredReports.reduce((sum, r) => sum + r.visitorsCount, 0),
-      totalOffering: filteredReports.reduce((sum, r) => sum + Number(r.offeringAmount || 0), 0),
-      averageAttendees: filteredReports.length > 0 ? Math.round(totalAttendees / filteredReports.length) : 0
+      totalLeaders: heldReports.reduce((sum, r) => sum + r.leadersCount, 0),
+      totalVisitors: heldReports.reduce((sum, r) => sum + r.visitorsCount, 0),
+      totalOffering: heldReports.reduce((sum, r) => sum + Number(r.offeringAmount || 0), 0),
+      averageAttendees: heldReports.length > 0 ? Math.round(totalAttendees / heldReports.length) : 0
     }
   }, [filteredReports])
 
@@ -176,6 +179,14 @@ const ReportListTable = ({
         id: 'attendance',
         header: 'Asistencia',
         cell: ({ row }) => {
+          if (row.original.noMeeting) {
+            return (
+              <Tooltip title={row.original.noMeetingReason || 'Sin motivo especificado'} arrow>
+                <Chip label='No realizado' color='warning' variant='tonal' size='small' />
+              </Tooltip>
+            )
+          }
+
           const { totalAttendees, leadersCount, visitorsCount } = row.original
 
           return (
@@ -193,6 +204,14 @@ const ReportListTable = ({
       columnHelper.accessor('offeringAmount', {
         header: 'Ofrenda',
         cell: ({ getValue, row }) => {
+          if (row.original.noMeeting) {
+            return (
+              <Typography variant='body2' color='text.disabled'>
+                —
+              </Typography>
+            )
+          }
+
           const amount = getValue()
 
           if (!row.original.reportOffering) {
@@ -246,7 +265,7 @@ const ReportListTable = ({
                       setDrawerOpen(true)
                     }}
                   >
-                    <i className='ri-pencil-line text-lg' />
+                    <i className='solar-pen-linear text-lg' />
                   </IconButton>
                 </Tooltip>
               )}
@@ -260,7 +279,7 @@ const ReportListTable = ({
                       setDeleteDialogOpen(true)
                     }}
                   >
-                    <i className='ri-delete-bin-line text-lg' />
+                    <i className='solar-trash-bin-trash-linear text-lg' />
                   </IconButton>
                 </Tooltip>
               )}
@@ -322,6 +341,7 @@ const ReportListTable = ({
     { header: 'Fecha', accessor: r => formatDate((r as ReportWithDetails).meetingDate), width: 20 },
     { header: 'Grupo', accessor: r => (r as ReportWithDetails).group.name, width: 20 },
     { header: 'Red', accessor: r => (r as ReportWithDetails).group.network.name, width: 16 },
+    { header: 'Estado', accessor: r => (r as ReportWithDetails).noMeeting ? 'No realizado' : 'Realizado', width: 14 },
     { header: 'Total Asistentes', accessor: r => (r as ReportWithDetails).totalAttendees, width: 16 },
     { header: 'Líderes', accessor: r => (r as ReportWithDetails).leadersCount, width: 10 },
     { header: 'Visitas', accessor: r => (r as ReportWithDetails).visitorsCount, width: 10 },
@@ -343,7 +363,8 @@ const ReportListTable = ({
       },
       width: 20
     },
-    { header: 'Notas', accessor: r => (r as ReportWithDetails).notes || '', width: 30 }
+    { header: 'Notas', accessor: r => (r as ReportWithDetails).notes || '', width: 30 },
+    { header: 'Motivo No Realizado', accessor: r => (r as ReportWithDetails).noMeetingReason || '', width: 30 }
   ]
 
   return (
@@ -365,7 +386,7 @@ const ReportListTable = ({
             input: {
               startAdornment: (
                 <InputAdornment position='start'>
-                  <i className='ri-search-line' />
+                  <i className='solar-magnifer-linear' />
                 </InputAdornment>
               )
             }
@@ -427,7 +448,7 @@ const ReportListTable = ({
         />
 
         {hasActiveFilters && (
-          <Button variant='text' size='small' onClick={clearFilters} startIcon={<i className='ri-close-line' />}>
+          <Button variant='text' size='small' onClick={clearFilters} startIcon={<i className='solar-close-square-linear' />}>
             Limpiar
           </Button>
         )}
@@ -436,7 +457,7 @@ const ReportListTable = ({
 
         <ExportButton data={filteredReports} columns={exportColumns} fileName='reportes' title='Reportes de Grupos' />
 
-        <Button variant='contained' startIcon={<i className='ri-add-line' />} onClick={handleOpenCreate}>
+        <Button variant='contained' startIcon={<i className='solar-add-circle-linear' />} onClick={handleOpenCreate}>
           Nuevo Reporte
         </Button>
       </Box>
@@ -466,7 +487,11 @@ const ReportListTable = ({
               </TableRow>
             ) : (
               table.getRowModel().rows.map(row => (
-                <TableRow key={row.id} hover>
+                <TableRow
+                  key={row.id}
+                  hover
+                  sx={row.original.noMeeting ? { opacity: 0.7, bgcolor: 'action.hover' } : undefined}
+                >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}

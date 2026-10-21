@@ -1,0 +1,585 @@
+<section class="pt-34 pb-28 xl:pt-40 2xl:pt-50">
+  <div class="main-container">
+    <div class="mb-[70px] space-y-3 text-center">
+      <h1
+        data-opai-split-text
+        class="lg:text-sora-heading-2 text-sora-heading-3 font-normal text-white/90"
+      >
+        Pricing <span class="text-white/30">plans</span>
+      </h1>
+      <p
+        data-opai-split-text
+        data-delay="0.2"
+        data-line-delay="0.1"
+        class="text-tagline-2 mx-auto w-full max-w-xs font-normal text-white/60"
+      >
+        Transparent pricing designed to scale with your business. No hidden fees, no surprises.
+      </p>
+    </div>
+    <div class="price-scope space-y-14" data-opai-animate data-delay="0.7">
+      <div
+        class="tab-slider-wrapper mx-auto max-h-11 w-full max-w-[195px]"
+        data-active-tab-bg-color="var(--color-background-7)"
+        data-active-tab-text-color="#0d0d12E6"
+        data-animation-duration="0.4"
+        data-animation-ease="power3.out"
+      >
+        <form class="pricing-form">
+          <fieldset
+            class="relative inline-flex w-full rounded-full bg-white/5 p-1 backdrop-blur-[20px]"
+          >
+            <legend class="sr-only">Choose billing period</legend>
+
+            <input
+              type="radio"
+              name="pricing-toggle"
+              id="monthly"
+              value="monthly"
+              class="peer/monthly sr-only"
+              checked
+              aria-describedby="monthly-description"
+            />
+            <input
+              type="radio"
+              name="pricing-toggle"
+              id="yearly"
+              value="yearly"
+              class="peer/yearly sr-only"
+              aria-describedby="yearly-description"
+            />
+
+            <label
+              for="monthly"
+              class="font-inter-tight text-tagline-2 relative z-20 flex h-9 w-full max-w-[89px] cursor-pointer items-center justify-center rounded-full px-4 py-[5px] font-normal text-white/90"
+              id="monthly-description"
+            >
+              Monthly
+            </label>
+
+            <label
+              for="yearly"
+              class="font-inter-tight text-tagline-2 relative z-20 flex h-9 w-full max-w-24 cursor-pointer items-center justify-center rounded-full px-4 py-[5px] font-normal text-white/90"
+              id="yearly-description"
+            >
+              Yearly
+            </label>
+
+            <!-- active tab  -->
+            <div class="active-tab absolute top-0 left-0 z-10 rounded-full"></div>
+          </fieldset>
+        </form>
+      </div>
+      <div
+        class="flex flex-col items-center justify-center gap-x-8 xl:flex-row xl:items-start 2xl:gap-x-12"
+      >
+        <!-- pricing  card one  -->
+        <div class="w-full max-w-[608px] flex-1 xl:basis-[408px]">
+          <div class="pricing-card rounded-4xl bg-transparent px-5 py-8 xl:px-8 xl:py-11">
+            <!-- content  -->
+            <div class="border-stroke-1/11 space-y-6 border-b pb-6">
+              <div class="space-y-4">
+                <span
+                  class="flex size-12 items-center justify-center rounded-full border border-[#6A727B] text-white/90"
+                >
+                  <Component
+                    src="src/components/shared/icon/lighting.htm"
+                    class="size-6 shrink-0"
+                  />
+                </span>
+                <div class="space-y-1">
+                  <h3
+                    class="xl:text-sora-heading-3 lg:text-sora-heading-4 text-sora-heading-5 font-normal text-white/90"
+                  >
+                    Basic
+                  </h3>
+                  <p class="font-inter-tight text-tagline-2 font-normal text-white/60">
+                    For startups and small teams getting started with AI
+                  </p>
+                </div>
+              </div>
+
+              <!-- pricing number  -->
+              <div>
+                <h4 class="monthly space-x-4">
+                  <span
+                    class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                    >$99
+                    <span
+                      class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                    ></span>
+                  </span>
+                  <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                    >$19</span
+                  >
+                  <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                    >/month</span
+                  >
+                </h4>
+                <h4 class="yearly hidden space-x-4">
+                  <span
+                    class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                    >$999
+                    <span
+                      class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                    ></span>
+                  </span>
+                  <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                    >$699</span
+                  >
+                  <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                    >/year</span
+                  >
+                </h4>
+              </div>
+            </div>
+            <!-- includes  -->
+            <div class="space-y-14">
+              <ul class="space-y-4 pt-8 pb-2">
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Up to 3 AI projects
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Core AI tools & templates
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Email support
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Basic analytics & reporting
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Documentation & guides
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  14-day free trial
+                </li>
+              </ul>
+
+              <!-- btn  -->
+              <div class="block w-full">
+                <Component
+                  src="src/components/shared/button-secondary.htm"
+                  button-text="Get started"
+                  display-class="w-full"
+                  href="./contact.html"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- pricing  card two  -->
+        <div class="relative w-full max-w-[608px] flex-1 xl:basis-[408px]">
+          <div
+            class="border-stroke-1/11 hidden h-[643px] w-full rounded-4xl border border-dashed bg-transparent px-5 py-8 xl:block xl:px-8 xl:py-11"
+          ></div>
+
+          <!-- main card  -->
+          <div
+            class="pricing-card relative overflow-hidden rounded-4xl shadow-[40px_24px_94px_3px_rgba(141,89,255,0.24)] xl:absolute xl:top-0 xl:w-[408px]"
+            data-opai-animate
+            data-offset="0"
+            data-rotation="3"
+            data-scale="0.9"
+            data-delay="1.5"
+            data-duration="1.5"
+          >
+            <div class="bg-background-5 rounded-4xl p-12">
+              <!-- gradient bg -->
+
+              <figure
+                class="bg-opai-purple absolute -top-[109px] right-[-121px] size-[371px] -rotate-7 mix-blend-plus-lighter blur-[100px]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="440"
+                  height="502"
+                  viewBox="0 0 440 502"
+                  fill="none"
+                >
+                  <g filter="url(#filter0_f_11381_17958)" style="mix-blend-mode: plus-lighter">
+                    <circle
+                      cx="385.507"
+                      cy="116.14"
+                      r="185.5"
+                      transform="rotate(-4 385.507 116.14)"
+                      fill="rgba(141,89,255,1.0)"
+                    />
+                  </g>
+                  <g filter="url(#filter1_f_11381_17958)" style="mix-blend-mode: plus-lighter">
+                    <circle
+                      cx="419.992"
+                      cy="43.0437"
+                      r="64"
+                      transform="rotate(-4 419.992 43.0437)"
+                      fill="white"
+                    />
+                  </g>
+                  <defs>
+                    <filter
+                      id="filter0_f_11381_17958"
+                      x="0"
+                      y="-269.367"
+                      width="771.016"
+                      height="771.016"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        result="shape"
+                      />
+                      <feGaussianBlur
+                        stdDeviation="100"
+                        result="effect1_foregroundBlur_11381_17958"
+                      />
+                    </filter>
+                    <filter
+                      id="filter1_f_11381_17958"
+                      x="255.988"
+                      y="-120.957"
+                      width="328.008"
+                      height="328.004"
+                      filterUnits="userSpaceOnUse"
+                      color-interpolation-filters="sRGB"
+                    >
+                      <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        result="shape"
+                      />
+                      <feGaussianBlur
+                        stdDeviation="50"
+                        result="effect1_foregroundBlur_11381_17958"
+                      />
+                    </filter>
+                  </defs>
+                </svg>
+              </figure>
+
+              <div class="relative z-10">
+                <!-- content  -->
+                <div class="border-b-stroke-1/11 space-y-6 border-b pb-6">
+                  <div class="space-y-4">
+                    <span
+                      class="flex size-12 items-center justify-center rounded-full border border-[#6A727B] text-white/90"
+                    >
+                      <Component
+                        src="src/components/shared/icon/lighting.htm"
+                        class="size-6 shrink-0"
+                      />
+                    </span>
+                    <div class="space-y-1">
+                      <h3
+                        class="xl:text-sora-heading-3 lg:text-sora-heading-4 text-sora-heading-5 font-normal text-white/90"
+                      >
+                        Business
+                      </h3>
+                      <p class="font-inter-tight text-tagline-2 font-normal text-white/60">
+                        For growing companies scaling AI across operations
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- pricing number  -->
+                  <div>
+                    <h4 class="monthly space-x-4">
+                      <span
+                        class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                        >$199
+                        <span
+                          class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                        ></span>
+                      </span>
+                      <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                        >$149</span
+                      >
+                      <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                        >/month</span
+                      >
+                    </h4>
+                    <h4 class="yearly hidden space-x-4">
+                      <span
+                        class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                        >$1999
+                        <span
+                          class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                        ></span>
+                      </span>
+                      <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                        >$1399</span
+                      >
+                      <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                        >/year</span
+                      >
+                    </h4>
+                  </div>
+                </div>
+                <!-- includes  -->
+                <div class="flex flex-1 flex-col pt-8">
+                  <ul class="flex-1 space-y-4 pb-6">
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      Up to 15 AI projects
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      API access & integrations
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      Priority support
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      Advanced analytics & dashboards
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      Custom workflows & automation
+                    </li>
+                    <li
+                      class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                    >
+                      <span class="flex size-4 items-center justify-center"
+                        ><Component
+                          src="src/components/shared/icon/check-icon.htm"
+                          class="h-2 w-3 stroke-white/90"
+                      /></span>
+                      Dedicated onboarding
+                    </li>
+                  </ul>
+
+                  <!-- btn  -->
+                  <div class="block w-full">
+                    <Component
+                      src="src/components/shared/button-primary.htm"
+                      button-text="Get started"
+                      display-class="w-full"
+                      href="./contact.html"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- pricing  card three  -->
+        <div class="w-full max-w-[608px] flex-1 xl:basis-[408px]">
+          <div class="pricing-card rounded-4xl bg-transparent px-5 py-8 xl:px-8 xl:py-11">
+            <!-- content  -->
+            <div class="border-stroke-1/11 space-y-6 border-b pb-6">
+              <div class="space-y-4">
+                <span
+                  class="flex size-12 items-center justify-center rounded-full border border-[#6A727B] text-white/90"
+                >
+                  <Component
+                    src="src/components/shared/icon/lighting.htm"
+                    class="size-6 shrink-0"
+                  />
+                </span>
+                <div class="space-y-1">
+                  <h3
+                    class="xl:text-sora-heading-3 lg:text-sora-heading-4 text-sora-heading-5 font-normal text-white/90"
+                  >
+                    Team
+                  </h3>
+                  <p class="font-inter-tight text-tagline-2 font-normal text-white/60">
+                    For teams and organizations that need collaboration & control
+                  </p>
+                </div>
+              </div>
+
+              <!-- pricing number  -->
+              <div>
+                <h4 class="monthly space-x-4">
+                  <span
+                    class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                    >$299
+                    <span
+                      class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                    ></span>
+                  </span>
+                  <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                    >$249</span
+                  >
+                  <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                    >/month</span
+                  >
+                </h4>
+                <h4 class="yearly hidden space-x-4">
+                  <span
+                    class="font-inter-tight text-it-heading-6 relative z-30 h-[30px] font-normal text-white/60"
+                    >$2999
+                    <span
+                      class="absolute top-1/2 left-0 z-10 h-0.5 w-[92%] -translate-y-1/2 bg-white/70"
+                    ></span>
+                  </span>
+                  <span class="font-manrope text-manrope-heading-4 font-medium text-white/90"
+                    >$2399</span
+                  >
+                  <span class="font-inter-tight text-tagline-2 font-normal text-white/50"
+                    >/year</span
+                  >
+                </h4>
+              </div>
+            </div>
+            <!-- includes  -->
+            <div class="space-y-14">
+              <ul class="space-y-4 pt-8 pb-2">
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Unlimited AI projects
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Team seats & role-based access
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  SSO & security controls
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Everything in Business
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  Dedicated success manager
+                </li>
+                <li
+                  class="font-inter-tight text-tagline-2 flex items-center justify-start gap-x-4 text-left font-normal text-white/60"
+                >
+                  <span class="flex size-4 items-center justify-center"
+                    ><Component
+                      src="src/components/shared/icon/check-icon.htm"
+                      class="h-2 w-3 stroke-white/90"
+                  /></span>
+                  SLA & custom contracts
+                </li>
+              </ul>
+
+              <!-- btn  -->
+              <div class="block w-full">
+                <Component
+                  src="src/components/shared/button-secondary.htm"
+                  button-text="Get started"
+                  display-class="w-full"
+                  href="./contact.html"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

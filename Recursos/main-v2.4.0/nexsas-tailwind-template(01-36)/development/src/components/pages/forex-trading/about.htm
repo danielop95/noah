@@ -1,0 +1,255 @@
+<!-- =========================
+About section
+===========================-->
+<section
+  data-ns-animate
+  data-delay="0.1"
+  class="bg-background-2 dark:bg-background-5 overflow-hidden py-20 sm:pt-[100px] sm:pb-10 lg:pt-[150px] lg:pb-16"
+>
+  <div class="main-container">
+    <!-- TabBar small screen -->
+    <div
+      class="tab-mobile mb-14 flex flex-wrap items-center justify-center gap-4 md:hidden lg:mb-[72px]"
+    >
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        For beginners
+      </button>
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        For active traders
+      </button>
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        For institutions
+      </button>
+    </div>
+
+    <!-- tab bar for large screen  -->
+    <div
+      role="tablist"
+      data-tab-bar
+      class="tab-bar border-stroke-2 dark:border-stroke-6 relative mb-16 hidden items-center justify-center border-b md:flex lg:mb-[100px]"
+    >
+      <!-- active-tab-bar  -->
+      <div
+        data-active-tab-bar
+        class="bg-primary-500 absolute bottom-[-1px] z-[1] h-[2px] transition-all duration-300 ease-in-out"
+      ></div>
+
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">For beginners</span>
+      </button>
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">For active traders</span>
+      </button>
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">For institutions</span>
+      </button>
+    </div>
+
+    <!-- tab content one  -->
+    <div data-tab-content>
+      <div class="flex flex-col items-start justify-center gap-x-24 gap-y-16 lg:flex-row">
+        <div>
+          <div class="space-y-3">
+            <h2 class="max-w-[610px]">Custom fit for all traders</h2>
+            <p class="max-w-[409px]">
+              Whether you're learning the ropes or managing millions, we've got you covered.
+            </p>
+          </div>
+          <ul class="mt-8 mb-14 space-y-2">
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-27 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Practice mode
+                </strong>
+                <p class="text-tagline-2">Understand the needs of novice traders.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-17 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Interactive guides
+                </strong>
+                <p class="text-tagline-2">Track your trading performance indicators.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-25 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Step-by-step trade setup
+                </strong>
+                <p class="text-tagline-2">Reveal overlooked patterns in trading data.</p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./forex-trading-learn.html"
+              class="btn md:btn-xl btn-md btn-white dark:btn-transparent hover:btn-green mx-auto w-[90%] md:mx-0 md:w-auto"
+            >
+              <span>Start learning</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <figure class="relative mx-auto max-w-[580px] lg:inline-block">
+          <img src="./images/ns-img-6.png" alt="about" class="size-full object-cover" />
+        </figure>
+      </div>
+    </div>
+
+    <!-- tab content two  -->
+    <div data-tab-content class="hidden">
+      <div class="flex flex-col items-start justify-center gap-x-24 gap-y-16 lg:flex-row">
+        <div>
+          <div class="space-y-3">
+            <h2 class="max-w-[610px]">Tailored specifically for active traders</h2>
+            <p class="max-w-[409px]">
+              Whether you’re just starting out or handling substantial investments, our services are
+              designed specifically for active traders like you.
+            </p>
+          </div>
+          <ul class="mt-8 mb-14 space-y-2">
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-27 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Practice mode
+                </strong>
+                <p class="text-tagline-2">Understand the needs of novice traders.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-17 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Interactive guides
+                </strong>
+                <p class="text-tagline-2">Track your trading performance indicators.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-25 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Step-by-step trade setup
+                </strong>
+                <p class="text-tagline-2">Reveal overlooked patterns in trading data.</p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./forex-trading-learn.html"
+              class="btn md:btn-xl btn-md btn-white dark:btn-transparent hover:btn-green mx-auto w-[90%] md:mx-0 md:w-auto"
+            >
+              <span>Start learning</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <figure class="relative mx-auto max-w-[580px] lg:inline-block">
+          <figure class="relative lg:inline-block">
+            <img src="./images/ns-img-298.png" alt="about" class="size-full object-cover" />
+          </figure>
+        </figure>
+      </div>
+    </div>
+
+    <!-- tab content three  -->
+    <div data-tab-content class="hidden">
+      <div class="flex flex-col items-start justify-center gap-x-24 gap-y-16 lg:flex-row">
+        <div>
+          <div class="space-y-3">
+            <h2 class="max-w-[610px]">Custom Solutions Designed for Institutional Traders</h2>
+            <p class="max-w-[409px]">
+              No matter if you're just starting out or overseeing vast portfolios, our tailored
+              solutions for institutional traders are here to support you.
+            </p>
+          </div>
+          <ul class="mt-8 mb-14 space-y-2">
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-27 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Practice mode
+                </strong>
+                <p class="text-tagline-2">Understand the needs of novice traders.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-17 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Interactive guides
+                </strong>
+                <p class="text-tagline-2">Track your trading performance indicators.</p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-3 py-2">
+              <div>
+                <span class="ns-shape-25 text-secondary dark:text-accent text-[36px]"> </span>
+              </div>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium">
+                  Step-by-step trade setup
+                </strong>
+                <p class="text-tagline-2">Reveal overlooked patterns in trading data.</p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./forex-trading-learn.html"
+              class="btn md:btn-xl btn-md btn-white dark:btn-transparent hover:btn-green mx-auto w-[90%] md:mx-0 md:w-auto"
+            >
+              <span>Start learning</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <figure class="relative mx-auto max-w-[580px] lg:inline-block">
+          <figure class="relative lg:inline-block">
+            <img src="./images/ns-img-299.png" alt="about" class="size-full object-cover" />
+          </figure>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>

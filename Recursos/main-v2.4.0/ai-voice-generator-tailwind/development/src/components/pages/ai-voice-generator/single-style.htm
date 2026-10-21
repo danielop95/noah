@@ -1,0 +1,16 @@
+<div
+  class="{=$class} flex min-w-[160px] items-center justify-start gap-x-3 rounded-full border border-[#DFD1C5] bg-white py-1 pr-4 pl-1 shadow-[0_1px_2px_0_rgba(16,24,40,0.06)] lg:min-w-[192px]"
+>
+  <figure class="relative z-10 size-11 overflow-hidden rounded-full sm:size-14">
+    <img src="{=$img-link}" alt="avatar" />
+
+    <span class="absolute top-1/2 left-1/2 z-20 size-7 shrink-0 -translate-x-1/2 -translate-y-1/2">
+      <Component src="src/components/pages/ai-voice-generator/play-icon.htm" />
+    </span>
+  </figure>
+
+  <div>
+    <p class="text-tagline-1 text-secondary font-normal">{=$name}</p>
+    <p class="text-tagline-2 font-normal text-nowrap">{=$description}</p>
+  </div>
+</div>

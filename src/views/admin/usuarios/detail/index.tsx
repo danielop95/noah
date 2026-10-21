@@ -121,7 +121,7 @@ const UserDetailView = ({ user, instituteProfile }: Props) => {
               <Tab
                 label={
                   <div className='flex items-center gap-1.5'>
-                    <i className='ri-user-3-line text-lg' />
+                    <i className='solar-user-linear text-lg' />
                     Perfil
                   </div>
                 }
@@ -131,7 +131,7 @@ const UserDetailView = ({ user, instituteProfile }: Props) => {
                 <Tab
                   label={
                     <div className='flex items-center gap-1.5'>
-                      <i className='ri-bar-chart-2-line text-lg' />
+                      <i className='solar-graph-up-linear text-lg' />
                       Actividad
                     </div>
                   }

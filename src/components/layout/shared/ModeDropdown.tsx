@@ -49,11 +49,11 @@ const ModeDropdown = () => {
 
   const getModeIcon = () => {
     if (settings.mode === 'system') {
-      return 'ri-computer-line'
+      return 'solar-monitor-linear'
     } else if (settings.mode === 'dark') {
-      return 'ri-moon-clear-line'
+      return 'solar-moon-linear'
     } else {
-      return 'ri-sun-line'
+      return 'solar-sun-linear'
     }
   }
 
@@ -91,7 +91,7 @@ const ModeDropdown = () => {
                     onClick={() => handleModeSwitch('light')}
                     selected={settings.mode === 'light'}
                   >
-                    <i className='ri-sun-line' />
+                    <i className='solar-sun-linear' />
                     Light
                   </MenuItem>
                   <MenuItem
@@ -99,7 +99,7 @@ const ModeDropdown = () => {
                     onClick={() => handleModeSwitch('dark')}
                     selected={settings.mode === 'dark'}
                   >
-                    <i className='ri-moon-clear-line' />
+                    <i className='solar-moon-linear' />
                     Dark
                   </MenuItem>
                   <MenuItem
@@ -107,7 +107,7 @@ const ModeDropdown = () => {
                     onClick={() => handleModeSwitch('system')}
                     selected={settings.mode === 'system'}
                   >
-                    <i className='ri-computer-line' />
+                    <i className='solar-monitor-linear' />
                     System
                   </MenuItem>
                 </MenuList>

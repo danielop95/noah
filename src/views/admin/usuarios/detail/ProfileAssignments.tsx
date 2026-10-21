@@ -49,7 +49,7 @@ const ProfileAssignments = ({ network, networkRole, group, groupRole }: Props) =
         <CardContent>
           <div className='flex flex-col items-center justify-center py-6'>
             <CustomAvatar skin='light' color='secondary' size={56} sx={{ mb: 2 }}>
-              <i className='ri-links-line text-2xl' />
+              <i className='solar-link-linear text-2xl' />
             </CustomAvatar>
             <Typography variant='body1' color='text.secondary' className='mbe-1'>
               Sin asignaciones
@@ -75,7 +75,7 @@ const ProfileAssignments = ({ network, networkRole, group, groupRole }: Props) =
               color={networkRole === 'leader' ? 'warning' : 'info'}
               size={46}
             >
-              <i className='ri-bubble-chart-line text-[22px]' />
+              <i className='solar-share-circle-linear text-[22px]' />
             </CustomAvatar>
             <div className='flex-1 min-w-0'>
               <div className='flex items-center gap-2'>
@@ -108,7 +108,7 @@ const ProfileAssignments = ({ network, networkRole, group, groupRole }: Props) =
                 color={groupRole === 'leader' ? 'success' : 'primary'}
                 size={46}
               >
-                <i className='ri-team-line text-[22px]' />
+                <i className='solar-widget-2-linear text-[22px]' />
               </CustomAvatar>
               <div className='flex-1 min-w-0'>
                 <div className='flex items-center gap-2'>

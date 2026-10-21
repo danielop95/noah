@@ -35,6 +35,11 @@ const horizontalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>
     ]
   },
   {
+    label: dictionary['navigation'].solicitudes,
+    icon: 'solar-clipboard-list-linear',
+    href: '/dashboard/solicitudes'
+  },
+  {
     label: dictionary['navigation'].administracion,
     icon: 'solar-shield-keyhole-linear',
     maxHierarchy: 2,
@@ -55,6 +60,12 @@ const horizontalMenuData = (dictionary: Awaited<ReturnType<typeof getDictionary>
         label: dictionary['navigation'].grupos,
         icon: 'solar-widget-2-linear',
         href: '/dashboard/admin/grupos',
+        maxHierarchy: 2
+      },
+      {
+        label: dictionary['navigation'].areas,
+        icon: 'solar-buildings-3-linear',
+        href: '/dashboard/admin/areas',
         maxHierarchy: 2
       },
       {

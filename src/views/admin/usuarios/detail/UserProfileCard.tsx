@@ -122,7 +122,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
               variant='rounded'
               src={user.network.imageUrl || undefined}
             >
-              <i className='ri-bubble-chart-line' />
+              <i className='solar-share-circle-linear' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Typography variant='body1' fontWeight={500}>
@@ -133,7 +133,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
                 size='small'
                 color={user.networkRole === 'leader' ? 'warning' : 'default'}
                 variant='tonal'
-                icon={user.networkRole === 'leader' ? <i className='ri-star-fill' /> : undefined}
+                icon={user.networkRole === 'leader' ? <i className='solar-star-bold' /> : undefined}
                 sx={{ height: 22, mt: 0.5 }}
               />
             </Box>
@@ -141,7 +141,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         ) : (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='secondary' size={44} variant='rounded'>
-              <i className='ri-bubble-chart-line' />
+              <i className='solar-share-circle-linear' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No asignado
@@ -160,7 +160,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         {user.group ? (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
-              <i className='ri-team-line' />
+              <i className='solar-widget-2-linear' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Typography variant='body1' fontWeight={500}>
@@ -172,7 +172,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
                   size='small'
                   color={user.groupRole === 'leader' ? 'success' : 'default'}
                   variant='tonal'
-                  icon={user.groupRole === 'leader' ? <i className='ri-shield-star-line' /> : undefined}
+                  icon={user.groupRole === 'leader' ? <i className='solar-shield-star-linear' /> : undefined}
                   sx={{ height: 22 }}
                 />
                 {user.group._count.reports > 0 && (
@@ -186,7 +186,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         ) : (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='secondary' size={44} variant='rounded'>
-              <i className='ri-team-line' />
+              <i className='solar-widget-2-linear' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No asignado
@@ -205,20 +205,20 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         <Box className='flex flex-col gap-3'>
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='info' size={32}>
-              <i className='ri-mail-line text-base' />
+              <i className='solar-letter-linear text-base' />
             </CustomAvatar>
             <Typography variant='body2'>{user.email || '-'}</Typography>
           </Box>
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='info' size={32}>
-              <i className='ri-phone-line text-base' />
+              <i className='solar-phone-linear text-base' />
             </CustomAvatar>
             <Typography variant='body2'>{user.phone || '-'}</Typography>
           </Box>
           {(user.city || user.country) && (
             <Box className='flex items-center gap-3'>
               <CustomAvatar skin='light' color='info' size={32}>
-                <i className='ri-map-pin-line text-base' />
+                <i className='solar-map-point-linear text-base' />
               </CustomAvatar>
               <Typography variant='body2'>
                 {[user.city, user.country].filter(Boolean).join(', ')}
@@ -228,7 +228,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
           {user.organization && (
             <Box className='flex items-center gap-3'>
               <CustomAvatar skin='light' color='info' size={32}>
-                <i className='ri-building-line text-base' />
+                <i className='solar-buildings-linear text-base' />
               </CustomAvatar>
               <Typography variant='body2'>{user.organization.name}</Typography>
             </Box>
@@ -243,7 +243,7 @@ const UserProfileCard = ({ user, onEdit }: Props) => {
         <Button
           variant='contained'
           fullWidth
-          startIcon={<i className='ri-edit-line' />}
+          startIcon={<i className='solar-pen-new-square-linear' />}
           onClick={onEdit}
         >
           Editar Usuario

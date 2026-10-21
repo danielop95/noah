@@ -1,0 +1,149 @@
+<!-- ========================================
+    Contact us Section
+    ======================================== -->
+
+<section
+  class="pt-14 pb-14 md:pt-16 md:pb-16 lg:pt-[88px] lg:pb-[88px] xl:pt-[100px] xl:pb-[100px]"
+  aria-label="Contact us"
+>
+  <div class="main-container">
+    <div class="flex flex-col items-start justify-between gap-y-10 lg:flex-row">
+      <!-- contact us text  -->
+      <div class="space-y-9">
+        <!-- heading  -->
+        <div class="space-y-2">
+          <span data-ns-animate data-delay="0.1" class="badge badge-green mb-3 md:mb-5"
+            >Why Choose Us</span
+          >
+          <h2 data-ns-animate data-delay="0.2" id="contact-heading">Still have questions?</h2>
+          <p data-ns-animate data-delay="0.3">Let's talk about your homeownership journey.</p>
+        </div>
+
+        <!-- contact info  -->
+        <ul class="space-y-2 md:space-y-4" aria-label="Contact Information">
+          <li data-ns-animate data-delay="0.4" class="flex items-center gap-2">
+            <span
+              class="dark:bg-background-8 flex size-10 items-center justify-center rounded-full bg-white"
+              aria-hidden="true"
+            >
+              <img src="./images/icons/mail.svg" alt="Email icon" class="size-6 dark:invert" />
+            </span>
+            <p>
+              <a href="mailto:hello@Nexsas.com" aria-label="Email us at hello@Nexsas.com"
+                >hello@Nexsas.com</a
+              >
+            </p>
+          </li>
+          <li data-ns-animate data-delay="0.5" class="flex items-center gap-2">
+            <span
+              class="dark:bg-background-8 flex size-10 items-center justify-center rounded-full bg-white"
+              aria-hidden="true"
+            >
+              <img src="./images/icons/phone.svg" alt="Phone icon" class="size-6 dark:invert" />
+            </span>
+            <p>
+              <a href="tel:2395550108" aria-label="Call us at (239) 555-0108">(239) 555-0108</a>
+            </p>
+          </li>
+          <li data-ns-animate data-delay="0.6" class="flex items-center gap-2">
+            <span
+              class="dark:bg-background-8 flex size-10 items-center justify-center rounded-full bg-white"
+              aria-hidden="true"
+            >
+              <img
+                src="./images/icons/location.svg"
+                alt="Location icon"
+                class="size-6 dark:invert"
+              />
+            </span>
+            <p>1425 Harmony ave, austin, TX 73301</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- contact form  -->
+      <div
+        data-ns-animate
+        data-delay="0.7"
+        class="dark:bg-background-8 w-full max-w-full rounded-[20px] p-7 md:w-full lg:max-w-[605px] lg:p-[42px]"
+      >
+        <form action="/index.html" method="post">
+          <!-- name field  -->
+          <fieldset class="mb-8 flex w-full flex-col items-start justify-start gap-2">
+            <label for="fullName" class="text-tagline-1 text-secondary dark:text-accent font-medium"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              name="fullName"
+              id="fullName"
+              required
+              placeholder="Enter your name"
+              class="placeholder:text-tagline-1 dark:placeholder:text-accent/60 dark:text-accent/90 bg-background-1 dark:bg-background-6 border-stroke-3 dark:border-stroke-7 shadow-1 focus-visible:outline-primary-500 w-full rounded-full border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+              aria-required="true"
+            />
+          </fieldset>
+
+          <!-- email field  -->
+          <fieldset class="mb-8 flex w-full flex-col items-start justify-start gap-2">
+            <label
+              for="emailAddress"
+              class="text-tagline-1 text-secondary dark:text-accent font-medium"
+              >Email address</label
+            >
+            <input
+              type="email"
+              required
+              name="emailAddress"
+              id="emailAddress"
+              placeholder="Enter your email"
+              class="placeholder:text-tagline-1 dark:placeholder:text-accent/60 dark:text-accent/90 shadow-1 bg-background-1 dark:bg-background-6 border-stroke-3 dark:border-stroke-7 focus-visible:outline-primary-500 w-full rounded-full border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+              aria-required="true"
+            />
+          </fieldset>
+
+          <!-- message field  -->
+          <fieldset class="mb-4 flex w-full flex-col items-start justify-start gap-2">
+            <label for="messages" class="text-tagline-1 text-secondary dark:text-accent font-medium"
+              >Message</label
+            >
+            <textarea
+              name="messages"
+              id="messages"
+              required
+              placeholder="Enter your message"
+              class="placeholder:text-tagline-1 dark:placeholder:text-accent/60 dark:text-accent/90 shadow-1 bg-background-1 dark:bg-background-6 border-stroke-3 dark:border-stroke-7 focus-visible:outline-primary-500 min-h-[120px] w-full resize-none rounded-xl border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+              aria-required="true"
+            ></textarea>
+          </fieldset>
+
+          <!-- terms and conditions checkbox -->
+          <fieldset class="mb-4 flex items-center gap-2">
+            <label for="remember-me" class="flex items-center gap-x-3">
+              <input id="remember-me" type="checkbox" class="peer sr-only" />
+              <span
+                class="border-stroke-3 dark:border-stroke-7 after:bg-primary-500 peer-checked:border-primary-500 relative size-4 cursor-pointer rounded-full border after:absolute after:top-1/2 after:left-1/2 after:size-[10px] after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:opacity-0 peer-checked:after:opacity-100"
+              ></span>
+            </label>
+            <label
+              for="remember-me"
+              class="text-tagline-3 text-secondary/60 dark:text-accent/60 cursor-pointer"
+            >
+              I agree with the
+              <a href="#" class="text-primary-500 text-tagline-3 underline">terms and conditions</a>
+            </label>
+          </fieldset>
+
+          <!-- submit button -->
+          <button
+            type="submit"
+            class="btn btn-secondary dark:btn-accent btn-md hover:btn-primary w-full first-letter:uppercase before:content-none"
+            aria-label="Submit contact form"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

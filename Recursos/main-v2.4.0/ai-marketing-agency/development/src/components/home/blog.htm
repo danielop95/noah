@@ -1,0 +1,59 @@
+<!-- ================================
+    Blog
+=================================    -->
+
+<section class="bg-background-7 py-14 md:py-24 lg:py-28 xl:py-36 2xl:py-44">
+  <div class="main-container space-y-10 md:space-y-14">
+    <div class="space-y-3 pb-3.5 text-center">
+      <div
+        class="flex items-center justify-center"
+        data-opai-animate
+        data-delay="0.1"
+      >
+        <Component
+          src="src/components/shared/badge.htm"
+          badge-text="Blog"
+          class="text-black"
+        />
+      </div>
+      <div class="space-y-1.5 md:space-y-3">
+        <h2
+          class="text-is-heading-4 md:text-is-heading-3 lg:text-is-heading-2 text-background-5 font-normal max-md:leading-[1.1]"
+          data-opai-animate
+          data-delay="0.2"
+        >
+          Learn What’s Working Now in <br class="hidden md:block" />
+          <span class="font-instrument-serif text-background-13/30"
+            >AI Marketing</span
+          >
+        </h2>
+        <p
+          class="text-tagline-2 text-background-13/60 font-normal"
+          data-opai-animate
+          data-delay="0.3"
+        >
+          Playbooks, trends, and real tactics for ads, SEO, funnels, and
+          automation—built for growth-focused teams.
+        </p>
+      </div>
+    </div>
+
+    <!-- Blog Posts Cards -->
+    <div class="hidden lg:block">
+      <Component src="src/components/shared/blog-cards-lg.htm" />
+    </div>
+
+    <div class="block lg:hidden">
+      <Component src="src/components/shared/blog-cards-mobile.htm" />
+    </div>
+
+    <div class="flex justify-center" data-opai-animate data-delay="0.1">
+      <Component
+        src="src/components/shared/button/button-secondary.htm"
+        button-text="Read Marketing Insights"
+        class="w-[85%] md:w-auto"
+        href="./blog.html"
+      />
+    </div>
+  </div>
+</section>

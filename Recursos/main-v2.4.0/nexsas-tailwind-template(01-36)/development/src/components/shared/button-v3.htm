@@ -1,0 +1,38 @@
+<!-- button v3 -->
+<div
+  class="{=$class} w-fit cursor-pointer rounded-2xl px-1 py-1"
+  aria-label="{=$aria-label}"
+  data-button-v3
+>
+  <a href="{=$page-link}" class="block">
+    <div class="flex items-center gap-x-4">
+      <!-- icon   -->
+      <span
+        class="relative z-20 flex shrink-0 items-center justify-center overflow-hidden rounded-[13px] p-2.5 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        data-button-v3-icon
+        aria-hidden="true"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-6">
+          <path d="M11 5H13V7H11V5Z" />
+          <path d="M5 5H7V7H5V5Z" />
+          <path d="M14 8H16V10H14V8Z" />
+          <path d="M8 8H10V10H8V8Z" />
+          <path d="M17 11H19V13H17V11Z" />
+          <path d="M11 11H13V13H11V11Z" />
+          <path d="M14 14H16V16H14V14Z" />
+          <path d="M8 14H10V16H8V14Z" />
+          <path d="M11 17H13V19H11V17Z" />
+          <path d="M5 17H7V19H5V17Z" />
+        </svg>
+      </span>
+      <!-- content  -->
+      <span
+        class="shrink-0 pr-4 transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] first-letter:uppercase"
+        data-button-v3-text
+        aria-hidden="true"
+      >
+        {=$btn-text}
+      </span>
+    </div>
+  </a>
+</div>

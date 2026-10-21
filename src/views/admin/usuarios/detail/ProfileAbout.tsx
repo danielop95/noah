@@ -98,10 +98,10 @@ const ProfileAbout = ({ user }: Props) => {
             <Typography variant='caption' className='uppercase' color='text.disabled'>
               Contacto
             </Typography>
-            <InfoRow icon='ri-mail-line' label='Email' value={user.email} />
-            <InfoRow icon='ri-phone-line' label='Telefono' value={user.phone} />
+            <InfoRow icon='solar-letter-linear' label='Email' value={user.email} />
+            <InfoRow icon='solar-phone-linear' label='Telefono' value={user.phone} />
             {user.organization && (
-              <InfoRow icon='ri-building-2-line' label='Organizacion' value={user.organization.name} />
+              <InfoRow icon='solar-buildings-2-linear' label='Organizacion' value={user.organization.name} />
             )}
           </div>
         )}
@@ -113,19 +113,19 @@ const ProfileAbout = ({ user }: Props) => {
               <Typography variant='caption' className='uppercase' color='text.disabled'>
                 Informacion Personal
               </Typography>
-              <InfoRow icon='ri-user-line' label='Genero' value={getGenderLabel(user.gender)} />
-              <InfoRow icon='ri-cake-2-line' label='Nacimiento' value={formatDate(user.birthDate)} />
-              <InfoRow icon='ri-heart-line' label='Estado civil' value={getMaritalLabel(user.maritalStatus)} />
+              <InfoRow icon='solar-user-linear' label='Genero' value={getGenderLabel(user.gender)} />
+              <InfoRow icon='solar-cake-linear' label='Nacimiento' value={formatDate(user.birthDate)} />
+              <InfoRow icon='solar-heart-linear' label='Estado civil' value={getMaritalLabel(user.maritalStatus)} />
               {user.hasChildren && (
                 <InfoRow
-                  icon='ri-parent-line'
+                  icon='solar-people-nearby-linear'
                   label='Hijos'
                   value={user.childrenCount ? `${user.childrenCount}` : 'Si'}
                 />
               )}
               {user.documentType && (
                 <InfoRow
-                  icon='ri-id-card-line'
+                  icon='solar-user-id-linear'
                   label={getDocTypeLabel(user.documentType) || 'Documento'}
                   value={user.documentNumber}
                 />
@@ -141,10 +141,10 @@ const ProfileAbout = ({ user }: Props) => {
               <Typography variant='caption' className='uppercase' color='text.disabled'>
                 Ubicacion
               </Typography>
-              <InfoRow icon='ri-map-pin-2-line' label='Ciudad' value={user.city} />
-              <InfoRow icon='ri-global-line' label='Pais' value={getCountryName(user.country)} />
-              <InfoRow icon='ri-home-4-line' label='Direccion' value={user.address} />
-              <InfoRow icon='ri-community-line' label='Barrio' value={user.neighborhood} />
+              <InfoRow icon='solar-map-point-linear' label='Ciudad' value={user.city} />
+              <InfoRow icon='solar-global-linear' label='Pais' value={getCountryName(user.country)} />
+              <InfoRow icon='solar-home-linear' label='Direccion' value={user.address} />
+              <InfoRow icon='solar-people-nearby-linear' label='Barrio' value={user.neighborhood} />
             </div>
           </>
         )}

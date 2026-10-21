@@ -5,7 +5,7 @@ import React from 'react'
 import type { Theme } from '@mui/material/styles'
 
 const SelectIcon = () => {
-  return <i className='ri-arrow-down-s-line' />
+  return <i className='solar-alt-arrow-down-linear' />
 }
 
 const iconStyles = (theme: Theme) => ({

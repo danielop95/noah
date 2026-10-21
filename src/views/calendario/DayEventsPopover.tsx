@@ -25,11 +25,11 @@ const categoryLabels: Record<CalendarCategory, string> = {
 }
 
 const categoryIcons: Record<CalendarCategory, string> = {
-  culto: 'ri-service-line',
-  evento: 'ri-star-line',
-  reunion: 'ri-team-line',
-  actividad: 'ri-run-line',
-  capacitacion: 'ri-graduation-cap-line'
+  culto: 'solar-cup-star-linear',
+  evento: 'solar-star-linear',
+  reunion: 'solar-widget-2-linear',
+  actividad: 'solar-running-2-linear',
+  capacitacion: 'solar-square-academic-cap-linear'
 }
 
 type Props = {
@@ -137,7 +137,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
             }
           }}
         >
-          <i className='ri-close-line text-xl' />
+          <i className='solar-close-square-linear text-xl' />
         </IconButton>
 
         <Typography
@@ -189,7 +189,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                 mb: 2.5
               }}
             >
-              <i className='ri-calendar-check-line text-4xl' style={{ color: theme.palette.primary.main }} />
+              <i className='solar-calendar-mark-linear text-4xl' style={{ color: theme.palette.primary.main }} />
             </Box>
             <Typography variant='body1' color='text.secondary' sx={{ fontWeight: 500 }}>
               No hay eventos para este día
@@ -198,7 +198,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
               <Button
                 variant='contained'
                 size='medium'
-                startIcon={<i className='ri-add-line' />}
+                startIcon={<i className='solar-add-circle-linear' />}
                 onClick={onAddEvent}
                 sx={{ mt: 3, px: 4 }}
               >
@@ -293,7 +293,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                               color: theme.palette.text.secondary
                             }}
                           >
-                            <i className='ri-time-line' style={{ fontSize: 14 }} />
+                            <i className='solar-clock-circle-linear' style={{ fontSize: 14 }} />
                             <Typography variant='caption' sx={{ fontWeight: 500 }}>
                               {event.allDay ? 'Todo el día' : formatTime(event.start as Date)}
                             </Typography>
@@ -328,7 +328,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                               color: theme.palette.text.secondary
                             }}
                           >
-                            <i className='ri-map-pin-line' style={{ fontSize: 14 }} />
+                            <i className='solar-map-point-linear' style={{ fontSize: 14 }} />
                             <Typography variant='caption' sx={{ fontWeight: 500 }}>
                               {event.extendedProps.location}
                             </Typography>
@@ -346,7 +346,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        <i className='ri-arrow-right-s-line text-xl' />
+                        <i className='solar-alt-arrow-right-linear text-xl' />
                       </Box>
                     </Box>
                   </Box>
@@ -370,7 +370,7 @@ const DayEventsPopover = forwardRef<HTMLDivElement, Props>((props, ref) => {
             fullWidth
             variant='contained'
             color='primary'
-            startIcon={<i className='ri-add-line' />}
+            startIcon={<i className='solar-add-circle-linear' />}
             onClick={onAddEvent}
             sx={{
               py: 1.25,

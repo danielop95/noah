@@ -95,7 +95,7 @@ const UserPickerDialog = ({ open, onClose, title, fetchUsers, onSelect, excludeI
       <DialogTitle className='flex items-center justify-between'>
         <span>{title}</span>
         <IconButton size='small' onClick={onClose}>
-          <i className='ri-close-line' />
+          <i className='solar-close-square-linear' />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -110,7 +110,7 @@ const UserPickerDialog = ({ open, onClose, title, fetchUsers, onSelect, excludeI
             input: {
               startAdornment: (
                 <InputAdornment position='start'>
-                  <i className='ri-search-line' />
+                  <i className='solar-magnifer-linear' />
                 </InputAdornment>
               )
             }
@@ -165,7 +165,7 @@ const UserPickerDialog = ({ open, onClose, title, fetchUsers, onSelect, excludeI
                   {isAdding ? (
                     <CircularProgress size={20} />
                   ) : (
-                    <i className='ri-add-line text-xl text-textSecondary' />
+                    <i className='solar-add-circle-linear text-xl text-textSecondary' />
                   )}
                 </Box>
               )

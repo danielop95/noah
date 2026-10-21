@@ -147,7 +147,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
       <>
         <Box className='flex flex-col items-center justify-center py-12'>
           <CustomAvatar skin='light' color='info' size={64} sx={{ mb: 2 }}>
-            <i className='ri-group-line text-3xl' />
+            <i className='solar-users-group-rounded-linear text-3xl' />
           </CustomAvatar>
           <Typography variant='h6' className='mbe-1'>
             Sin miembros asignados
@@ -157,7 +157,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
           </Typography>
           <Button
             variant='contained'
-            startIcon={<i className='ri-user-add-line' />}
+            startIcon={<i className='solar-user-plus-linear' />}
             onClick={() => setPickerOpen(true)}
           >
             Agregar Miembros
@@ -186,7 +186,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
             input: {
               startAdornment: (
                 <InputAdornment position='start'>
-                  <i className='ri-search-line' />
+                  <i className='solar-magnifer-linear' />
                 </InputAdornment>
               )
             }
@@ -196,7 +196,7 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
         <Button
           size='small'
           variant='outlined'
-          startIcon={<i className='ri-user-add-line' />}
+          startIcon={<i className='solar-user-plus-linear' />}
           onClick={() => setPickerOpen(true)}
         >
           Agregar
@@ -252,11 +252,11 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
                       size='small'
                       onClick={() => router.push(`/dashboard/admin/usuarios/${member.id}`)}
                     >
-                      <i className='ri-eye-line' />
+                      <i className='solar-eye-linear' />
                     </IconButton>
                   </Tooltip>
                   <IconButton size='small' onClick={e => handleMenuOpen(e, member)}>
-                    <i className='ri-more-2-line' />
+                    <i className='solar-menu-dots-linear' />
                   </IconButton>
                 </Box>
               </Box>
@@ -273,15 +273,15 @@ const NetworkMembersTab = ({ members, networkId }: Props) => {
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem onClick={handleViewProfile}>
-          <ListItemIcon><i className='ri-user-line' /></ListItemIcon>
+          <ListItemIcon><i className='solar-user-linear' /></ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
         <MenuItem onClick={handlePromoteToLeader}>
-          <ListItemIcon><i className='ri-arrow-up-line' /></ListItemIcon>
+          <ListItemIcon><i className='solar-arrow-up-linear' /></ListItemIcon>
           <ListItemText>Promover a lider</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleRemoveFromNetwork} sx={{ color: 'error.main' }}>
-          <ListItemIcon sx={{ color: 'error.main' }}><i className='ri-user-unfollow-line' /></ListItemIcon>
+          <ListItemIcon sx={{ color: 'error.main' }}><i className='solar-user-block-linear' /></ListItemIcon>
           <ListItemText>Remover de la red</ListItemText>
         </MenuItem>
       </Menu>

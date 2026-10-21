@@ -9,7 +9,8 @@ import NotAuthorized from '@/views/NotAuthorized'
 import ReportesView from '@/views/reportes'
 
 // Server Action Imports
-import { getAllReports, getGroupsForReporting, getNetworksForReportFilters } from '@/app/server/reportActions'
+import { getAllReports, getGroupsForReporting, getNetworksForReportFilters, getUnreportedGroups, getActiveVacationPeriod } from '@/app/server/reportActions'
+import { getUserOrganizationId } from '@/app/server/helpers'
 
 // Utils
 import { getServerMode } from '@core/utils/serverHelpers'
@@ -38,7 +39,14 @@ const ReportesPage = async () => {
   }
 
   // Fetch data
-  const [reports, networks] = await Promise.all([getAllReports(), getNetworksForReportFilters()])
+  const organizationId = await getUserOrganizationId(session.user.id)
+
+  const [reports, networks, unreportedData, activeVacation] = await Promise.all([
+    getAllReports(),
+    getNetworksForReportFilters(),
+    getUnreportedGroups(),
+    organizationId ? getActiveVacationPeriod(organizationId) : null
+  ])
 
   return (
     <ReportesView
@@ -47,6 +55,8 @@ const ReportesPage = async () => {
       networks={networks}
       isAdmin={(session.user.roleHierarchy ?? 999) <= 2}
       currentUserId={session.user.id}
+      unreportedGroups={unreportedData.unreportedGroups}
+      activeVacation={activeVacation}
     />
   )
 }

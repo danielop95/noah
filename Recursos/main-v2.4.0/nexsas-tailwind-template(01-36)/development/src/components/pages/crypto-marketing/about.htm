@@ -1,0 +1,351 @@
+<!--===============================
+ About Section 
+===================================-->
+<section
+  data-ns-animate
+  data-delay="0.3"
+  class="dark:bg-background-6 overflow-hidden bg-white pt-20 pb-14 sm:pb-36 lg:pt-[88px] xl:pt-[100px] xl:pb-[176px]"
+>
+  <div class="main-container">
+    <!-- TabBar small screen -->
+    <div
+      class="tab-mobile mb-14 flex flex-wrap items-center justify-start gap-4 sm:mx-auto sm:max-w-[500px] lg:mb-[72px] lg:hidden"
+    >
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        Decentralization
+      </button>
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        Blockchain
+      </button>
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        Privacy
+      </button>
+      <button
+        data-mobile-tab-button
+        class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium text-nowrap transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+      >
+        Exchanges
+      </button>
+    </div>
+
+    <!-- TabBar large screen -->
+    <div
+      role="tablist"
+      data-tab-bar
+      class="tab-bar border-stroke-2 dark:border-stroke-6 relative mb-14 hidden items-center justify-center border-b lg:mb-[72px] lg:flex"
+    >
+      <!-- active-tab-bar  -->
+      <div
+        data-active-tab-bar
+        class="bg-primary-500 absolute bottom-[-1px] z-[1] h-[2px] transition-all duration-300 ease-in-out"
+      ></div>
+
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">Decentralization</span>
+      </button>
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">Blockchain</span>
+      </button>
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">Privacy</span>
+      </button>
+      <button
+        data-tab-button
+        class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+      >
+        <span class="text-tagline-1 font-medium">Exchanges</span>
+      </button>
+    </div>
+    <!-- Tab Content-1 -->
+    <div data-tab-content>
+      <div class="flex w-full flex-col items-start justify-between gap-x-24 gap-y-14 lg:flex-row">
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <span class="badge badge-green mb-3.5 xl:mb-5"> About </span>
+          <h2 class="lg:text-heading-2 text-heading-4 mb-3">
+            Crypto is the leading <br class="hidden lg:block" />
+            platform for
+            <span class="text-primary-500">crowd sales!</span>
+          </h2>
+          <p class="mb-6 lg:max-w-[478px] xl:mb-8">
+            Most cryptocurrencies are not controlled by any central authority such as a government
+            or financial institution.
+          </p>
+          <ul class="mb-7 space-y-1.5 xl:mb-14">
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-6 text-secondary text-[36px] dark:text-white"></span>
+
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Interactive reports</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Learn about your users.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-46 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Team dashboard</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Monitor your metrics.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-47 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Limitless segmentation</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Surface hidden trends.
+                </p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./crypto-marketing-about.html"
+              class="btn btn-white btn-lg md:btn-xl dark:btn-transparent hover:btn-primary w-full md:w-auto"
+            >
+              <span>About us</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <div class="flex items-center justify-center">
+            <figure class="lg:inline-block">
+              <img
+                src="./images/ns-img-6.png"
+                alt="Happy man using phone"
+                class="w-fit object-cover"
+              />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content-2 -->
+    <div data-tab-content class="hidden">
+      <div class="flex w-full flex-col items-start gap-x-24 gap-y-16 lg:flex-row">
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <span class="badge badge-green mb-5"> About </span>
+          <h2 class="mb-3">
+            Blockchain is changing the game for data and
+            <span class="text-primary-500 inline-block">finance.</span>
+          </h2>
+          <p class="mb-8 lg:max-w-[478px]">
+            Blockchain technology is revolutionizing the way we think about data security,
+            transparency, and financial transactions.
+          </p>
+          <ul class="mb-7 space-y-1.5 md:mb-14">
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-6 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Bold and impactful</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Learn about your users.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-46 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Tech-savvy and professional</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Monitor your metrics.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-47 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Short and punchy</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Surface hidden trends.
+                </p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./crypto-marketing-about.html"
+              class="btn btn-white btn-lg md:btn-xl dark:btn-transparent hover:btn-primary w-full md:w-auto"
+            >
+              <span>About us</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <div class="flex items-center justify-center">
+            <figure class="tab-item-image">
+              <img src="./images/ns-img-5.png" alt="Happy man using phone" />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Tab Content-3 -->
+    <div data-tab-content class="hidden">
+      <div class="flex w-full flex-col items-start gap-x-24 gap-y-16 lg:flex-row">
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <span class="badge badge-green mb-5"> About </span>
+          <h2 class="mb-3">
+            Privacy is key to safe online
+
+            <span class="text-primary-500">experiences.</span>
+          </h2>
+          <p class="mb-8 lg:max-w-[478px]">
+            In today's digital age, protecting your privacy isn't just a personal choice—it's a
+            crucial step toward ensuring your safety online.
+          </p>
+          <ul class="mb-7 space-y-1.5 md:mb-14">
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-6 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Straightforward & professional</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Learn about your users.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-46 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Friendly & trust-building</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Monitor your metrics.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-47 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Bold & emphatic</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Surface hidden trends.
+                </p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./crypto-marketing-about.html"
+              class="btn btn-white btn-lg md:btn-xl dark:btn-transparent hover:btn-primary w-full md:w-auto"
+            >
+              <span>About us</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <figure class="tab-item-image">
+            <img src="./images/ns-img-9.png" alt="Happy man using phone" />
+          </figure>
+        </div>
+      </div>
+    </div>
+    <!-- Tab Content-4 -->
+    <div data-tab-content class="hidden">
+      <div class="flex w-full flex-col items-start gap-x-24 gap-y-16 lg:flex-row">
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <span class="badge badge-green mb-5"> About </span>
+          <h2 class="mb-3">
+            Exchanges drive crypto
+
+            <span class="text-primary-500">trading!</span>
+          </h2>
+          <p class="mb-8 lg:max-w-[478px]">
+            Cryptocurrency exchanges are the beating heart of the digital asset market. These
+            platforms enable users to buy
+          </p>
+          <ul class="mb-7 space-y-1.5 md:mb-14">
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-6 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Bold & direct</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Learn about your users.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-46 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Conversational & friendly</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Monitor your metrics.
+                </p>
+              </div>
+            </li>
+            <li class="flex list-none items-center gap-4 py-2">
+              <span class="ns-shape-47 text-secondary text-[36px] dark:text-white"></span>
+              <div>
+                <strong class="text-tagline-1 text-secondary dark:text-accent font-medium"
+                  >Professional & clear</strong
+                >
+                <p class="text-secondary/60 text-tagline-2 dark:text-accent/60 font-normal">
+                  Surface hidden trends.
+                </p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <a
+              href="./crypto-marketing-about.html"
+              class="btn btn-white btn-lg md:btn-xl dark:btn-transparent hover:btn-primary w-full md:w-auto"
+            >
+              <span>About us</span>
+            </a>
+          </div>
+        </div>
+        <!-- About Image -->
+        <div class="flex-1 sm:mx-auto sm:max-w-[500px] lg:max-w-full">
+          <figure class="tab-item-image">
+            <img src="./images/ns-img-8.png" alt="Happy man using phone" />
+          </figure>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

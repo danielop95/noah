@@ -1,0 +1,148 @@
+<header>
+  <nav
+    data-header-scroll
+    class="fixed top-5 left-1/2 z-50 w-full -translate-x-1/2 rounded-lg transition-all duration-500 ease-in-out data-[has-scrolled=true]:top-3"
+  >
+    <div
+      data-opai-animate
+      data-delay="0.3"
+      data-direction="top"
+      class="bg-background-6/60 mx-auto flex w-full items-center justify-between rounded-lg px-2.5 py-2.5 backdrop-blur-[25px] md:max-w-[640px] lg:max-w-[980px] xl:max-w-[1180px] 2xl:max-w-[1290px]"
+    >
+      <a href="/" class="flex items-center gap-x-1.5">
+        <figure class="-mt-1 hidden h-full max-h-[40px] w-[166px] xl:block">
+          <img src="./images/logo/logo-white.svg" alt="logo" />
+          <span class="sr-only">Nexsas</span>
+        </figure>
+        <figure class="block size-11 xl:hidden">
+          <img src="./images/logo/logo-small.svg" alt="logo" class="h-full w-full" />
+          <span class="sr-only">Nexsas</span>
+        </figure>
+      </a>
+
+      <div class="hidden items-center gap-10 lg:flex 2xl:gap-16">
+        <ul class="flex items-center gap-8">
+          <li
+            class="group/nav-item {=$link-style} nav-item relative cursor-pointer"
+            data-menu="company-mega-menu"
+          >
+            <a href="#" class="footer-link flex items-center gap-1.5">
+              <span
+                class="text-tagline-3 font-ibm-plex-mono leading-[21.7px] font-normal tracking-[1.68px] text-white/60 transition-colors duration-500 group-hover/nav-item:text-white"
+              >
+                Company
+              </span>
+              <span
+                class="transition-transform duration-500 ease-in-out group-hover/nav-item:rotate-180"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="5"
+                  viewBox="0 0 10 5"
+                  fill="none"
+                >
+                  <path
+                    d="M1.19922 0.5L5.19922 4.5L9.19922 0.5"
+                    class="stroke-white/60 transition-colors duration-500 group-hover/nav-item:stroke-white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+            <Component src="src/components/shared/company-menu.htm" />
+          </li>
+          <li
+            class="group/nav-item nav-item {=$link-style} relative cursor-pointer"
+            data-menu="partnership-dropdown-menu"
+          >
+            <a href="#" class="footer-link flex items-center gap-1.5">
+              <span
+                class="text-tagline-3 font-ibm-plex-mono leading-[21.7px] font-normal tracking-[1.68px] text-white/60 transition-colors duration-500 group-hover/nav-item:text-white"
+              >
+                Collaborate
+              </span>
+              <span
+                class="transition-transform duration-500 ease-in-out group-hover/nav-item:rotate-180"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="5"
+                  viewBox="0 0 10 5"
+                  fill="none"
+                >
+                  <path
+                    d="M1.19922 0.5L5.19922 4.5L9.19922 0.5"
+                    class="stroke-white/60 transition-colors duration-500 group-hover/nav-item:stroke-white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+            <Component src="src/components/shared/partnership-menu.htm" />
+          </li>
+          <li
+            class="group/nav-item {=$link-style} nav-item relative cursor-pointer"
+            data-menu="resources-mega-menu"
+          >
+            <a href="#" class="footer-link flex items-center gap-1.5">
+              <span
+                class="text-tagline-3 font-ibm-plex-mono leading-[21.7px] font-normal tracking-[1.68px] text-white/60 transition-colors duration-500 group-hover/nav-item:text-white"
+              >
+                Resources
+              </span>
+              <span
+                class="transition-transform duration-500 ease-in-out group-hover/nav-item:rotate-180"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="5"
+                  viewBox="0 0 10 5"
+                  fill="none"
+                >
+                  <path
+                    d="M1.19922 0.5L5.19922 4.5L9.19922 0.5"
+                    class="stroke-white/60 transition-colors duration-500 group-hover/nav-item:stroke-white"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+
+            <Component src="src/components/shared/resources-menu.htm" />
+          </li>
+
+          <li class="{=$link-style} relative">
+            <a href="./pricing.html" class="footer-link flex items-center gap-1.5">
+              <span
+                class="text-tagline-3 font-ibm-plex-mono leading-[21.7px] font-normal tracking-[1.68px] text-white/60 transition-colors duration-500 hover:text-white"
+              >
+                pricing
+              </span>
+            </a>
+          </li>
+        </ul>
+        <Component
+          src="src/components/shared/button-default.htm"
+          button-text="Learn More"
+          class="!max-h-10 !px-6 !py-[9px]"
+          anchor-link="./contact-us.html"
+        />
+      </div>
+
+      <button
+        class="nav-hamburger flex cursor-pointer flex-col items-end justify-center space-y-2 xl:hidden"
+      >
+        <span class="sr-only">Toggle menu</span>
+        <span class="bg-background-7 block h-px w-9"></span>
+        <span class="bg-background-7 block h-px w-6"></span>
+      </button>
+    </div>
+  </nav>
+  <Component src="src/components/shared/mobile-menu-bar.htm" />
+</header>

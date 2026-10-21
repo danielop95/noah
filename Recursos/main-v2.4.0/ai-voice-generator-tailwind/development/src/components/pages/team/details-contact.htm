@@ -1,0 +1,78 @@
+<!-- =========================
+Contact section
+===========================-->
+<section
+  class="bg-background-2 pt-14 pb-14 md:pt-16 md:pb-16 lg:pt-[88px] lg:pb-[88px] xl:pt-[200px] xl:pb-[200px]"
+>
+  <div class="main-container space-y-[70px]">
+    <div class="mx-auto max-w-[650px] space-y-5 text-center">
+      <span data-ns-animate data-delay="0.2" class="badge badge-ivory">Contact</span>
+      <div class="space-y-3">
+        <h2 data-ns-animate data-delay="0.3">Let us know how we can assist you</h2>
+      </div>
+    </div>
+    <!-- contact form  -->
+    <div
+      data-ns-animate
+      data-delay="0.4"
+      class="bg-background-3 mx-auto w-full max-w-[850px] rounded-[32px] p-6 lg:p-11"
+    >
+      <form action="/index.html" method="post" class="grid grid-cols-12 gap-y-8 sm:gap-x-8">
+        <!-- name field  -->
+        <fieldset class="col-span-12 flex flex-col items-start justify-start gap-y-2 md:col-span-6">
+          <label for="fullName" class="text-tagline-1 text-secondary font-medium">Full Name</label>
+          <input
+            type="text"
+            name="fullName"
+            id="fullName"
+            required
+            placeholder="Enter your name"
+            class="placeholder:text-tagline-1 border-stroke-10/80 focus-visible:outline-stroke-10 w-full rounded-full border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+            aria-required="true"
+          />
+        </fieldset>
+
+        <!-- email field  -->
+        <fieldset
+          class="col-span-12 flex w-full flex-col items-start justify-start gap-2 md:col-span-6"
+        >
+          <label for="emailAddress" class="text-tagline-1 text-secondary font-medium"
+            >Email address</label
+          >
+          <input
+            type="email"
+            required
+            name="emailAddress"
+            id="emailAddress"
+            placeholder="Enter your email"
+            class="placeholder:text-tagline-1 border-stroke-10/80 focus-visible:outline-stroke-10 w-full rounded-full border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+            aria-required="true"
+          />
+        </fieldset>
+
+        <!-- message field  -->
+        <fieldset class="col-span-12 flex w-full flex-col items-start justify-start gap-2">
+          <label for="messages" class="text-tagline-1 text-secondary font-medium"> Message </label>
+          <textarea
+            name="messages"
+            id="messages"
+            required
+            placeholder="Enter your message"
+            class="border-stroke-10/80 focus-visible:outline-stroke-10 min-h-[207px] w-full resize-none rounded-xl border px-[18px] py-3 font-normal placeholder:font-normal focus-visible:outline"
+            aria-required="true"
+          ></textarea>
+        </fieldset>
+
+        <!-- submit button -->
+        <div class="col-span-12 mt-6 w-full">
+          <button
+            type="submit"
+            class="btn btn-primary hover:btn-secondary btn-md mx-auto w-full first-letter:uppercase before:content-none"
+          >
+            Contact now
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

@@ -26,33 +26,43 @@ const ReportStatsCards = ({ stats }: ReportStatsCardsProps) => {
     {
       title: 'Total Reportes',
       value: stats.totalReports.toString(),
-      icon: 'ri-file-list-3-line',
+      icon: 'solar-clipboard-text-linear',
       color: 'primary' as const
     },
     {
       title: 'Total Asistentes',
       value: stats.totalAttendees.toLocaleString('es-CO'),
-      icon: 'ri-group-line',
+      icon: 'solar-users-group-rounded-linear',
       color: 'success' as const
     },
     {
       title: 'Promedio Asistencia',
       value: stats.averageAttendees.toString(),
-      icon: 'ri-bar-chart-line',
+      icon: 'solar-chart-2-linear',
       color: 'info' as const
     },
     {
       title: 'Total Visitas',
       value: stats.totalVisitors.toLocaleString('es-CO'),
-      icon: 'ri-user-add-line',
+      icon: 'solar-user-plus-linear',
       color: 'warning' as const
     },
     {
       title: 'Total Ofrenda',
       value: formatCurrency(stats.totalOffering),
-      icon: 'ri-hand-heart-line',
+      icon: 'solar-hand-heart-linear',
       color: 'secondary' as const
-    }
+    },
+    ...(stats.cancelledReports > 0
+      ? [
+          {
+            title: 'No Realizados',
+            value: stats.cancelledReports.toString(),
+            icon: 'solar-close-circle-linear',
+            color: 'warning' as const
+          }
+        ]
+      : [])
   ]
 
   return (

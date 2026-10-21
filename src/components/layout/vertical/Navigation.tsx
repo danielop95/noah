@@ -108,9 +108,9 @@ const Navigation = (props: Props) => {
         </Link>
         {!(isCollapsed && !isHovered) && (
           <NavCollapseIcons
-            lockedIcon={<i className='ri-radio-button-line text-xl' />}
-            unlockedIcon={<i className='ri-checkbox-blank-circle-line text-xl' />}
-            closeIcon={<i className='ri-close-line text-xl' />}
+            lockedIcon={<i className='solar-circle-bottom-up-linear text-xl' />}
+            unlockedIcon={<i className='solar-circle-bottom-up-linear text-xl' />}
+            closeIcon={<i className='solar-close-square-linear text-xl' />}
             className='text-textSecondary'
             onClick={() => updateSettings({ layout: !isCollapsed ? 'collapsed' : 'vertical' })}
           />

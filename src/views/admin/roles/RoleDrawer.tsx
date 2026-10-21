@@ -3,7 +3,11 @@
 import { useState, useEffect, useMemo } from 'react'
 
 // MUI Imports
-import Drawer from '@mui/material/Drawer'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import Fade from '@mui/material/Fade'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
@@ -206,21 +210,25 @@ const RoleDrawer = ({ open, onClose, roleId, permissions, onSaved }: Props) => {
   }
 
   return (
-    <Drawer
-      anchor='right'
+    <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { width: { xs: '100%', sm: 600, md: 700 } } }}
+      maxWidth='md'
+      fullWidth
+      TransitionComponent={Fade}
+      transitionDuration={300}
+      PaperProps={{
+        sx: { borderRadius: '16px', maxHeight: '90vh' }
+      }}
     >
-      <div className='flex flex-col gap-5 p-6 h-full overflow-y-auto'>
-        {/* Header */}
-        <div className='flex justify-between items-center'>
-          <Typography variant='h6'>{roleId ? 'Editar Rol' : 'Crear Rol'}</Typography>
-          <IconButton onClick={onClose}>
-            <i className='ri-close-line' />
-          </IconButton>
-        </div>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {roleId ? 'Editar Rol' : 'Crear Rol'}
+        <IconButton onClick={onClose}>
+          <i className='solar-close-square-linear' />
+        </IconButton>
+      </DialogTitle>
 
+      <DialogContent dividers>
         {error && <Alert severity='error'>{error}</Alert>}
 
         {loading ? (
@@ -228,7 +236,7 @@ const RoleDrawer = ({ open, onClose, roleId, permissions, onSaved }: Props) => {
             <Typography color='text.secondary'>Cargando...</Typography>
           </div>
         ) : (
-          <>
+          <div className='flex flex-col gap-5'>
             {/* Basic Info */}
             <div className='flex flex-col gap-4'>
               <TextField
@@ -345,20 +353,19 @@ const RoleDrawer = ({ open, onClose, roleId, permissions, onSaved }: Props) => {
                 {selectedPermissions.size} permisos seleccionados
               </Typography>
             </div>
-
-            {/* Actions */}
-            <div className='flex gap-4 mbs-auto'>
-              <Button variant='contained' onClick={handleSave} disabled={saving} fullWidth>
-                {saving ? 'Guardando...' : roleId ? 'Guardar Cambios' : 'Crear Rol'}
-              </Button>
-              <Button variant='outlined' onClick={onClose} disabled={saving}>
-                Cancelar
-              </Button>
-            </div>
-          </>
+          </div>
         )}
-      </div>
-    </Drawer>
+      </DialogContent>
+
+      <DialogActions sx={{ px: 3, py: 2 }}>
+        <Button variant='outlined' onClick={onClose} disabled={saving}>
+          Cancelar
+        </Button>
+        <Button variant='contained' onClick={handleSave} disabled={saving} fullWidth>
+          {saving ? 'Guardando...' : roleId ? 'Guardar Cambios' : 'Crear Rol'}
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

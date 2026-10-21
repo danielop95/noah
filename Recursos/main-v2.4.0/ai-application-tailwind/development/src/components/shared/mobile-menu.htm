@@ -1,0 +1,65 @@
+<!-- =========================
+Mobile Menu
+===========================-->
+
+<aside
+  class="sidebar dark:bg-background-7 scroll-bar fixed top-0 right-0 z-[999] h-screen w-full translate-x-full bg-white transition-all duration-300 sm:w-1/2 xl:hidden"
+>
+  <div class="space-y-4 p-5 sm:p-8 lg:p-9">
+    <div class="flex items-center justify-between">
+      <a href="./">
+        <span class="sr-only">Home</span>
+        <figure class="max-w-[44px]">
+          <img src="./images/shared/logo.svg" alt="Nexsas" class="block w-full dark:hidden" />
+          <img src="./images/shared/logo-dark.svg" alt="Nexsas" class="hidden w-full dark:block" />
+        </figure>
+      </a>
+      <button
+        class="nav-hamburger-close bg-background-4 dark:bg-background-9 relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full"
+      >
+        <span class="sr-only">Close Menu</span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 rotate-45"></span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 -rotate-45"></span>
+      </button>
+    </div>
+    <div class="scroll-bar h-[85vh] w-full overflow-x-hidden overflow-y-auto pb-10">
+      <ul>
+        <!-- home menu  -->
+        <Component src="src/components/shared/mobile-menu/home-menu.htm" />
+
+        <!-- about us menu  -->
+        <Component src="src/components/shared/mobile-menu/about-us-menu.htm" />
+
+        <!-- blog menu  -->
+        <Component src="src/components/shared/mobile-menu/blog-menu.htm" />
+
+        <!-- services menu  -->
+        <Component src="src/components/shared/mobile-menu/services-menu.htm" />
+
+        <!-- integration menu  -->
+        <Component src="src/components/shared/mobile-menu/integration-menu.htm" />
+
+        <!-- features menu  -->
+        <Component src="src/components/shared/mobile-menu/features-menu.htm" />
+
+        <!-- process menu  -->
+        <Component src="src/components/shared/mobile-menu/process-menu.htm" />
+
+        <!-- testimonial menu  -->
+        <Component src="src/components/shared/mobile-menu/testimonial-menu.htm" />
+
+        <!-- teams menu  -->
+        <Component src="src/components/shared/mobile-menu/teams-menu.htm" />
+
+        <!-- pricing menu  -->
+        <Component src="src/components/shared/mobile-menu/pricing-menu.htm" />
+
+        <!-- login menu  -->
+        <Component src="src/components/shared/mobile-menu/login-menu.htm" />
+
+        <!-- sign up menu  -->
+        <Component src="src/components/shared/mobile-menu/sign-up-menu.htm" />
+      </ul>
+    </div>
+  </div>
+</aside>

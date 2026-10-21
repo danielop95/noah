@@ -1,0 +1,12 @@
+import './counter';
+import './divider-expend';
+import './footer';
+import './marquee';
+import './mobile-menu';
+import './navigation-menu';
+import './price-switcher';
+import './pricing-toggle';
+import './progressive-blur-effect';
+import './sidebar-menu';
+import './swiper';
+import './tab-slider';

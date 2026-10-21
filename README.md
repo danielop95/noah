@@ -1,4 +1,3 @@
-# Noah - SaaS B2B para Iglesias
 
 Plataforma de gestión para iglesias, construida con tecnologías modernas para escalabilidad y experiencia de usuario premium.
 

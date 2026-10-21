@@ -41,7 +41,7 @@ type Props = {
 
 const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
-    <i className='ri-arrow-right-s-line' />
+    <i className='solar-alt-arrow-right-linear' />
   </StyledVerticalNavExpandIcon>
 )
 
@@ -74,7 +74,7 @@ const VerticalMenu = ({ dictionary, scrollMenu, userHierarchy }: Props) => {
         popoutMenuOffset={{ mainAxis: 10 }}
         menuItemStyles={menuItemStyles(verticalNavOptions, theme)}
         renderExpandIcon={({ open }) => <RenderExpandIcon open={open} transitionDuration={transitionDuration} />}
-        renderExpandedMenuItemIcon={{ icon: <i className='ri-circle-line' /> }}
+        renderExpandedMenuItemIcon={{ icon: <i className='solar-circle-bottom-up-linear' /> }}
         menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
       >
         <GenerateVerticalMenu menuData={filteredMenuData} />

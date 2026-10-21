@@ -120,16 +120,16 @@ const CommandFooter = () => {
     <div cmdk-footer=''>
       <div className='flex items-center gap-1'>
         <kbd>
-          <i className='ri-arrow-up-line text-base' />
+          <i className='solar-arrow-up-linear text-base' />
         </kbd>
         <kbd>
-          <i className='ri-arrow-down-line text-base' />
+          <i className='solar-alt-arrow-down-linear text-base' />
         </kbd>
         <span>to navigate</span>
       </div>
       <div className='flex items-center gap-1'>
         <kbd>
-          <i className='ri-corner-down-left-line text-base' />
+          <i className='solar-login-2-linear text-base' />
         </kbd>
         <span>to open</span>
       </div>
@@ -217,12 +217,12 @@ const NavSearch = () => {
     <>
       {isBreakpointReached || settings.layout === 'horizontal' ? (
         <IconButton className='text-textPrimary' onClick={() => setOpen(true)}>
-          <i className='ri-search-line text-textPrimary' />
+          <i className='solar-magnifer-linear text-textPrimary' />
         </IconButton>
       ) : (
         <div className='flex items-center gap-2 cursor-pointer' onClick={() => setOpen(true)}>
           <IconButton className='text-textPrimary' onClick={() => setOpen(true)}>
-            <i className='ri-search-line text-textPrimary' />
+            <i className='solar-magnifer-linear text-textPrimary' />
           </IconButton>
           <div className='whitespace-nowrap select-none text-textDisabled'>Search ⌘K</div>
         </div>
@@ -231,10 +231,10 @@ const NavSearch = () => {
         <div className='flex items-center justify-between border-be pli-4 plb-3 gap-2'>
           <Title hidden />
           <Description hidden />
-          <i className='ri-search-line' />
+          <i className='solar-magnifer-linear' />
           <CommandInput value={searchValue} onValueChange={setSearchValue} />
           <span className='text-textDisabled'>[esc]</span>
-          <i className='ri-close-line cursor-pointer' onClick={() => setOpen(false)} />
+          <i className='solar-close-square-linear cursor-pointer' onClick={() => setOpen(false)} />
         </div>
         <CommandList>
           {searchValue ? (

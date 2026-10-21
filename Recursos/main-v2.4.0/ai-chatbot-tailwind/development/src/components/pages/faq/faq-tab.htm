@@ -1,0 +1,72 @@
+<!-- =========================
+FAQ Tab section
+===========================-->
+<div class="py-[70px]">
+  <!-- for above md devices  -->
+  <div
+    role="tablist"
+    data-tab-bar
+    data-ns-animate
+    data-delay="0.5"
+    class="border-stroke-2 dark:border-stroke-6 relative hidden items-center justify-center border-b md:flex"
+  >
+    <!-- active-tab-bar  -->
+    <div
+      data-active-tab-bar
+      class="bg-primary-500 absolute bottom-[-1px] z-[1] h-[2px] transition-all duration-300 ease-in-out"
+    ></div>
+
+    <button
+      data-tab-button
+      class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+    >
+      <span class="text-tagline-1 font-medium">General</span>
+    </button>
+    <button
+      data-tab-button
+      class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+    >
+      <span class="text-tagline-1 font-medium">Changelog</span>
+    </button>
+    <button
+      data-tab-button
+      class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+    >
+      <span class="text-tagline-1 font-medium">Privacy</span>
+    </button>
+    <button
+      data-tab-button
+      class="data-[state=selected]:text-secondary text-secondary/60 dark:data-[state=selected]:text-accent dark:text-accent/60 -mb-px cursor-pointer px-10 py-3 focus-visible:outline-0"
+    >
+      <span class="text-tagline-1 font-medium">Terms & Condition</span>
+    </button>
+  </div>
+
+  <!-- for less md devices  -->
+  <div class="tab-mobile flex flex-wrap items-center gap-4 md:hidden">
+    <button
+      data-mobile-tab-button
+      class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+    >
+      General
+    </button>
+    <button
+      data-mobile-tab-button
+      class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+    >
+      Changelog
+    </button>
+    <button
+      data-mobile-tab-button
+      class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+    >
+      Privacy
+    </button>
+    <button
+      data-mobile-tab-button
+      class="text-tagline-2 text-secondary/60 dark:text-accent/60 border-stroke-2 dark:border-stroke-7 data-[mobile-active=true]:bg-primary-500 dark:bg-background-7 col-span-6 min-w-16 rounded-full border px-3.5 py-2 font-medium text-nowrap transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] data-[mobile-active=true]:scale-[1.05] data-[mobile-active=true]:text-white"
+    >
+      Terms & Condition
+    </button>
+  </div>
+</div>

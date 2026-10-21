@@ -32,7 +32,7 @@ type OrganizationSettings = {
   logoUrl: string | null
 }
 
-const ConfiguracionView = () => {
+const ConfiguracionView = ({ children }: { children?: React.ReactNode }) => {
   const tenant = useTenant()
 
   const [settings, setSettings] = useState<OrganizationSettings>({
@@ -231,6 +231,12 @@ const ConfiguracionView = () => {
           </CardContent>
         </Card>
       </Grid>
+
+      {children && (
+        <Grid size={{ xs: 12 }}>
+          {children}
+        </Grid>
+      )}
     </Grid>
   )
 }

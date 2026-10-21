@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <Component src="src/components/shared/head-links.htm" />
+    <title>Career - Payment Solution || Nexsas</title>
+  </head>
+  <body class="bg-background-3 dark:bg-background-5">
+    <Component src="src/components/pages/payment-solution/header.htm" />
+    <main>
+      <Component src="src/components/pages/career-page/career.htm" />
+      <Component
+        src="src/components/pages/payment-solution/features.htm"
+        class="py-[100px] xl:py-[200px]"
+      />
+      <Component
+        src="src/components/pages/career-page/positions.htm"
+        page-link="./payment-solution-career-details.html"
+      />
+      <Component
+        src="src/components/shared/cta/cta-v1.htm"
+        class="dark:bg-background-6 bg-white"
+        badge-class="badge-green"
+        badge-text="Get started"
+        span-class="hidden"
+        cta-heading="Build a complete website using the assistance"
+        description="Start your free trial today and see your ideas come to life easily and creatively."
+        cta-btn-text="Get started"
+        btn-class="hover:btn-secondary dark:hover:btn-accent"
+      />
+    </main>
+    <Component src="src/components/pages/payment-solution/footer.htm" />
+  </body>
+</html>

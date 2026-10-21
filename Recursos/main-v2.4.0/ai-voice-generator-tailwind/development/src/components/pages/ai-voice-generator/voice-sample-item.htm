@@ -1,0 +1,132 @@
+<div
+  data-ns-animate
+  data-delay="{=$delay}"
+  class="bg-ns-ivory group voice-sample-item flex w-full max-w-[417px] items-center justify-between gap-x-3 rounded-full p-2 transition-colors duration-500 ease-in-out"
+  role="article"
+  itemscope
+  itemtype="https://schema.org/AudioObject"
+  aria-label="Voice sample: {=$name}"
+>
+  <div class="flex flex-auto items-center justify-start gap-x-3">
+    <figure class="size-[56px] shrink-0 overflow-hidden rounded-full">
+      <img
+        src="{=$img-link}"
+        alt="Avatar for {=$name} voice sample"
+        class="size-full object-cover"
+        itemprop="image"
+        title="{=$name} voice avatar"
+      />
+    </figure>
+    <div class="relative w-full max-w-[257px] overflow-hidden">
+      <div class="voice-sample-item-content relative">
+        <h3 class="text-tagline-1 font-normal" itemprop="name">{=$name}</h3>
+        <p class="text-tagline-3 font-normal" itemprop="description">{=$description}</p>
+      </div>
+      <!-- voice svg  -->
+
+      <div
+        class="voice-sample-svg absolute left-1/2 z-20 w-full max-w-[257px] -translate-x-1/2 translate-y-0"
+      >
+        <Component src="src/components/pages/ai-voice-generator/voice-sample-svg.htm" />
+      </div>
+    </div>
+  </div>
+  <button
+    class="voice-sample-play-button relative flex size-16 cursor-pointer items-center justify-center rounded-full bg-white p-4 transition-transform duration-300 ease-in-out group-hover:scale-107"
+    aria-label="Play voice sample for {=$name}"
+  >
+    <div class="relative size-7 overflow-hidden">
+      <!-- play icon   -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="19"
+        viewBox="0 0 16 19"
+        fill="none"
+        class="play-icon absolute top-1/2 left-1/2 ml-px -translate-x-1/2 -translate-y-1/2"
+      >
+        <foreignObject x="-4" y="-4" width="23.6328" height="26.6816"
+          ><div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style="
+              backdrop-filter: blur(2px);
+              clip-path: url(#bgblur_0_5153_3765_clip_path);
+              height: 100%;
+              width: 100%;
+            "
+          ></div
+        ></foreignObject>
+        <path
+          data-figma-bg-blur-radius="4"
+          d="M0.5 2.50415C0.5 0.921819 2.25049 -0.0338637 3.58151 0.821794L14.2163 7.65846C15.441 8.44573 15.441 10.2359 14.2163 11.0232L3.58152 17.8598C2.2505 18.7155 0.5 17.7598 0.5 16.1775V2.50415Z"
+          fill="#BEAB9A"
+          stroke="#BEAB9A"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <defs>
+          <clipPath id="bgblur_0_5153_3765_clip_path" transform="translate(4 4)">
+            <path
+              d="M0.5 2.50415C0.5 0.921819 2.25049 -0.0338637 3.58151 0.821794L14.2163 7.65846C15.441 8.44573 15.441 10.2359 14.2163 11.0232L3.58152 17.8598C2.2505 18.7155 0.5 17.7598 0.5 16.1775V2.50415Z"
+            />
+          </clipPath>
+        </defs>
+      </svg>
+
+      <!-- pause icon  -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="28"
+        height="28"
+        viewBox="0 0 28 28"
+        fill="none"
+        class="pause-icon absolute left-1/2 -translate-x-1/2 translate-y-[25px]"
+      >
+        <foreignObject x="12.3359" y="0.666504" width="12.6641" height="26.6665"
+          ><div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style="
+              backdrop-filter: blur(2px);
+              clip-path: url(#bgblur_0_5226_9254_clip_path);
+              height: 100%;
+              width: 100%;
+            "
+          ></div
+        ></foreignObject>
+        <path
+          data-figma-bg-blur-radius="4"
+          d="M19.0026 4.6665H18.3359C17.2314 4.6665 16.3359 5.56193 16.3359 6.6665V21.3332C16.3359 22.4377 17.2314 23.3332 18.3359 23.3332H19.0026C20.1072 23.3332 21.0026 22.4377 21.0026 21.3332V6.6665C21.0026 5.56193 20.1072 4.6665 19.0026 4.6665Z"
+          fill="#BEAB9A"
+        />
+        <foreignObject x="3" y="0.666504" width="12.6641" height="26.6665"
+          ><div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style="
+              backdrop-filter: blur(2px);
+              clip-path: url(#bgblur_1_5226_9254_clip_path);
+              height: 100%;
+              width: 100%;
+            "
+          ></div
+        ></foreignObject>
+        <path
+          data-figma-bg-blur-radius="4"
+          d="M9.66667 4.6665H9C7.89543 4.6665 7 5.56193 7 6.6665V21.3332C7 22.4377 7.89543 23.3332 9 23.3332H9.66667C10.7712 23.3332 11.6667 22.4377 11.6667 21.3332V6.6665C11.6667 5.56193 10.7712 4.6665 9.66667 4.6665Z"
+          fill="#BEAB9A"
+        />
+        <defs>
+          <clipPath id="bgblur_0_5226_9254_clip_path" transform="translate(-12.3359 -0.666504)">
+            <path
+              d="M19.0026 4.6665H18.3359C17.2314 4.6665 16.3359 5.56193 16.3359 6.6665V21.3332C16.3359 22.4377 17.2314 23.3332 18.3359 23.3332H19.0026C20.1072 23.3332 21.0026 22.4377 21.0026 21.3332V6.6665C21.0026 5.56193 20.1072 4.6665 19.0026 4.6665Z"
+            />
+          </clipPath>
+          <clipPath id="bgblur_1_5226_9254_clip_path" transform="translate(-3 -0.666504)">
+            <path
+              d="M9.66667 4.6665H9C7.89543 4.6665 7 5.56193 7 6.6665V21.3332C7 22.4377 7.89543 23.3332 9 23.3332H9.66667C10.7712 23.3332 11.6667 22.4377 11.6667 21.3332V6.6665C11.6667 5.56193 10.7712 4.6665 9.66667 4.6665Z"
+            />
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+  </button>
+</div>

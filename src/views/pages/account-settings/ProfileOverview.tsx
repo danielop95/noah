@@ -117,7 +117,7 @@ const ProfileOverview = ({ profile }: Props) => {
         <Box className='flex gap-4'>
           <StatBox>
             <CustomAvatar skin='light' color='warning' size={40} variant='rounded'>
-              <i className='ri-file-list-3-line text-xl' />
+              <i className='solar-clipboard-text-linear text-xl' />
             </CustomAvatar>
             <Box>
               <Typography variant='h5' fontWeight={600}>
@@ -130,7 +130,7 @@ const ProfileOverview = ({ profile }: Props) => {
           </StatBox>
           <StatBox>
             <CustomAvatar skin='light' color='success' size={40} variant='rounded'>
-              <i className='ri-group-line text-xl' />
+              <i className='solar-users-group-rounded-linear text-xl' />
             </CustomAvatar>
             <Box>
               <Typography variant='h5' fontWeight={600}>
@@ -160,7 +160,7 @@ const ProfileOverview = ({ profile }: Props) => {
               variant='rounded'
               src={profile.network.imageUrl || undefined}
             >
-              <i className='ri-bubble-chart-line' />
+              <i className='solar-share-circle-linear' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Typography variant='body1' fontWeight={500}>
@@ -171,7 +171,7 @@ const ProfileOverview = ({ profile }: Props) => {
                 size='small'
                 color={profile.networkRole === 'leader' ? 'warning' : 'default'}
                 variant='tonal'
-                icon={profile.networkRole === 'leader' ? <i className='ri-star-fill' /> : undefined}
+                icon={profile.networkRole === 'leader' ? <i className='solar-star-bold' /> : undefined}
                 sx={{ height: 22, mt: 0.5 }}
               />
             </Box>
@@ -179,7 +179,7 @@ const ProfileOverview = ({ profile }: Props) => {
         ) : (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='secondary' size={44} variant='rounded'>
-              <i className='ri-bubble-chart-line' />
+              <i className='solar-share-circle-linear' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No asignado
@@ -198,7 +198,7 @@ const ProfileOverview = ({ profile }: Props) => {
         {profile.group ? (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='success' size={44} variant='rounded'>
-              <i className='ri-team-line' />
+              <i className='solar-widget-2-linear' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Typography variant='body1' fontWeight={500}>
@@ -210,7 +210,7 @@ const ProfileOverview = ({ profile }: Props) => {
                   size='small'
                   color={profile.groupRole === 'leader' ? 'success' : 'default'}
                   variant='tonal'
-                  icon={profile.groupRole === 'leader' ? <i className='ri-shield-star-line' /> : undefined}
+                  icon={profile.groupRole === 'leader' ? <i className='solar-shield-star-linear' /> : undefined}
                   sx={{ height: 22 }}
                 />
                 {profile.group._count.reports > 0 && (
@@ -224,7 +224,7 @@ const ProfileOverview = ({ profile }: Props) => {
         ) : (
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='secondary' size={44} variant='rounded'>
-              <i className='ri-team-line' />
+              <i className='solar-widget-2-linear' />
             </CustomAvatar>
             <Typography variant='body2' color='text.secondary'>
               No asignado
@@ -243,20 +243,20 @@ const ProfileOverview = ({ profile }: Props) => {
         <Box className='flex flex-col gap-3'>
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='info' size={32}>
-              <i className='ri-mail-line text-base' />
+              <i className='solar-letter-linear text-base' />
             </CustomAvatar>
             <Typography variant='body2'>{profile.email || '-'}</Typography>
           </Box>
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='info' size={32}>
-              <i className='ri-phone-line text-base' />
+              <i className='solar-phone-linear text-base' />
             </CustomAvatar>
             <Typography variant='body2'>{profile.phone || '-'}</Typography>
           </Box>
           {(profile.city || profile.country) && (
             <Box className='flex items-center gap-3'>
               <CustomAvatar skin='light' color='info' size={32}>
-                <i className='ri-map-pin-line text-base' />
+                <i className='solar-map-point-linear text-base' />
               </CustomAvatar>
               <Typography variant='body2'>
                 {[profile.city, profile.country].filter(Boolean).join(', ')}
@@ -266,7 +266,7 @@ const ProfileOverview = ({ profile }: Props) => {
           {profile.organization && (
             <Box className='flex items-center gap-3'>
               <CustomAvatar skin='light' color='info' size={32}>
-                <i className='ri-building-line text-base' />
+                <i className='solar-buildings-linear text-base' />
               </CustomAvatar>
               <Typography variant='body2'>{profile.organization.name}</Typography>
             </Box>

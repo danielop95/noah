@@ -34,7 +34,25 @@
       "Bash(npx dotenv-cli:*)",
       "Bash(tree:*)",
       "Bash(wc:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(vercel:*)",
+      "Bash(while IFS='=' read -r key value)",
+      "Bash(do echo \"$value\")",
+      "Bash(done)",
+      "Bash(pnpm install:*)",
+      "Bash(git:*)",
+      "Bash(tail:*)",
+      "Bash(pnpm build:*)",
+      "Bash(printf 'noah-ruby.vercel.app' | vercel env add NEXT_PUBLIC_MAIN_DOMAIN production 2>&1)",
+      "Bash(printf 'uH6IJQvSsDPBym0KLrs/LFElEHaeWDJfbHjXKp8d+s4=' | vercel env add NEXTAUTH_SECRET production 2>&1)",
+      "Bash(printf 'postgresql://postgres.omamnuaebatnnentcwip:Noahdatabase2026.@aws-0-us-west-2.pooler.supabase.com:6543/postgres?pgbouncer=true' | vercel env add DATABASE_URL production 2>&1)",
+      "Bash(printf 'postgresql://postgres.omamnuaebatnnentcwip:Noahdatabase2026.@aws-0-us-west-2.pooler.supabase.com:5432/postgres' | vercel env add DIRECT_URL production 2>&1)",
+      "Bash(printf 'https://noah-ruby.vercel.app' | vercel env add NEXTAUTH_URL production 2>&1)",
+      "Bash(printf 'https://noah-ruby.vercel.app' | vercel env add NEXT_PUBLIC_APP_URL production 2>&1)",
+      "Bash(printf 'https://noah-ruby.vercel.app/api' | vercel env add API_URL production 2>&1)",
+      "Bash(printf 'https://noah-ruby.vercel.app/api' | vercel env add NEXT_PUBLIC_API_URL production 2>&1)",
+      "Bash(printf 'https://omamnuaebatnnentcwip.supabase.co' | vercel env add NEXT_PUBLIC_SUPABASE_URL production 2>&1)",
+      "Bash(printf 'sb_publishable_kRnd9W-sUgcFz8waAKB38A_IDHQze6K' | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production 2>&1)"
     ],
     "additionalDirectories": [
       "/Users/dan/Documents/Nkrease/Noah/src/app/[lang]/(dashboard)/(private)/admin/usuarios/[id]"

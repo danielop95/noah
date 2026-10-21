@@ -19,37 +19,37 @@ import { verticalLayoutClasses } from '@layouts/utils/layoutClasses'
 const shortcuts: ShortcutsType[] = [
   {
     url: '/dashboard',
-    icon: 'ri-home-smile-line',
+    icon: 'solar-home-smile-linear',
     title: 'Inicio',
     subtitle: 'Dashboard'
   },
   {
     url: '/dashboard/calendario',
-    icon: 'ri-calendar-line',
+    icon: 'solar-calendar-linear',
     title: 'Calendario',
     subtitle: 'Eventos'
   },
   {
     url: '/dashboard/reportes',
-    icon: 'ri-file-chart-line',
+    icon: 'solar-chart-square-linear',
     title: 'Reportes',
     subtitle: 'Informes'
   },
   {
     url: '/dashboard/admin/usuarios',
-    icon: 'ri-group-line',
+    icon: 'solar-users-group-rounded-linear',
     title: 'Usuarios',
     subtitle: 'Administrar'
   },
   {
     url: '/dashboard/admin/redes',
-    icon: 'ri-bubble-chart-line',
+    icon: 'solar-share-circle-linear',
     title: 'Redes',
     subtitle: 'Ministerios'
   },
   {
     url: '/dashboard/account-settings',
-    icon: 'ri-settings-4-line',
+    icon: 'solar-settings-minimalistic-linear',
     title: 'Mi Cuenta',
     subtitle: 'Configuracion'
   }
@@ -77,7 +77,7 @@ const notifications: NotificationsType[] = [
     read: true
   },
   {
-    avatarIcon: 'ri-bar-chart-line',
+    avatarIcon: 'solar-chart-2-linear',
     avatarColor: 'info',
     title: 'Monthly report generated',
     subtitle: 'July month financial report is generated',
@@ -93,7 +93,7 @@ const notifications: NotificationsType[] = [
     read: true
   },
   {
-    avatarIcon: 'ri-mail-line',
+    avatarIcon: 'solar-letter-linear',
     avatarColor: 'error',
     title: 'New message from Harry',
     subtitle: 'You have new message from Harry',

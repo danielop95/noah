@@ -50,7 +50,7 @@ const UserRecentReports = ({ reports }: Props) => {
         <CardContent>
           <Box className='flex flex-col items-center justify-center py-8'>
             <Avatar sx={{ width: 64, height: 64, bgcolor: 'action.hover', mb: 2 }}>
-              <i className='ri-file-list-3-line text-3xl text-textSecondary' />
+              <i className='solar-clipboard-text-linear text-3xl text-textSecondary' />
             </Avatar>
             <Typography color='text.secondary'>
               Este usuario no ha creado reportes
@@ -75,7 +75,7 @@ const UserRecentReports = ({ reports }: Props) => {
             sx={{ bgcolor: 'action.hover' }}
           >
             <Avatar variant='rounded' sx={{ bgcolor: 'primary.main' }}>
-              <i className='ri-calendar-line' />
+              <i className='solar-calendar-linear' />
             </Avatar>
             <Box className='flex-1'>
               <div className='flex items-center gap-2 flex-wrap'>
@@ -90,15 +90,15 @@ const UserRecentReports = ({ reports }: Props) => {
               </div>
               <div className='flex items-center gap-3 mbs-1'>
                 <Typography variant='caption' color='text.secondary'>
-                  <i className='ri-group-line mie-1' />
+                  <i className='solar-users-group-rounded-linear mie-1' />
                   {report.totalAttendees} asistentes
                 </Typography>
                 <Typography variant='caption' color='text.secondary'>
-                  <i className='ri-user-star-line mie-1' />
+                  <i className='solar-medal-star-linear mie-1' />
                   {report.leadersCount} líderes
                 </Typography>
                 <Typography variant='caption' color='text.secondary'>
-                  <i className='ri-user-add-line mie-1' />
+                  <i className='solar-user-plus-linear mie-1' />
                   {report.visitorsCount} visitas
                 </Typography>
               </div>

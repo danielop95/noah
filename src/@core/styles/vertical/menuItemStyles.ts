@@ -47,16 +47,8 @@ const menuItemStyles = (verticalNavOptions: VerticalNavState, theme: Theme): Men
             }
           : {
               color: 'var(--mui-palette-primary-contrastText)',
-              background:
-                theme.direction === 'ltr'
-                  ? `linear-gradient(270deg, var(--mui-palette-primary-main), ${lighten(
-                      theme.palette.primary.main,
-                      0.5
-                    )} 100%)`
-                  : `linear-gradient(270deg, ${lighten(
-                      theme.palette.primary.main,
-                      0.5
-                    )}, var(--mui-palette-primary-main) 100%)`,
+              backgroundColor: 'var(--mui-palette-primary-main)',
+              borderRadius: '50px',
               [`& .${menuClasses.icon}`]: {
                 color: 'inherit'
               }
@@ -74,12 +66,12 @@ const menuItemStyles = (verticalNavOptions: VerticalNavState, theme: Theme): Men
         transition: `padding-inline-start ${transitionDuration}ms ease-in-out`,
         paddingInlineStart: theme.spacing(collapsedNotHovered ? ((collapsedWidth as number) - 25) / 8 : 5.5),
         paddingInlineEnd: theme.spacing(collapsedNotHovered ? ((collapsedWidth as number) - 25) / 8 - 1.25 : 3.5),
-        borderStartEndRadius: 50,
-        borderEndEndRadius: 50
+        borderRadius: '50px'
       }),
       ...(!active && {
         '&:hover, &:focus-visible': {
-          backgroundColor: 'var(--mui-palette-action-hover)'
+          backgroundColor: 'var(--mui-palette-primary-lighterOpacity)',
+          borderRadius: '50px'
         },
         '&[aria-expanded="true"]': {
           backgroundColor: 'var(--mui-palette-action-selected)'

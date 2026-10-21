@@ -176,7 +176,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
         })}
       >
         <div className={styles.toggler} onClick={handleToggle}>
-          <i className='ri-settings-5-line text-[22px]' />
+          <i className='solar-settings-minimalistic-linear text-[22px]' />
         </div>
         <div className={styles.header}>
           <div className='flex flex-col'>
@@ -185,10 +185,10 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
           </div>
           <div className='flex gap-4'>
             <div onClick={resetSettings} className='relative flex cursor-pointer'>
-              <i className='ri-refresh-line text-actionActive' />
+              <i className='solar-restart-linear text-actionActive' />
               <div className={classnames(styles.dotStyles, { [styles.show]: isSettingsChanged })} />
             </div>
-            <i className='ri-close-line text-actionActive cursor-pointer' onClick={handleToggle} />
+            <i className='solar-close-square-linear text-actionActive cursor-pointer' onClick={handleToggle} />
           </div>
         </div>
         <ScrollWrapper
@@ -231,7 +231,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                           : 'var(--mui-palette-primary-contrastText)'
                       }}
                     >
-                      <i className='ri-palette-line text-xl' />
+                      <i className='solar-palette-round-linear text-xl' />
                     </div>
                   </div>
                   <Popper
@@ -270,7 +270,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                       })}
                       onClick={() => handleChange('mode', 'light')}
                     >
-                      <i className='ri-sun-line text-[30px]' />
+                      <i className='solar-sun-linear text-[30px]' />
                     </div>
                     <p className={styles.itemLabel} onClick={() => handleChange('mode', 'light')}>
                       Light
@@ -283,7 +283,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                       })}
                       onClick={() => handleChange('mode', 'dark')}
                     >
-                      <i className='ri-moon-clear-line text-[30px]' />
+                      <i className='solar-moon-linear text-[30px]' />
                     </div>
                     <p className={styles.itemLabel} onClick={() => handleChange('mode', 'dark')}>
                       Dark
@@ -296,7 +296,7 @@ const Customizer = ({ breakpoint = 'lg', dir = 'ltr', disableDirection = false }
                       })}
                       onClick={() => handleChange('mode', 'system')}
                     >
-                      <i className='ri-computer-line text-[30px]' />
+                      <i className='solar-monitor-linear text-[30px]' />
                     </div>
                     <p className={styles.itemLabel} onClick={() => handleChange('mode', 'system')}>
                       System

@@ -15,7 +15,9 @@ const card = (skin: Skin): Theme['components'] => {
       styleOverrides: {
         root: ({ ownerState }) => ({
           ...(ownerState.variant !== 'outlined' && {
-            boxShadow: 'var(--mui-customShadows-md)'
+            boxShadow: 'none',
+            border: '1px solid #dfe4eb',
+            backgroundColor: '#fcfcfd'
           })
         })
       }

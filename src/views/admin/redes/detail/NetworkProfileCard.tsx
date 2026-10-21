@@ -75,7 +75,7 @@ const NetworkProfileCard = ({ network }: Props) => {
           variant='rounded'
           sx={{ bgcolor: 'primary.main' }}
         >
-          <i className='ri-bubble-chart-line text-4xl' />
+          <i className='solar-share-circle-linear text-4xl' />
         </StyledAvatar>
 
         {/* Nombre */}
@@ -115,7 +115,7 @@ const NetworkProfileCard = ({ network }: Props) => {
               size={44}
               variant='rounded'
             >
-              <i className={`ri-arrow-${stats.memberGrowth >= 0 ? 'up' : 'down'}-line text-xl`} />
+              <i className={`solar-arrow-${stats.memberGrowth >= 0 ? 'up' : 'down'}-linear text-xl`} />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between'>
@@ -139,7 +139,7 @@ const NetworkProfileCard = ({ network }: Props) => {
           {/* Grupos */}
           <Box className='flex items-center gap-3'>
             <CustomAvatar skin='light' color='primary' size={44} variant='rounded'>
-              <i className='ri-team-line text-xl' />
+              <i className='solar-widget-2-linear text-xl' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between'>
@@ -164,7 +164,7 @@ const NetworkProfileCard = ({ network }: Props) => {
               size={44}
               variant='rounded'
             >
-              <i className='ri-file-chart-line text-xl' />
+              <i className='solar-chart-square-linear text-xl' />
             </CustomAvatar>
             <Box className='flex-1'>
               <Box className='flex items-center justify-between mbe-1'>
@@ -199,7 +199,7 @@ const NetworkProfileCard = ({ network }: Props) => {
         <Box className='flex gap-4'>
           <StatBox>
             <CustomAvatar skin='light' color='info' size={40} variant='rounded'>
-              <i className='ri-file-list-3-line text-lg' />
+              <i className='solar-clipboard-text-linear text-lg' />
             </CustomAvatar>
             <Box>
               <Typography variant='h6' fontWeight={600}>
@@ -212,7 +212,7 @@ const NetworkProfileCard = ({ network }: Props) => {
           </StatBox>
           <StatBox>
             <CustomAvatar skin='light' color='success' size={40} variant='rounded'>
-              <i className='ri-user-follow-line text-lg' />
+              <i className='solar-user-check-linear text-lg' />
             </CustomAvatar>
             <Box>
               <Typography variant='h6' fontWeight={600}>
@@ -236,7 +236,7 @@ const NetworkProfileCard = ({ network }: Props) => {
         <Box className='flex items-center justify-between'>
           <Box className='flex items-center gap-2'>
             <CustomAvatar skin='light' color='warning' size={32}>
-              <i className='ri-star-fill text-base' />
+              <i className='solar-star-bold text-base' />
             </CustomAvatar>
             <Box>
               <Typography variant='body2' fontWeight={500}>
@@ -249,7 +249,7 @@ const NetworkProfileCard = ({ network }: Props) => {
           </Box>
           <Box className='flex items-center gap-2'>
             <CustomAvatar skin='light' color='info' size={32}>
-              <i className='ri-group-line text-base' />
+              <i className='solar-users-group-rounded-linear text-base' />
             </CustomAvatar>
             <Box>
               <Typography variant='body2' fontWeight={500}>
@@ -262,7 +262,7 @@ const NetworkProfileCard = ({ network }: Props) => {
           </Box>
           <Box className='flex items-center gap-2'>
             <CustomAvatar skin='light' color='secondary' size={32}>
-              <i className='ri-user-line text-base' />
+              <i className='solar-user-linear text-base' />
             </CustomAvatar>
             <Box>
               <Typography variant='body2' fontWeight={500}>

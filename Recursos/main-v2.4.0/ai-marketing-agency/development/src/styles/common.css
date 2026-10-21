@@ -1,0 +1,290 @@
+/* =========== GLOBAL STYLES ========== */
+
+body {
+  @apply font-inter-tight antialiased;
+}
+
+/* ========== CONTAINER ========== */
+@utility main-container {
+  @apply lp:px-0 mx-auto max-w-[1290px] px-5;
+}
+
+@utility main-container-v2 {
+  @apply lp:px-0 mx-auto max-w-[1440px] px-5;
+}
+
+[data-opai-animate] {
+  opacity: 0;
+}
+
+textarea::-webkit-resizer {
+  display: none;
+}
+textarea::-moz-resizer {
+  display: none;
+}
+
+@utility navbar-link {
+  @apply relative before:absolute before:top-2/3 before:left-0 before:h-px before:w-full before:origin-right before:translate-y-2/3 before:scale-x-0 before:bg-white/60 before:transition-transform before:duration-500 before:content-[''] hover:before:origin-left hover:before:scale-x-100;
+}
+
+@utility nav-link {
+  @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-500 before:content-[''] group-hover/nav-item:before:origin-left group-hover/nav-item:before:scale-x-100;
+}
+
+@utility footer-link {
+  @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-500 before:content-[''] hover:before:origin-left hover:before:scale-x-100;
+}
+
+@utility footer-link-v2 {
+  @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:bg-black before:transition-transform before:duration-500 before:content-[''] hover:before:origin-left hover:before:scale-x-100;
+}
+
+.footer-title {
+  background: var(
+    --Gradient-12,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.2) 100%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/*  =========================== Blog title underline hover effect =========================== */
+.underline-hover-effect .blog-title h3 {
+  @apply inline w-full cursor-pointer pb-[1px] transition-all duration-500 ease-[cubic-bezier(0.645,0.045,0.355,1.000)];
+  background-image: linear-gradient(transparent calc(100% - 1px), white 1px);
+  @apply bg-[length:0%_100%] bg-no-repeat;
+}
+
+.underline-hover-effect:hover .blog-title h3 {
+  @apply bg-[length:100%_100%];
+}
+
+/*  =========================== Blog title underline hover effect black =========================== */
+.underline-hover-effect-black .blog-title-black h3 {
+  @apply inline w-full cursor-pointer pb-[1px] transition-all duration-500 ease-[cubic-bezier(0.645,0.045,0.355,1.000)];
+  background-image: linear-gradient(transparent calc(100% - 1px), black 1px);
+  @apply bg-[length:0%_100%] bg-no-repeat;
+}
+
+.underline-hover-effect-black:hover .blog-title-black h3 {
+  @apply bg-[length:100%_100%];
+}
+
+/* =========================== Image Loading Reveal =========================== */
+.image-loading-reveal img {
+  will-change: transform, clip-path;
+}
+
+/* =========================== MODAL =========================== */
+
+.modal-open {
+  @apply grid;
+}
+
+.modal-close {
+  @apply hidden;
+}
+
+/* Dialog element styling */
+dialog.modal-overlay {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+dialog.modal-overlay::backdrop {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+dialog.modal-overlay.modal-close {
+  display: none;
+}
+
+/* =========================== Text reveal =========================== */
+.text-reveal {
+  @apply relative inline-block overflow-hidden;
+}
+
+.integration-circle-animation {
+  animation: spin 50s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================== Blog Card Active Width transition =========================== */
+.blog-card {
+  @apply w-full transition-[width] duration-800 ease-in-out md:w-[318px];
+}
+.blog-card.active-card {
+  @apply md:w-[590px];
+}
+
+/* =========================== Partner Ship Card Active Width transition =========================== */
+.partner-ship-card {
+  @apply w-full transition-[width] duration-800 ease-in-out lg:w-[336.5px];
+}
+.partner-ship-card.active-partner-ship-card {
+  @apply lg:w-[717px];
+}
+.partner-ship-description {
+  @apply max-h-0 overflow-hidden transition-all duration-700 ease-in-out;
+}
+.active-partner-ship-card .partner-ship-description {
+  @apply max-h-[200px];
+}
+
+.partner-ship-gradient {
+  @apply -translate-x-100 scale-50 transition-all duration-700 ease-in-out;
+}
+.active-partner-ship-card .partner-ship-gradient {
+  @apply translate-x-0 scale-100;
+}
+
+.partner-ship-arrow-icon {
+  @apply translate-y-20 scale-75 opacity-0 transition-all duration-700 ease-in-out;
+}
+.active-partner-ship-card .partner-ship-arrow-icon {
+  @apply translate-y-0 scale-100 opacity-100;
+}
+
+/* =========================== Service Details Markdown =========================== */
+.service-details-markdown {
+  h2 {
+    @apply text-background-13/90 font-instrument-serif text-is-heading-4 md:text-is-heading-3 lg:text-is-heading-2 font-normal;
+  }
+
+  p {
+    @apply text-tagline-2 text-background-13/60 mt-[70px] font-normal;
+
+    span {
+      @apply mt-5 inline-block;
+    }
+  }
+
+  img {
+    @apply mt-[70px] overflow-hidden rounded-lg outline-8 outline-white;
+  }
+
+  h2 + p {
+    @apply !mt-3;
+  }
+
+  h3 {
+    @apply text-background-13/90 font-instrument-serif text-is-heading-4 mt-[70px] font-normal;
+  }
+  h3 + ul {
+    @apply mt-4 space-y-3;
+  }
+  ul > li {
+    @apply font-inter-tight text-tagline-2 text-background-13/60 before:bg-background-13 flex items-center gap-x-2 font-normal before:block before:size-1.5 before:rounded-full before:content-[''];
+  }
+
+  h3 + p {
+    @apply !mt-4;
+  }
+}
+
+/* =========================== Case Study Details Markdown =========================== */
+
+.case-study-details-markdown {
+  h3 {
+    @apply font-inter-tight text-it-heading-5 mt-[70px] font-normal text-white/90;
+  }
+
+  p {
+    @apply text-tagline-2 font-inter-tight font-normal text-white/60;
+
+    span {
+      @apply mt-5 inline-block;
+    }
+  }
+
+  ul {
+    @apply mt-4 space-y-2;
+
+    li {
+      @apply font-inter-tight text-tagline-2 font-normal text-white/60;
+
+      span {
+        @apply text-white/90;
+      }
+    }
+  }
+
+  h3 + p {
+    @apply mt-2;
+  }
+}
+
+/* =========================== Blog Details Markdown =========================== */
+.blog-details-markdown {
+  h3 {
+    @apply text-background-13/90 font-instrument-serif text-is-heading-4 md:text-is-heading-3 lg:text-is-heading-4 mt-[70px] font-normal;
+  }
+
+  p {
+    @apply text-tagline-2 text-background-13/60 font-inter-tight my-[70px] font-normal;
+  }
+
+  blockquote {
+    @apply bg-background-4 font-inter-tight text-tagline-1 relative mt-[70px] rounded-xl px-6 py-[39px] font-normal text-white/90;
+
+    &::before {
+      @apply bg-opai-blue absolute top-1/2 left-0 h-[90px] w-[3px] -translate-y-1/2 rounded-full content-[''];
+    }
+  }
+
+  h3 + p {
+    @apply !mt-2 !mb-0;
+  }
+
+  h3 + p + ul {
+    @apply mt-4 space-y-2;
+
+    li {
+      @apply font-inter-tight text-tagline-2 text-background-13/90 before:bg-background-13 flex items-center gap-x-2 font-normal before:block before:size-1.5 before:rounded-full before:content-[''];
+    }
+  }
+}
+
+/* team details markdown style  */
+.team-details {
+  @apply mx-auto w-full max-w-[850px];
+
+  h3 {
+    @apply font-instrument-serif text-is-heading-5 mt-10 font-normal text-white/90 md:mt-18;
+  }
+
+  p {
+    @apply font-inter-tight text-tagline-2 font-normal text-white/60;
+  }
+
+  h3 + p {
+    @apply mt-1;
+  }
+
+  h4 {
+    @apply font-instrument-serif text-is-heading-6 mt-8 font-normal text-white/90;
+  }
+
+  h4 + p {
+    @apply mt-2;
+  }
+
+  h3 + ul {
+    @apply mt-2 space-y-1;
+  }
+
+  ul > li {
+    @apply font-inter-tight text-tagline-2 flex items-center gap-x-2 font-normal text-white/60 before:block before:size-1.5 before:rounded-full before:bg-white before:content-[''];
+  }
+}

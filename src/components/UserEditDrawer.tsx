@@ -206,7 +206,7 @@ const UserEditDrawer = ({ open, onClose, user, onSaved }: Props) => {
         <div className='flex justify-between items-center'>
           <Typography variant='h6'>Editar Usuario</Typography>
           <IconButton onClick={onClose}>
-            <i className='ri-close-line' />
+            <i className='solar-close-square-linear' />
           </IconButton>
         </div>
 

@@ -1,0 +1,410 @@
+<!-- =========================
+Mobile Menu
+===========================-->
+
+<aside
+  class="sidebar dark:bg-background-8 scroll-bar fixed top-0 right-0 z-[9999] h-screen w-full translate-x-full rounded-l-3xl bg-white transition-all duration-300 sm:w-1/2 xl:hidden"
+>
+  <div class="space-y-4 p-5 sm:p-8 lg:p-9">
+    <div class="flex items-center justify-between">
+      <a href="./insurance.html">
+        <span class="sr-only">Home</span>
+        <figure class="max-w-[44px]">
+          <img src="./images/shared/logo.svg" alt="Nexsas" class="block w-full dark:hidden" />
+          <img src="./images/shared/logo-dark.svg" alt="Nexsas" class="hidden w-full dark:block" />
+        </figure>
+      </a>
+      <button
+        class="nav-hamburger-close bg-background-4 dark:bg-background-9 relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full"
+      >
+        <span class="sr-only">Close Menu</span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 rotate-45"></span>
+        <span class="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 -rotate-45"></span>
+      </button>
+    </div>
+    <div class="scroll-bar mt-6 h-[85vh] w-full overflow-x-hidden overflow-y-auto pb-10">
+      <p
+        class="text-secondary dark:text-accent text-tagline-1 before:bg-stroke-4 dark:before:bg-stroke-6 relative mb-2 block font-normal before:absolute before:top-1/2 before:-right-16 before:h-px before:w-full before:-translate-y-1/2 before:content-['']"
+      >
+        Menu
+      </p>
+      <ul class="space-y-2">
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="company"
+          >
+            <span class="text-secondary/60 dark:text-accent/60 text-tagline-1 block font-normal"
+              >Company</span
+            >
+
+            <span class="menu-arrow rotate-90 transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu block" data-submenu="company">
+            <li>
+              <a
+                href="./insurance-about.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-services.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Our Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-features.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Product Features</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-blog.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Blog &amp; News</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="collaborate"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >Collaborate</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="collaborate">
+            <li>
+              <a
+                href="./insurance-affiliates.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Affiliate</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-referral-program.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Referral</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-login.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Login</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-signup.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Create Account</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-download.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Download</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-integration.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Integration</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="resources"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >Resources</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="resources">
+            <li>
+              <a
+                href="./insurance-documentation.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Documentation</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-tutorial.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Tutorials</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-faq.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >FAQ</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-case-study.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Case Studies</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-whitepaper.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Whitepapers</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-support.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Support</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-use-case.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Use Cases</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-success-stories.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Success Stories</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-analytics.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Analytics</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-changelog.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Changelog</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-glossary.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Glossary</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-security.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Security</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-gdpr.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >GDPR Compliance</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-privacy-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-terms-conditions.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Terms &amp; Conditions</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-refund-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Refund Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-affiliate-policy.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Affiliate Policy</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-legal.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Legal</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-press.html"
+                class="text-tagline-1 font-normal text-secondary dark:text-accent transition-all duration-200 py-2.5 text-left block ml-4"
+                >Press Coverage</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="space-y-2">
+          <button
+            class="mobile-menu-toggle flex w-full cursor-pointer items-center justify-between py-2.5"
+            data-menu="people-culture"
+          >
+            <span
+              class="text-secondary/60 dark:text-accent/60 text-tagline-1 relative block font-normal"
+              >People & Culture</span
+            >
+
+            <span class="menu-arrow transition-transform duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 12L14 8L10 4"
+                  class="stroke-secondary/60 dark:stroke-accent/60"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+          <ul class="mobile-submenu hidden" data-submenu="people-culture">
+            <li>
+              <a
+                href="./insurance-process.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Process</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-team.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Team</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-career.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Career</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-testimonial.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Testimonial</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-customers.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Customer</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-contact.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Contact</a
+              >
+            </li>
+            <li>
+              <a
+                href="./insurance-pricing.html"
+                class="text-tagline-1 text-secondary dark:text-accent ml-4 block py-2.5 text-left font-normal transition-all duration-200"
+                >Pricing</a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

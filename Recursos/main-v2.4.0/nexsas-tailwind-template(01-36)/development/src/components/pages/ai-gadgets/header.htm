@@ -1,0 +1,121 @@
+<!-- =========================
+Header
+===========================-->
+<header>
+  <div
+    data-ns-animate
+    data-direction="up"
+    data-offset="20"
+    class="header-six lp:!max-w-[1290px] bg-accent/10 dark:bg-background-7/40 has-top-nav {=$class} fixed top-14 left-1/2 z-50 mx-auto flex w-full max-w-[350px] -translate-x-1/2 items-center justify-between rounded-full px-2.5 py-2.5 backdrop-blur-[25px] min-[425px]:max-w-[380px] min-[500px]:max-w-[450px] sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] xl:py-0"
+  >
+    <div>
+      <a href="./ai-gadgets.html">
+        <span class="sr-only">Home</span>
+        <figure class="hidden lg:block lg:max-w-[198px]">
+          <img src="./images/shared/dark-logo.svg" alt="Nexsas" />
+        </figure>
+        <figure class="block max-w-[44px] lg:hidden">
+          <img src="./images/shared/logo.svg" alt="Nexsas" class="block w-full dark:hidden" />
+          <img src="./images/shared/logo-dark.svg" alt="Nexsas" class="hidden w-full dark:block" />
+        </figure>
+      </a>
+    </div>
+    <nav class="hidden items-center xl:flex">
+      <ul class="flex items-center gap-6">
+        <li class="nav-item relative cursor-pointer py-5" data-menu="explore-mega-menu">
+          <a href="#" class="nav-item-link-white flex items-center gap-1">
+            <span>Explore</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/ai-gadgets/explore-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-5" data-menu="engage-dropdown-menu">
+          <a href="#" class="nav-item-link-white flex items-center gap-1">
+            <span>Engage</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/ai-gadgets/engage-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-5" data-menu="insights-dropdown-menu">
+          <a href="#" class="nav-item-link-white flex items-center gap-1">
+            <span>Insights</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/ai-gadgets/insights-menu.htm" />
+        </li>
+        <li class="py-5">
+          <a href="./ai-gadgets-blog.html" class="nav-item-link-white"> Blog </a>
+        </li>
+        <li class="py-5">
+          <a href="./ai-gadgets-contact.html" class="nav-item-link-white"> Contact us </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <div class="hidden items-center sm:flex">
+        <Component
+          src="src/components/shared/button-v2.htm"
+          page-link="./ai-gadgets-login.html"
+          btn-class="btn-md-v2 !border-0 btn-v2-white group-hover/btn-v2:btn-primary-v2 "
+          btn-text="Get started"
+        />
+      </div>
+      <div class="block xl:hidden">
+        <button
+          class="nav-hamburger bg-background-4 dark:bg-background-6 flex size-12 cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full"
+        >
+          <span class="sr-only">Menu</span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <Component src="src/components/pages/ai-gadgets/mobile-menu.htm" />
+</header>

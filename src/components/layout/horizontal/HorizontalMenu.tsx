@@ -42,13 +42,13 @@ type RenderVerticalExpandIconProps = {
 
 const RenderExpandIcon = ({ level }: RenderExpandIconProps) => (
   <StyledHorizontalNavExpandIcon level={level}>
-    <i className='ri-arrow-right-s-line' />
+    <i className='solar-alt-arrow-right-linear' />
   </StyledHorizontalNavExpandIcon>
 )
 
 const RenderVerticalExpandIcon = ({ open, transitionDuration }: RenderVerticalExpandIconProps) => (
   <StyledVerticalNavExpandIcon open={open} transitionDuration={transitionDuration}>
-    <i className='ri-arrow-right-s-line' />
+    <i className='solar-alt-arrow-right-linear' />
   </StyledVerticalNavExpandIcon>
 )
 
@@ -83,8 +83,8 @@ const HorizontalMenu = ({ dictionary, userHierarchy }: HorizontalMenuProps) => {
       <Menu
         rootStyles={menuRootStyles(theme)}
         renderExpandIcon={({ level }) => <RenderExpandIcon level={level} />}
-        renderExpandedMenuItemIcon={{ icon: <i className='ri-circle-line' /> }}
-        menuItemStyles={menuItemStyles(theme, 'ri-circle-line')}
+        renderExpandedMenuItemIcon={{ icon: <i className='solar-circle-bottom-up-linear' /> }}
+        menuItemStyles={menuItemStyles(theme, 'solar-circle-bottom-up-linear')}
         popoutMenuOffset={{
           mainAxis: ({ level }) => (level && level > 0 ? 4 : 16),
           alignmentAxis: 0
@@ -94,7 +94,7 @@ const HorizontalMenu = ({ dictionary, userHierarchy }: HorizontalMenuProps) => {
           renderExpandIcon: ({ open }) => (
             <RenderVerticalExpandIcon open={open} transitionDuration={transitionDuration} />
           ),
-          renderExpandedMenuItemIcon: { icon: <i className='ri-circle-line' /> },
+          renderExpandedMenuItemIcon: { icon: <i className='solar-circle-bottom-up-linear' /> },
           menuSectionStyles: verticalMenuSectionStyles(verticalNavOptions, theme)
         }}
       >

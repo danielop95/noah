@@ -1,0 +1,157 @@
+<!-- =========================
+Header 
+===========================-->
+<header>
+  <div
+    data-ns-animate
+    data-direction="up"
+    data-offset="20"
+    class="header-two lp:!max-w-[1290px] dark:bg-background-7 bg-background-7 {=$class} fixed top-14 left-1/2 z-50 mx-auto flex w-full max-w-[350px] -translate-x-1/2 items-center justify-between rounded-full px-2.5 py-2.5 backdrop-blur-[25px] max-md:!top-8 min-[425px]:max-w-[380px] min-[500px]:max-w-[450px] sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px] xl:py-0"
+  >
+    <div>
+      <a href="./time-tracking.html">
+        <span class="sr-only">Home</span>
+        <figure class="hidden lg:block lg:max-w-[198px]">
+          <img src="./images/shared/dark-logo.svg" alt="Nexsas" />
+        </figure>
+        <figure class="block max-w-[44px] lg:hidden">
+          <img src="./images/shared/logo.svg" alt="Nexsas" class="block w-full dark:hidden" />
+          <img src="./images/shared/logo-dark.svg" alt="Nexsas" class="hidden w-full dark:block" />
+        </figure>
+      </a>
+    </div>
+    <nav class="hidden items-center xl:flex">
+      <ul class="flex items-center">
+        <li class="nav-item relative cursor-pointer py-2.5" data-menu="company-mega-menu-v2">
+          <a
+            href="#"
+            class="hover:text-accent hover:border-accent dark:hover:border-stroke-7 text-tagline-1 text-accent/60 dark:text-accent/60 dark:hover:text-accent group flex items-center gap-1 rounded-full border border-transparent px-4 py-2 font-normal transition-all duration-200"
+          >
+            <span>Company</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="stroke-accent/60 group-hover:stroke-accent size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/time-tracking/company-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-2.5" data-menu="platform-mega-menu-v2">
+          <a
+            href="#"
+            class="hover:text-accent hover:border-accent dark:hover:border-stroke-7 text-tagline-1 text-accent/60 dark:text-accent/60 dark:hover:text-accent group flex items-center gap-1 rounded-full border border-transparent px-4 py-2 font-normal transition-all duration-200"
+          >
+            <span>Platform</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="stroke-accent/60 group-hover:stroke-accent size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/time-tracking/platform-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-2.5" data-menu="resources-dropdown-menu-v2">
+          <a
+            href="#"
+            class="hover:text-accent hover:border-accent dark:hover:border-stroke-7 text-tagline-1 text-accent/60 dark:text-accent/60 dark:hover:text-accent group flex items-center gap-1 rounded-full border border-transparent px-4 py-2 font-normal transition-all duration-200"
+          >
+            <span>Resources</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="stroke-accent/60 group-hover:stroke-accent size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/time-tracking/resources-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-2.5" data-menu="product-mega-menu">
+          <a
+            href="#"
+            class="hover:text-accent hover:border-accent dark:hover:border-stroke-7 text-tagline-1 text-accent/60 dark:text-accent/60 dark:hover:text-accent group flex items-center gap-1 rounded-full border border-transparent px-4 py-2 font-normal transition-all duration-200"
+          >
+            <span>Plans & Support</span>
+            <span class="nav-arrow block origin-center translate-y-px transition-all duration-300">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="stroke-accent/60 group-hover:stroke-accent size-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </span>
+          </a>
+          <Component src="src/components/pages/time-tracking/plan-and-support-menu.htm" />
+        </li>
+        <li class="nav-item relative cursor-pointer py-2.5">
+          <a
+            href="./time-tracking-pricing.html"
+            class="hover:text-accent hover:border-accent dark:hover:border-stroke-7 text-tagline-1 text-accent/60 dark:text-accent/60 dark:hover:text-accent group flex items-center gap-1 rounded-full border border-transparent px-4 py-2 font-normal transition-all duration-200"
+          >
+            <span>Pricing</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <div class="hidden items-center justify-center xl:flex">
+        <a
+          href="./time-tracking-signup.html"
+          class="btn btn-md hover:btn-white dark:hover:btn-white-dark btn-white-dark dark:btn-white"
+        >
+          <span>Get started</span>
+        </a>
+      </div>
+      <div class="block xl:hidden">
+        <button
+          class="nav-hamburger bg-background-4 dark:bg-background-6 flex size-12 cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full"
+        >
+          <span class="sr-only">Menu</span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+          <span class="bg-stroke-9 dark:bg-stroke-1 block h-0.5 w-6"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <Component src="src/components/pages/time-tracking/mobile-menu.htm" />
+</header>

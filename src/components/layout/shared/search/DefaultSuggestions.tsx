@@ -27,22 +27,22 @@ const defaultSuggestions: DefaultSuggestionsType[] = [
       {
         label: 'Inicio',
         href: '/dashboard',
-        icon: 'ri-home-smile-line'
+        icon: 'solar-home-smile-linear'
       },
       {
         label: 'Calendario',
         href: '/dashboard/calendario',
-        icon: 'ri-calendar-line'
+        icon: 'solar-calendar-linear'
       },
       {
         label: 'Reportes',
         href: '/dashboard/reportes',
-        icon: 'ri-file-chart-line'
+        icon: 'solar-chart-square-linear'
       },
       {
         label: 'Mi Cuenta',
         href: '/dashboard/account-settings',
-        icon: 'ri-user-settings-line'
+        icon: 'solar-user-circle-linear'
       }
     ]
   },
@@ -52,22 +52,22 @@ const defaultSuggestions: DefaultSuggestionsType[] = [
       {
         label: 'Usuarios',
         href: '/dashboard/admin/usuarios',
-        icon: 'ri-group-line'
+        icon: 'solar-users-group-rounded-linear'
       },
       {
         label: 'Redes',
         href: '/dashboard/admin/redes',
-        icon: 'ri-bubble-chart-line'
+        icon: 'solar-share-circle-linear'
       },
       {
         label: 'Grupos',
         href: '/dashboard/admin/grupos',
-        icon: 'ri-team-line'
+        icon: 'solar-widget-2-linear'
       },
       {
         label: 'Configuracion',
         href: '/dashboard/admin/configuracion',
-        icon: 'ri-settings-3-line'
+        icon: 'solar-settings-minimalistic-linear'
       }
     ]
   }

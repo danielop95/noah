@@ -129,12 +129,12 @@ const UserDropdown = () => {
                   </div>
                   <Divider className='mlb-1' />
                   <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/dashboard/account-settings')}>
-                    <i className='ri-user-settings-line' />
+                    <i className='solar-user-circle-linear' />
                     <Typography color='text.primary'>Mi Cuenta</Typography>
                   </MenuItem>
                   {(session?.user?.roleHierarchy ?? 999) <= 2 && (
                     <MenuItem className='gap-3' onClick={e => handleDropdownClose(e, '/dashboard/admin/usuarios')}>
-                      <i className='ri-group-line' />
+                      <i className='solar-users-group-rounded-linear' />
                       <Typography color='text.primary'>Usuarios</Typography>
                     </MenuItem>
                   )}
@@ -144,7 +144,7 @@ const UserDropdown = () => {
                       variant='contained'
                       color='error'
                       size='small'
-                      endIcon={<i className='ri-logout-box-r-line' />}
+                      endIcon={<i className='solar-logout-2-linear' />}
                       onClick={handleUserLogout}
                       sx={{ '& .MuiButton-endIcon': { marginInlineStart: 1.5 } }}
                     >

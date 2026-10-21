@@ -181,7 +181,7 @@ const NotificationDropdown = ({ notifications }: { notifications: NotificationsT
           invisible={notificationCount === 0}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <i className='ri-notification-2-line' />
+          <i className='solar-bell-linear' />
         </Badge>
       </IconButton>
       <Popper
@@ -233,7 +233,7 @@ const NotificationDropdown = ({ notifications }: { notifications: NotificationsT
                     >
                       {notificationsState.length > 0 ? (
                         <IconButton size='small' onClick={() => readAllNotifications()} className='text-textPrimary'>
-                          <i className={readAll ? 'ri-mail-line' : 'ri-mail-open-line'} />
+                          <i className={readAll ? 'solar-letter-linear' : 'solar-letter-opened-linear'} />
                         </IconButton>
                       ) : (
                         <></>
@@ -283,7 +283,7 @@ const NotificationDropdown = ({ notifications }: { notifications: NotificationsT
                               })}
                             />
                             <i
-                              className='ri-close-line text-xl invisible group-hover:visible text-textSecondary'
+                              className='solar-close-square-linear text-xl invisible group-hover:visible text-textSecondary'
                               onClick={e => handleRemoveNotification(e, index)}
                             />
                           </div>

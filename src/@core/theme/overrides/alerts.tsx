@@ -8,10 +8,10 @@ const alerts: Theme['components'] = {
   MuiAlert: {
     defaultProps: {
       iconMapping: {
-        error: <i className='ri-error-warning-line' />,
-        warning: <i className='ri-alert-line' />,
-        info: <i className='ri-information-line' />,
-        success: <i className='ri-checkbox-circle-line' />
+        error: <i className='solar-danger-triangle-linear' />,
+        warning: <i className='solar-danger-triangle-linear' />,
+        info: <i className='solar-info-circle-linear' />,
+        success: <i className='solar-check-circle-linear' />
       }
     },
     styleOverrides: {

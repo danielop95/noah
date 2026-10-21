@@ -7,14 +7,16 @@ export const metadata = {
   description: 'Panel del Instituto Life'
 }
 
-const InstitutoPage = async () => {
+async function PageContent() {
   const stats = await getInstitutoDashboardStats()
 
+  return <InstitutoDashboard stats={stats} />
+}
+
+export default function InstitutoPage() {
   return (
     <PermissionGuard permission='instituto.ver'>
-      <InstitutoDashboard stats={stats} />
+      <PageContent />
     </PermissionGuard>
   )
 }
-
-export default InstitutoPage

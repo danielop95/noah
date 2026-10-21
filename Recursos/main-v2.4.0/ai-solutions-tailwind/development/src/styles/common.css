@@ -1,0 +1,78 @@
+/* =========== GLOBAL STYLES ========== */
+
+body {
+  @apply font-inter-tight antialiased;
+}
+
+[data-opai-animate] {
+  opacity: 0;
+}
+[data-opai-split-text] {
+  opacity: 0;
+}
+
+/* ========== CONTAINER ========== */
+
+@utility main-container {
+  @apply lp:px-0 mx-auto max-w-[1290px] px-5;
+}
+
+@utility footer-link {
+  @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-500 before:content-[''] hover:before:origin-left hover:before:scale-x-100;
+}
+
+.footer-title {
+  background: var(
+    --Gradient-12,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.2) 100%)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/*  =========================== Blog title underline hover effect =========================== */
+.underline-hover-effect .blog-title h3 {
+  @apply inline w-full cursor-pointer pb-[1px] transition-all duration-500 ease-[cubic-bezier(0.645,0.045,0.355,1.000)];
+  background-image: linear-gradient(transparent calc(100% - 1px), white 1px);
+  @apply bg-[length:0%_100%] bg-no-repeat;
+}
+
+.underline-hover-effect:hover .blog-title h3 {
+  @apply bg-[length:100%_100%];
+}
+
+/* =========================== Image Loading Reveal =========================== */
+.image-loading-reveal img {
+  will-change: transform, clip-path;
+}
+
+/* =========================== MODAL =========================== */
+
+.modal-open {
+  @apply grid;
+}
+
+.modal-close {
+  @apply hidden;
+}
+
+/* Dialog element styling */
+dialog.modal-overlay {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+dialog.modal-overlay::backdrop {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+dialog.modal-overlay.modal-close {
+  display: none;
+}
+
+/* =========================== Text reveal =========================== */
+.text-reveal {
+  @apply relative inline-block overflow-hidden;
+}

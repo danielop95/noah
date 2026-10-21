@@ -180,7 +180,7 @@ const AccountTab = () => {
                 component='label'
                 variant='contained'
                 disabled={uploading}
-                startIcon={uploading ? <CircularProgress size={16} color='inherit' /> : <i className='ri-upload-2-line' />}
+                startIcon={uploading ? <CircularProgress size={16} color='inherit' /> : <i className='solar-upload-linear' />}
               >
                 {uploading ? 'Subiendo...' : 'Subir Foto'}
                 <input
@@ -195,7 +195,7 @@ const AccountTab = () => {
                   variant='outlined'
                   color='error'
                   onClick={() => handleChange('image', '')}
-                  startIcon={<i className='ri-delete-bin-line' />}
+                  startIcon={<i className='solar-trash-bin-trash-linear' />}
                 >
                   Eliminar
                 </Button>
@@ -244,7 +244,7 @@ const AccountTab = () => {
               disabled
               slotProps={{
                 input: {
-                  startAdornment: <i className='ri-mail-line text-textSecondary mie-2' />
+                  startAdornment: <i className='solar-letter-linear text-textSecondary mie-2' />
                 }
               }}
             />
@@ -257,7 +257,7 @@ const AccountTab = () => {
               onChange={e => handleChange('phone', e.target.value)}
               slotProps={{
                 input: {
-                  startAdornment: <i className='ri-phone-line text-textSecondary mie-2' />
+                  startAdornment: <i className='solar-phone-linear text-textSecondary mie-2' />
                 }
               }}
             />
@@ -402,7 +402,7 @@ const AccountTab = () => {
                 variant='contained'
                 onClick={handleSave}
                 disabled={saving}
-                startIcon={saving ? <CircularProgress size={16} color='inherit' /> : <i className='ri-save-line' />}
+                startIcon={saving ? <CircularProgress size={16} color='inherit' /> : <i className='solar-save-linear' />}
               >
                 {saving ? 'Guardando...' : 'Guardar Cambios'}
               </Button>

@@ -97,7 +97,7 @@ const ShortcutsDropdown = ({ shortcuts }: { shortcuts: ShortcutsType[] }) => {
   return (
     <>
       <IconButton ref={anchorRef} onClick={handleToggle} className='!text-textPrimary'>
-        <i className='ri-star-smile-line' />
+        <i className='solar-star-shine-linear' />
       </IconButton>
       <Popper
         open={open}
@@ -144,7 +144,7 @@ const ShortcutsDropdown = ({ shortcuts }: { shortcuts: ShortcutsType[] }) => {
                       }}
                     >
                       <IconButton size='small' className='text-textPrimary'>
-                        <i className='ri-add-line' />
+                        <i className='solar-add-circle-linear' />
                       </IconButton>
                     </Tooltip>
                   </div>

@@ -1,0 +1,17 @@
+/* =========================
+Sidebar and header animations
+=========================== */
+
+/* Sidebar states */
+.show-sidebar {
+  @apply translate-x-0;
+}
+
+.hide-sidebar {
+  @apply translate-x-full;
+}
+
+/* Menu states */
+.active-menu {
+  @apply text-background-6 font-medium;
+}

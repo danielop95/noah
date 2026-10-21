@@ -1,0 +1,55 @@
+<!-- =========================
+Testimonial section
+===========================-->
+<section class="pb-[80px] lg:pb-[100px]">
+  <div class="main-container">
+    <div class="space-y-14">
+      <!-- heading  -->
+      <div class="space-y-3">
+        <h2 id="testimonials-title" data-ns-animate data-delay="0.1">What our users say</h2>
+        <blockquote>
+          <p data-ns-animate data-delay="0.2">
+            "Creative Portfolio delivered our entire platform ahead of schedule—flawless execution
+            and real partnership."
+          </p>
+        </blockquote>
+      </div>
+
+      <!-- testimonial card  -->
+      <div
+        data-ns-animate
+        data-delay="0.3"
+        class="bg-secondary dark:bg-background-6 max-w-[950px] space-y-6 rounded-[20px] p-8"
+      >
+        <figure class="size-14 overflow-hidden rounded-full bg-(image:--color-gradient-7)">
+          <img
+            src="./images/ns-avatar-5.png"
+            class="size-full object-cover"
+            alt="Darren Mitchell, CFO at VelocityFinance"
+          />
+        </figure>
+        <blockquote cite="https://velocityfinance.com">
+          <p class="dark:text-accent/60 text-white">
+            "Nexsas transformed our reporting process, reducing what used to take hours into just a
+            few clicks. It has become our definitive source of truth, streamlining our operations
+            and enhancing our decision-making capabilities."
+          </p>
+        </blockquote>
+
+        <div class="pb-4">
+          <h4 class="text-lg leading-[150%] font-medium text-white">Darren Mitchell</h4>
+          <p class="text-tagline-2 text-accent/60">CFO at VelocityFinance</p>
+        </div>
+      </div>
+
+      <div data-ns-animate data-delay="0.4" class="text-center lg:text-left">
+        <Component
+          src="src/components/shared/button-v2.htm"
+          page-link="{=$page-link}"
+          btn-class="btn-xl-v2 btn-primary-v2 group-hover/btn-v2:btn-secondary-v2"
+          btn-text="Read full case study"
+        />
+      </div>
+    </div>
+  </div>
+</section>

@@ -109,7 +109,7 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
     return (
       <Box className='flex flex-col items-center justify-center py-12'>
         <CustomAvatar skin='light' color='info' size={64} sx={{ mb: 2 }}>
-          <i className='ri-file-list-3-line text-3xl' />
+          <i className='solar-clipboard-text-linear text-3xl' />
         </CustomAvatar>
         <Typography variant='h6' className='mbe-1'>
           Sin reportes
@@ -119,7 +119,7 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
         </Typography>
         <Button
           variant='contained'
-          startIcon={<i className='ri-add-line' />}
+          startIcon={<i className='solar-add-circle-linear' />}
           onClick={() => router.push('/dashboard/reportes')}
         >
           Crear Reporte
@@ -134,13 +134,13 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
       <Box className='flex items-center justify-between mbe-4 flex-wrap gap-4'>
         <Box className='flex items-center gap-4'>
           <Chip
-            icon={<i className='ri-file-list-3-line' />}
+            icon={<i className='solar-clipboard-text-linear' />}
             label={`${stats.totalReports} reportes`}
             color='primary'
             variant='tonal'
           />
           <Chip
-            icon={<i className='ri-group-line' />}
+            icon={<i className='solar-users-group-rounded-linear' />}
             label={`Prom. ${stats.avgAttendees} asistentes`}
             color='success'
             variant='tonal'
@@ -149,7 +149,7 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
         <Button
           size='small'
           variant='outlined'
-          startIcon={<i className='ri-add-line' />}
+          startIcon={<i className='solar-add-circle-linear' />}
           onClick={() => router.push('/dashboard/reportes')}
         >
           Nuevo Reporte
@@ -178,63 +178,78 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
               <Box
                 className='flex flex-col items-center justify-center p-2 rounded-lg'
                 sx={{
-                  bgcolor: 'success.main',
+                  bgcolor: (report as any).noMeeting ? 'warning.main' : 'success.main',
                   minWidth: 56
                 }}
               >
-                <Typography variant='h6' fontWeight={700} sx={{ color: 'success.contrastText' }}>
+                <Typography variant='h6' fontWeight={700} sx={{ color: (report as any).noMeeting ? 'warning.contrastText' : 'success.contrastText' }}>
                   {new Date(report.meetingDate).getDate()}
                 </Typography>
-                <Typography variant='caption' sx={{ color: 'success.contrastText', textTransform: 'uppercase', fontSize: '0.65rem' }}>
+                <Typography variant='caption' sx={{ color: (report as any).noMeeting ? 'warning.contrastText' : 'success.contrastText', textTransform: 'uppercase', fontSize: '0.65rem' }}>
                   {new Date(report.meetingDate).toLocaleDateString('es-CO', { month: 'short' })}
                 </Typography>
               </Box>
 
               {/* Info del reporte */}
               <Box className='flex-1 min-w-0'>
-                <Box className='flex items-center gap-2 flex-wrap'>
-                  <Typography variant='body2' fontWeight={500}>
-                    {report.totalAttendees} asistentes
-                  </Typography>
-                  {report.visitorsCount > 0 && (
-                    <Chip
-                      label={`${report.visitorsCount} visitas`}
-                      size='small'
-                      color='success'
-                      variant='tonal'
-                      sx={{ height: 20, fontSize: '0.7rem' }}
-                    />
-                  )}
-                  {report.reportOffering && report.offeringAmount && (
-                    <Chip
-                      icon={<i className='ri-money-dollar-circle-line text-xs' />}
-                      label={formatCurrency(report.offeringAmount)}
-                      size='small'
-                      color='warning'
-                      variant='tonal'
-                      sx={{ height: 20, fontSize: '0.7rem' }}
-                    />
-                  )}
-                </Box>
-                <Box className='flex items-center gap-2 mbs-1'>
-                  <Typography variant='caption' color='text.secondary'>
-                    {report.leadersCount} {report.leadersCount === 1 ? 'líder' : 'líderes'}
-                  </Typography>
-                  <Typography variant='caption' color='text.disabled'>•</Typography>
-                  <Typography variant='caption' color='text.secondary'>
-                    Por {reporterName}
-                  </Typography>
-                </Box>
-                {report.notes && (
-                  <Typography
-                    variant='caption'
-                    color='text.secondary'
-                    noWrap
-                    className='block mbs-1'
-                    sx={{ maxWidth: 300 }}
-                  >
-                    {report.notes}
-                  </Typography>
+                {(report as any).noMeeting ? (
+                  <>
+                    <Tooltip title={(report as any).noMeetingReason || 'Sin motivo especificado'} arrow>
+                      <Chip label='No realizado' color='warning' variant='tonal' size='small' />
+                    </Tooltip>
+                    <Box className='flex items-center gap-2 mbs-1'>
+                      <Typography variant='caption' color='text.secondary'>
+                        Por {reporterName}
+                      </Typography>
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box className='flex items-center gap-2 flex-wrap'>
+                      <Typography variant='body2' fontWeight={500}>
+                        {report.totalAttendees} asistentes
+                      </Typography>
+                      {report.visitorsCount > 0 && (
+                        <Chip
+                          label={`${report.visitorsCount} visitas`}
+                          size='small'
+                          color='success'
+                          variant='tonal'
+                          sx={{ height: 20, fontSize: '0.7rem' }}
+                        />
+                      )}
+                      {report.reportOffering && report.offeringAmount && (
+                        <Chip
+                          icon={<i className='solar-money-bag-linear text-xs' />}
+                          label={formatCurrency(report.offeringAmount)}
+                          size='small'
+                          color='warning'
+                          variant='tonal'
+                          sx={{ height: 20, fontSize: '0.7rem' }}
+                        />
+                      )}
+                    </Box>
+                    <Box className='flex items-center gap-2 mbs-1'>
+                      <Typography variant='caption' color='text.secondary'>
+                        {report.leadersCount} {report.leadersCount === 1 ? 'líder' : 'líderes'}
+                      </Typography>
+                      <Typography variant='caption' color='text.disabled'>•</Typography>
+                      <Typography variant='caption' color='text.secondary'>
+                        Por {reporterName}
+                      </Typography>
+                    </Box>
+                    {report.notes && (
+                      <Typography
+                        variant='caption'
+                        color='text.secondary'
+                        noWrap
+                        className='block mbs-1'
+                        sx={{ maxWidth: 300 }}
+                      >
+                        {report.notes}
+                      </Typography>
+                    )}
+                  </>
                 )}
               </Box>
 
@@ -243,7 +258,7 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
                 size='small'
                 onClick={(e) => handleMenuOpen(e, report)}
               >
-                <i className='ri-more-2-line' />
+                <i className='solar-menu-dots-linear' />
               </IconButton>
             </Box>
           )
@@ -255,7 +270,7 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
         <Box className='text-center mbs-4'>
           <Button
             variant='text'
-            endIcon={<i className='ri-arrow-right-line' />}
+            endIcon={<i className='solar-arrow-right-linear' />}
             onClick={() => router.push('/dashboard/reportes')}
           >
             Ver todos los reportes ({stats.totalReports})
@@ -273,19 +288,19 @@ const GroupReportsTab = ({ reports, groupId, stats }: Props) => {
       >
         <MenuItem onClick={handleViewReport}>
           <ListItemIcon>
-            <i className='ri-eye-line' />
+            <i className='solar-eye-linear' />
           </ListItemIcon>
           <ListItemText>Ver detalle</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleEditReport}>
           <ListItemIcon>
-            <i className='ri-edit-line' />
+            <i className='solar-pen-new-square-linear' />
           </ListItemIcon>
           <ListItemText>Editar</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleDeleteReport} sx={{ color: 'error.main' }}>
           <ListItemIcon sx={{ color: 'error.main' }}>
-            <i className='ri-delete-bin-line' />
+            <i className='solar-trash-bin-trash-linear' />
           </ListItemIcon>
           <ListItemText>Eliminar</ListItemText>
         </MenuItem>

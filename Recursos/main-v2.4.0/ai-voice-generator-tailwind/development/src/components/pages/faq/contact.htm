@@ -1,0 +1,107 @@
+<!-- =========================
+Contact section
+===========================-->
+<section class="pt-[100px] pb-[200px]">
+  <div class="main-container">
+    <div class="space-y-[70px]">
+      <!-- heading  -->
+      <div class="main-w-[850px] mx-auto space-y-5 text-center md:w-full">
+        <span data-ns-animate data-delay="0.2" class="badge badge-ivory">Contact</span>
+        <div class="space-y-3">
+          <h2 id="contact-heading" data-ns-animate data-delay="0.3">Still have questions?</h2>
+          <p data-ns-animate data-delay="0.4" class="mx-auto max-w-[442px] sm:w-full">
+            If your question isn't listed here, feel free to contact us or start a live chat with
+            our team. We're happy to help!
+          </p>
+        </div>
+      </div>
+
+      <!-- form -->
+      <div
+        data-ns-animate
+        data-delay="0.5"
+        class="contact-form bg-ns-ivory/80 mx-auto max-w-[850px] rounded-[20px] p-5 sm:p-[42px] md:w-full"
+      >
+        <form action="/index.html" method="POST">
+          <!-- full name -->
+          <div class="mb-8 space-y-2">
+            <label
+              for="fullname"
+              class="text-tagline-1 text-secondary dark:text-accent block font-medium"
+              >Full name</label
+            >
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="Enter your name"
+              required
+              autocomplete="name"
+              class="shadow-1 dark:text-accent dark:bg-background-6 border-stroke-3 dark:border-stroke-6 bg-background-1 text-tagline-1 dark:placeholder:text-accent/60 placeholder:text-secondary/60 focus:border-stroke-10 placeholder:text-tagline-1 w-full rounded-full border px-[18px] py-2 font-normal placeholder:font-normal focus:outline-none"
+            />
+          </div>
+
+          <!-- email -->
+          <div class="mb-8 space-y-2">
+            <label
+              for="email"
+              class="text-tagline-1 text-secondary dark:text-accent block font-medium"
+              >Email address</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              autocomplete="email"
+              class="dark:text-accent dark:bg-background-6 border-stroke-3 dark:border-stroke-6 bg-background-1 text-tagline-1 dark:placeholder:text-accent/60 placeholder:text-secondary/60 focus:border-stroke-10 placeholder:text-tagline-1 w-full rounded-full border px-[18px] py-2 font-normal placeholder:font-normal focus:outline-none"
+            />
+          </div>
+
+          <!-- message -->
+          <div class="mb-4 space-y-2">
+            <label
+              for="message"
+              class="text-tagline-1 text-secondary dark:text-accent block font-medium"
+              >Messages</label
+            >
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              placeholder="Enter your messages"
+              required
+              class="dark:bg-background-6 dark:text-accent border-stroke-3 dark:border-stroke-6 bg-background-1 text-tagline-1 dark:placeholder:text-accent/60 placeholder:text-secondary/60 focus:border-stroke-10 placeholder:text-tagline-1 w-full rounded-xl border px-[18px] py-2 font-normal placeholder:font-normal focus:outline-none"
+            ></textarea>
+          </div>
+
+          <!-- terms checkbox -->
+          <fieldset class="mb-4 flex items-center gap-2">
+            <label for="terms" class="flex items-center gap-x-3">
+              <input id="terms" type="checkbox" class="peer sr-only" required />
+              <span
+                class="border-stroke-3 dark:border-stroke-7 after:bg-ns-linen peer-checked:border-stroke-10 relative size-4 cursor-pointer rounded-full border after:absolute after:top-1/2 after:left-1/2 after:size-2.5 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:opacity-0 peer-checked:after:opacity-100"
+              ></span>
+            </label>
+            <label
+              for="terms"
+              class="text-tagline-3 text-secondary/60 dark:text-accent/60 cursor-pointer"
+            >
+              I agree with the
+              <a href="#" class="text-ns-linen text-tagline-3 underline">terms and conditions</a>
+            </label>
+          </fieldset>
+
+          <!-- submit button -->
+          <button
+            type="submit"
+            class="btn btn-md btn-secondary dark:btn-accent hover:btn-primary w-full first-letter:uppercase before:content-none"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

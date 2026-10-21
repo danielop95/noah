@@ -49,7 +49,7 @@ const accordion = (skin: Skin): Theme['components'] => ({
   },
   MuiAccordionSummary: {
     defaultProps: {
-      expandIcon: <i className='ri-arrow-down-s-line' />
+      expandIcon: <i className='solar-alt-arrow-down-linear' />
     },
     styleOverrides: {
       root: ({ theme }) => ({

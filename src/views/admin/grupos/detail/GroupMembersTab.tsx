@@ -152,7 +152,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
     return (
       <Box className='flex flex-col items-center justify-center py-12'>
         <CustomAvatar skin='light' color='info' size={64} sx={{ mb: 2 }}>
-          <i className='ri-group-line text-3xl' />
+          <i className='solar-users-group-rounded-linear text-3xl' />
         </CustomAvatar>
         <Typography variant='h6' className='mbe-1'>
           Sin miembros en la red
@@ -162,7 +162,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
         </Typography>
         <Button
           variant='contained'
-          startIcon={<i className='ri-user-add-line' />}
+          startIcon={<i className='solar-user-plus-linear' />}
           onClick={() => router.push('/dashboard/admin/redes')}
         >
           Ir a Redes
@@ -183,7 +183,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
             input: {
               startAdornment: (
                 <InputAdornment position='start'>
-                  <i className='ri-search-line' />
+                  <i className='solar-magnifer-linear' />
                 </InputAdornment>
               )
             }
@@ -192,7 +192,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
         />
         <Box className='flex items-center gap-2'>
           <Chip
-            icon={<i className='ri-bubble-chart-line' />}
+            icon={<i className='solar-share-circle-linear' />}
             label={networkName}
             color='primary'
             variant='outlined'
@@ -200,7 +200,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
           <Button
             size='small'
             variant='outlined'
-            startIcon={<i className='ri-user-add-line' />}
+            startIcon={<i className='solar-user-plus-linear' />}
             onClick={() => setPickerOpen(true)}
           >
             Agregar
@@ -243,7 +243,7 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
                     </Typography>
                     {member.networkRole === 'leader' && (
                       <Chip
-                        icon={<i className='ri-star-fill' />}
+                        icon={<i className='solar-star-bold' />}
                         label='Lider de red'
                         size='small'
                         color='warning'
@@ -274,11 +274,11 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
                       size='small'
                       onClick={() => router.push(`/dashboard/admin/usuarios/${member.id}`)}
                     >
-                      <i className='ri-eye-line' />
+                      <i className='solar-eye-linear' />
                     </IconButton>
                   </Tooltip>
                   <IconButton size='small' onClick={e => handleMenuOpen(e, member)}>
-                    <i className='ri-more-2-line' />
+                    <i className='solar-menu-dots-linear' />
                   </IconButton>
                 </Box>
               </Box>
@@ -295,24 +295,24 @@ const GroupMembersTab = ({ members, groupId, networkName, groupMembers }: Props)
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MenuItem onClick={handleViewProfile}>
-          <ListItemIcon><i className='ri-user-line' /></ListItemIcon>
+          <ListItemIcon><i className='solar-user-linear' /></ListItemIcon>
           <ListItemText>Ver perfil</ListItemText>
         </MenuItem>
         {selectedMember && !groupMemberIds.has(selectedMember.id) && (
           <>
             <MenuItem onClick={handleAddAsLeader}>
-              <ListItemIcon><i className='ri-star-line' /></ListItemIcon>
+              <ListItemIcon><i className='solar-star-linear' /></ListItemIcon>
               <ListItemText>Agregar como lider</ListItemText>
             </MenuItem>
             <MenuItem onClick={handleAddAsMember}>
-              <ListItemIcon><i className='ri-user-add-line' /></ListItemIcon>
+              <ListItemIcon><i className='solar-user-plus-linear' /></ListItemIcon>
               <ListItemText>Agregar como miembro</ListItemText>
             </MenuItem>
           </>
         )}
         {selectedMember && groupMemberIds.has(selectedMember.id) && (
           <MenuItem onClick={handleRemoveFromGroup} sx={{ color: 'error.main' }}>
-            <ListItemIcon sx={{ color: 'error.main' }}><i className='ri-user-unfollow-line' /></ListItemIcon>
+            <ListItemIcon sx={{ color: 'error.main' }}><i className='solar-user-block-linear' /></ListItemIcon>
             <ListItemText>Remover del grupo</ListItemText>
           </MenuItem>
         )}

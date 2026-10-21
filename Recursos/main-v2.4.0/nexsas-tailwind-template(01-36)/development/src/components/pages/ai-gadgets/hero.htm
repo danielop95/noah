@@ -1,0 +1,75 @@
+<!-- ==========================Hero=========================== -->
+<section class="pt-46 md:pt-[204px] bg-black relative z-0 overflow-hidden">
+  <figure class="absolute top-0 -z-10 left-0">
+    <img src="./images/ns-img-540.png" alt="hero-bg" />
+  </figure>
+  <figure
+    data-ns-animate
+    data-delay="0.3"
+    data-instant
+    data-direction="up"
+    class="absolute top-10 -z-10 right-0"
+  >
+    <img src="./images/ns-img-541.png" alt="hero-bg" />
+  </figure>
+
+  <div class="main-container relative z-30">
+    <div class="text-center mb-16 md:mb-24 lg:mb-40">
+      <h1 class="font-medium text-accent mb-3 opacity-0" data-ns-animate data-delay="0.1">
+        Smarter living starts here
+      </h1>
+      <p
+        class="max-w-[500px] mx-auto mb-7 md:mb-10 lg:mb-14 text-accent/60"
+        data-ns-animate
+        data-delay="0.2"
+      >
+        Discover the next generation of AI-powered gadgets that make life faster, easier, and
+        effortlessly connected.
+      </p>
+
+      <!-- btns  -->
+      <div class="flex md:flex-row flex-col gap-y-3 md:gap-y-0 items-center justify-center gap-x-4">
+        <div
+          data-ns-animate
+          data-delay="0.4"
+          data-direction="left"
+          data-offset="50"
+          data-instant
+          class="w-[90%] md:w-auto"
+        >
+          <Component
+            src="src/components/shared/button-v2.htm"
+            page-link="./ai-gadgets-services.html"
+            btn-class="btn-xl-v2 btn-secondary-v2 group-hover/btn-v2:btn-gray-v2"
+            btn-text="Explore products"
+          />
+        </div>
+
+        <div
+          data-ns-animate
+          data-delay="0.5"
+          data-direction="left"
+          data-offset="50"
+          data-instant
+          class="w-[90%] md:w-auto"
+        >
+          <Component
+            src="src/components/shared/button-v2.htm"
+            page-link="./ai-gadgets-signup.html"
+            btn-class="btn-xl-v2 btn-gray-v2 group-hover/btn-v2:btn-primary-v2"
+            btn-text="Explore products"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- banner -->
+    <figure
+      data-ns-animate
+      data-delay="0.4"
+      class="max-w-[550px] mx-auto rounded-3xl overflow-hidden"
+    >
+      <img src="./images/ns-img-330.png" alt="Hero banner" class="w-full h-full object-cover" />
+    </figure>
+  </div>
+</section>

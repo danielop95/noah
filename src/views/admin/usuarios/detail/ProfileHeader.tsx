@@ -79,13 +79,13 @@ const ProfileHeader = ({ user, onEdit, onBack }: Props) => {
             '&:hover': { bgcolor: 'rgba(255,255,255,0.25)' }
           }}
         >
-          <i className='ri-arrow-left-line' />
+          <i className='solar-arrow-left-linear' />
         </IconButton>
         {/* Edit button */}
         <Button
           variant='contained'
           color='inherit'
-          startIcon={<i className='ri-edit-line' />}
+          startIcon={<i className='solar-pen-new-square-linear' />}
           onClick={onEdit}
           sx={{
             position: 'absolute',
@@ -148,7 +148,7 @@ const ProfileHeader = ({ user, onEdit, onBack }: Props) => {
             <div className='flex flex-wrap gap-5 justify-center sm:justify-normal'>
               {user.userRole && (
                 <div className='flex items-center gap-1.5'>
-                  <i className='ri-shield-star-line text-textSecondary' />
+                  <i className='solar-shield-star-linear text-textSecondary' />
                   <Typography className='font-medium' color='text.secondary'>
                     {user.userRole.name}
                   </Typography>
@@ -156,14 +156,14 @@ const ProfileHeader = ({ user, onEdit, onBack }: Props) => {
               )}
               {location && (
                 <div className='flex items-center gap-1.5'>
-                  <i className='ri-map-pin-2-line text-textSecondary' />
+                  <i className='solar-map-point-linear text-textSecondary' />
                   <Typography className='font-medium' color='text.secondary'>
                     {location}
                   </Typography>
                 </div>
               )}
               <div className='flex items-center gap-1.5'>
-                <i className='ri-calendar-line text-textSecondary' />
+                <i className='solar-calendar-linear text-textSecondary' />
                 <Typography className='font-medium' color='text.secondary'>
                   Miembro desde {formatDate(user.createdAt)}
                 </Typography>
@@ -173,7 +173,7 @@ const ProfileHeader = ({ user, onEdit, onBack }: Props) => {
             <div className='flex flex-wrap gap-2 mbs-1'>
               {user.network ? (
                 <Chip
-                  icon={user.networkRole === 'leader' ? <i className='ri-star-fill' /> : <i className='ri-bubble-chart-line' />}
+                  icon={user.networkRole === 'leader' ? <i className='solar-star-bold' /> : <i className='solar-share-circle-linear' />}
                   label={`${user.network.name}${user.networkRole === 'leader' ? ' (Lider)' : ''}`}
                   color={user.networkRole === 'leader' ? 'warning' : 'info'}
                   variant='tonal'
@@ -184,7 +184,7 @@ const ProfileHeader = ({ user, onEdit, onBack }: Props) => {
               )}
               {user.group ? (
                 <Chip
-                  icon={user.groupRole === 'leader' ? <i className='ri-star-fill' /> : <i className='ri-team-line' />}
+                  icon={user.groupRole === 'leader' ? <i className='solar-star-bold' /> : <i className='solar-widget-2-linear' />}
                   label={`${user.group.name}${user.groupRole === 'leader' ? ' (Lider)' : ''}`}
                   color={user.groupRole === 'leader' ? 'success' : 'primary'}
                   variant='tonal'

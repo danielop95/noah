@@ -1,0 +1,54 @@
+<a href="{=$href}" class="button-split-text-wrapper group inline-block">
+  <div class="relative z-10 h-full max-h-[52px] cursor-pointer">
+    <div
+      class="bg-background-7 flex cursor-pointer items-center justify-center rounded-full py-[5px] pr-1.5 pl-6"
+    >
+      <div class="relative overflow-hidden pr-5 transition-all duration-300 ease-in-out">
+        <div class="h-[21px]">
+          <div
+            class="text-background-5 font-ibm-plex-mono button-split-upper-text text-tagline-2 block leading-[1.4] font-medium text-nowrap"
+          >
+            {=$button-text}
+          </div>
+        </div>
+        <div class="absolute h-[21px]">
+          <div
+            class="text-background-5 font-ibm-plex-mono button-split-lower-text text-tagline-2 block leading-[1.4] font-medium text-nowrap"
+          >
+            {=$button-text}
+          </div>
+        </div>
+      </div>
+      <div class="relative mt-[2px] inline-block shrink-0 rounded-full p-2">
+        <!-- circle border  -->
+        <div
+          class="bg-background-6 absolute top-1/2 left-1/2 size-10 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-[var(--button-shadow)] transition-all duration-300 ease-in-out"
+        ></div>
+        <span class="relative z-10 size-10">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            class="rotate-45 stroke-white transition-all duration-400 ease-in-out group-hover:rotate-0"
+          >
+            <path d="M7 17L17 7" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M7 7H17V17" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- rounded lines with staging animation -->
+    <span
+      class="absolute top-1/2 left-1/2 h-[68px] w-[107%] -translate-x-1/2 -translate-y-1/2 scale-100 rounded-full border border-white/20 opacity-100"
+    ></span>
+    <span
+      class="absolute top-1/2 left-1/2 h-[84px] w-[115%] -translate-x-1/2 -translate-y-1/2 scale-100 rounded-full border border-white/10 opacity-100"
+    ></span>
+    <span
+      class="absolute top-1/2 left-1/2 h-[100px] w-[123%] -translate-x-1/2 -translate-y-1/2 scale-100 rounded-full border border-white/5 opacity-100"
+    ></span>
+  </div>
+</a>

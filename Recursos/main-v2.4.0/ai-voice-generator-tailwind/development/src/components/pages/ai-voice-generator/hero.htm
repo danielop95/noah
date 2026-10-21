@@ -1,0 +1,129 @@
+<!-- hero section -->
+<section
+  class="lp:pt-[254px] relative overflow-hidden pt-[170px] pb-12 lg:pb-24"
+  role="banner"
+  aria-label="AI Voice Generator Hero Section"
+  itemscope
+  itemtype="https://schema.org/WebPage"
+>
+  <!-- Video Background -->
+  <video
+    class="lp:!h-[960px] absolute top-0 left-0 z-[-1] h-[100%] w-full object-cover object-center md:h-[650px] lg:h-[700px]"
+    autoplay
+    muted
+    loop
+    playsinline
+    aria-label="Decorative background video animation"
+    title="Background animation"
+  >
+    <source src="/video/big-circle.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="main-container relative z-10">
+    <div class="lp:space-y-34 space-y-10 md:space-y-15">
+      <!-- content  -->
+      <div class="mx-auto space-y-10 text-center lg:space-y-14">
+        <!-- text groups -->
+        <div class="space-y-3 text-center">
+          <!-- badge and text -->
+          <div class="space-y-5">
+            <!-- badge  -->
+            <span
+              data-ns-animate
+              data-instant
+              data-delay="0.1"
+              class="badge badge-metal text-accent/80"
+              aria-label="Product Hunt announcement badge"
+              itemprop="name"
+            >
+              We're live on productHunt
+            </span>
+            <!-- main text  -->
+            <h1
+              data-ns-animate
+              data-instant
+              data-delay="0.2"
+              class="text-accent lg:text-heading-1 text-heading-3 mx-auto max-w-[350px] leading-[110%] lg:max-w-[500px]"
+              itemprop="headline"
+            >
+              Your voice, reinvented by AI.
+            </h1>
+          </div>
+          <p
+            data-ns-animate
+            data-instant
+            data-delay="0.3"
+            class="text-accent/80 mx-auto max-w-[465px]"
+            itemprop="description"
+            aria-label="AI Voice Generator description"
+          >
+            Bring your words to life with ultra-realistic AI voices powered by deep learning.
+            Perfect for videos, podcasts, ads, and more.
+          </p>
+        </div>
+
+        <!-- btns  -->
+        <div class="space-y-7" aria-label="Call to action buttons">
+          <div
+            class="flex flex-col items-center justify-center gap-y-4 md:flex-row md:gap-x-4 md:gap-y-0"
+            role="group"
+            aria-label="Primary action buttons"
+          >
+            <div
+              data-ns-animate
+              data-instant
+              data-delay="0.4"
+              data-direction="left"
+              data-offset="50"
+              class="w-[85%] md:w-auto"
+            >
+              <Component
+                src="src/components/shared/button-v2.htm"
+                page-link="./signup.html"
+                btn-text="Get started"
+                btn-class="btn-lg-v2 lg:btn-xl-v2 btn-v2-white border-0 group-hover/btn-v2:btn-primary-v2"
+              />
+            </div>
+            <div
+              data-ns-animate
+              data-instant
+              data-delay="0.5"
+              data-direction="left"
+              data-offset="50"
+              class="w-[85%] md:w-auto"
+            >
+              <Component
+                src="src/components/shared/button-v2.htm"
+                btn-text="Download the app"
+                page-link="./pricing.html"
+                btn-class="btn-lg-v2 lg:btn-xl-v2 btn-v2-accent group-hover/btn-v2:btn-secondary-v2"
+              />
+            </div>
+          </div>
+          <i
+            data-ns-animate
+            data-instant
+            data-delay="0.6"
+            class="text-tagline-3 text-accent font-normal"
+            aria-label="Demo information"
+            role="note"
+            >No signup required for demo — try it in your browser.</i
+          >
+        </div>
+      </div>
+
+      <!-- voice animation svg  -->
+      <div
+        data-ns-animate
+        data-instant
+        data-delay="0.7"
+        class="flex items-center justify-center"
+        aria-label="Voice waveform visualization"
+        role="img"
+      >
+        <Component src="src/components/pages/ai-voice-generator/hero-voice.htm" />
+      </div>
+    </div>
+  </div>
+</section>

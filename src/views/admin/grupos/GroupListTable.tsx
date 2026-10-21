@@ -180,7 +180,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
 
           return (
             <Chip
-              icon={<i className={modality === 'virtual' ? 'ri-video-line' : 'ri-map-pin-line'} />}
+              icon={<i className={modality === 'virtual' ? 'solar-video-frame-linear' : 'solar-map-point-linear'} />}
               label={modality === 'virtual' ? 'Virtual' : 'Presencial'}
               size='small'
               color={modality === 'virtual' ? 'info' : 'primary'}
@@ -200,7 +200,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
 
           return (
             <Box className='flex items-center gap-1'>
-              <i className='ri-time-line text-textSecondary' />
+              <i className='solar-clock-circle-linear text-textSecondary' />
               <Typography variant='body2'>
                 {DAYS_LABELS[meetingDay] || meetingDay} {meetingTime || ''}
               </Typography>
@@ -229,7 +229,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
                 size='small'
                 onClick={() => router.push(`/dashboard/admin/grupos/${row.original.id}`)}
               >
-                <i className='ri-eye-line' />
+                <i className='solar-eye-linear' />
               </IconButton>
             </Tooltip>
             <Tooltip title='Editar'>
@@ -240,7 +240,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
                   setDrawerOpen(true)
                 }}
               >
-                <i className='ri-edit-line' />
+                <i className='solar-pen-new-square-linear' />
               </IconButton>
             </Tooltip>
             <Tooltip title='Eliminar'>
@@ -252,7 +252,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
                   setDeleteDialogOpen(true)
                 }}
               >
-                <i className='ri-delete-bin-line' />
+                <i className='solar-trash-bin-trash-linear' />
               </IconButton>
             </Tooltip>
           </Box>
@@ -337,7 +337,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
-                  <i className='ri-search-line' />
+                  <i className='solar-magnifer-linear' />
                 </InputAdornment>
               )
             }}
@@ -375,7 +375,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
           <ExportButton data={filteredGroups} columns={groupExportColumns} fileName='grupos' title='Grupos' />
           <Button
             variant='contained'
-            startIcon={<i className='ri-add-line' />}
+            startIcon={<i className='solar-add-circle-linear' />}
             onClick={() => {
               setSelectedGroup(null)
               setDrawerOpen(true)
@@ -404,7 +404,7 @@ const GroupListTable = ({ groups: initialGroups, networks, onRefresh }: GroupLis
               <TableRow>
                 <TableCell colSpan={columns.length} align='center' sx={{ py: 8 }}>
                   <Box className='flex flex-col items-center gap-2'>
-                    <i className='ri-team-line text-5xl text-textSecondary' />
+                    <i className='solar-widget-2-linear text-5xl text-textSecondary' />
                     <Typography variant='body1' className='text-textSecondary'>
                       No hay grupos registrados
                     </Typography>

@@ -1,0 +1,165 @@
+/* =========== GLOBAL STYLES ========== */
+
+body {
+  @apply font-inter-tight antialiased;
+}
+
+[data-opai-animate] {
+  opacity: 0;
+}
+
+/* ========== CONTAINER ========== */
+
+@utility main-container {
+  @apply lp:px-0 mx-auto max-w-[1290px] px-5;
+}
+
+@utility footer-link {
+  @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:origin-right before:scale-x-0 before:bg-white before:transition-transform before:duration-500 before:content-[''] hover:before:origin-left hover:before:scale-x-100;
+}
+
+/*  =========================== Blog title underline hover effect =========================== */
+.underline-hover-effect .blog-title h3 {
+  @apply inline w-full cursor-pointer pb-[1px] transition-all duration-500 ease-[cubic-bezier(0.645,0.045,0.355,1.000)];
+  background-image: linear-gradient(transparent calc(100% - 1px), white 1px);
+  @apply bg-[length:0%_100%] bg-no-repeat;
+}
+
+.underline-hover-effect:hover .blog-title h3 {
+  @apply bg-[length:100%_100%];
+}
+
+/*  =========================== Blog title underline hover effect black =========================== */
+.underline-hover-effect-black .blog-title-black h3 {
+  @apply inline w-full cursor-pointer pb-[1px] transition-all duration-500 ease-[cubic-bezier(0.645,0.045,0.355,1.000)];
+  background-image: linear-gradient(transparent calc(100% - 1px), black 1px);
+  @apply bg-[length:0%_100%] bg-no-repeat;
+}
+
+.underline-hover-effect-black:hover .blog-title-black h3 {
+  @apply bg-[length:100%_100%];
+}
+
+/* =========================== service  Details Info =========================== */
+.details-info {
+  @apply space-y-12 md:space-y-15 lg:space-y-18;
+}
+
+.details-info h2 {
+  @apply font-manrope text-manrope-heading-4 md:text-manrope-heading-3 lg:text-manrope-heading-2 text-background-13/90 pb-3 font-medium max-md:leading-[1.2];
+}
+.details-info h2 span {
+  @apply font-instrument-serif text-background-13/50 italic;
+}
+
+.details-info p {
+  @apply font-inter-tight text-tagline-2 text-background-13/60 not-last:mb-5;
+}
+
+.details-info h3 {
+  @apply font-manrope text-manrope-heading-6 md:text-manrope-heading-5 lg:text-manrope-heading-4 text-background-13/90 pb-2.5 font-medium max-md:leading-[1.2];
+}
+
+.details-info figure {
+  @apply max-h-[710px] w-full overflow-hidden rounded-xl;
+}
+.details-info figure img {
+  @apply size-full object-cover;
+}
+.details-info ul {
+  @apply list-inside list-disc space-y-2.5;
+}
+
+.details-info ul li {
+  @apply font-inter-tight text-tagline-2 text-background-13/90;
+}
+
+/* =========================== Blog details markdown style =========================== */
+.blog-details {
+  h3 {
+    @apply font-instrument-serif text-is-heading-5 text-background-13/90 font-normal not-first:mt-[70px] first:mt-0;
+  }
+
+  p {
+    @apply font-inter-tight text-tagline-2 text-background-13/60 mt-[70px] font-normal;
+  }
+
+  h3 + p {
+    @apply mt-1;
+  }
+
+  h3 + p + ul {
+    @apply mt-4;
+  }
+
+  ul + p {
+    @apply mt-4;
+  }
+  ul {
+    @apply space-y-2;
+
+    li {
+      @apply font-inter-tight text-tagline-2 text-background-13/90 before:bg-background-13 flex items-center gap-x-2 font-normal before:block before:size-1.5 before:rounded-full before:content-[''];
+    }
+  }
+}
+
+/* team details markdown style  */
+.team-details {
+  @apply mx-auto w-full max-w-[850px];
+
+  h3 {
+    @apply font-instrument-serif text-is-heading-5 text-background-13/90 mt-10 font-normal md:mt-18;
+  }
+
+  p {
+    @apply font-inter-tight text-tagline-2 text-background-13/60 font-normal;
+  }
+
+  h3 + p {
+    @apply mt-1;
+  }
+
+  h4 {
+    @apply font-instrument-serif text-is-heading-6 text-background-13/90 mt-8 font-normal;
+  }
+
+  h4 + p {
+    @apply mt-2;
+  }
+
+  h3 + ul {
+    @apply mt-2 space-y-1;
+  }
+
+  ul > li {
+    @apply font-inter-tight text-tagline-2 text-background-13/60 before:bg-background-13 flex items-center gap-x-2 font-normal before:block before:size-1.5 before:rounded-full before:content-[''];
+  }
+}
+
+/* =========================== Use Case Details Info =========================== */
+.use-case-details-info {
+  @apply rounded-xl bg-white p-2 pb-7 lg:pb-14;
+}
+.use-case-details-info figure {
+  @apply h-[350px] w-full overflow-hidden rounded-lg md:h-[500px] lg:h-[700px];
+}
+.use-case-details-info figure img {
+  @apply size-full object-cover;
+}
+.use-case-details-info h2 {
+  @apply font-instrument-serif text-is-heading-5 text-background-13/80;
+}
+
+.use-case-details-info h3 {
+  @apply font-instrument-serif text-is-heading-4 text-background-13/80 px-7 pt-14 md:px-14 lg:pt-18;
+}
+.use-case-details-info p {
+  @apply font-inter-tight text-tagline-2 text-background-13/60 px-7 md:px-14;
+}
+.use-case-details-info ul {
+  @apply list-inside list-disc space-y-1.5 px-7 pt-4 md:px-14;
+}
+.use-case-details-info ul li {
+  @apply font-inter-tight text-tagline-2 text-background-13/90;
+}

@@ -81,7 +81,7 @@ const OptionMenu = (props: OptionsMenuType) => {
           ) : (icon as ReactNode) ? (
             icon
           ) : (
-            <i className={classnames('ri-more-2-line', iconClassName)} />
+            <i className={classnames('solar-menu-dots-linear', iconClassName)} />
           )}
         </IconButton>
       </IconButtonWrapper>

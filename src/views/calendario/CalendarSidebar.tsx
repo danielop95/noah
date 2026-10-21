@@ -110,7 +110,7 @@ const CalendarSidebar = (props: Props) => {
       {isAdmin && (
         <>
           <div className='is-full p-5'>
-            <Button fullWidth variant='contained' onClick={handleSidebarToggleSidebar} startIcon={<i className='ri-add-line' />}>
+            <Button fullWidth variant='contained' onClick={handleSidebarToggleSidebar} startIcon={<i className='solar-add-circle-linear' />}>
               Agregar Evento
             </Button>
           </div>

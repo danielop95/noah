@@ -62,6 +62,7 @@
   "exclude": [
     "node_modules",
     "materio-template",
-    "materio-docs"
+    "materio-docs",
+    "Recursos"
   ]
 }

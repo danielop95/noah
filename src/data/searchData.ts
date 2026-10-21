@@ -13,21 +13,21 @@ const data: SearchData[] = [
     id: '1',
     name: 'Inicio',
     url: '/dashboard',
-    icon: 'ri-home-smile-line',
+    icon: 'solar-home-smile-linear',
     section: 'Dashboards'
   },
   {
     id: '2',
     name: 'Mi Cuenta',
     url: '/dashboard/account-settings',
-    icon: 'ri-user-settings-line',
+    icon: 'solar-user-circle-linear',
     section: 'Paginas'
   },
   {
     id: '3',
     name: 'Usuarios',
     url: '/dashboard/admin/usuarios',
-    icon: 'ri-group-line',
+    icon: 'solar-users-group-rounded-linear',
     section: 'Administracion'
   },
   {
